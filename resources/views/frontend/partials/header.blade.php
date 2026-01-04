@@ -27,8 +27,8 @@
                 </li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('front.our-project') }}">Our Project</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('front.about-us') }}">About</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('front.blog') }}">Blog</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('front.contact') }}">Contact</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('front.blog') }}">Blog</a></li>
             </ul>
         </div>
 
@@ -93,8 +93,8 @@
                     </li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('front.our-project') }}">Our Project</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('front.about-us') }}">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('front.blog') }}">Blog</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('front.contact') }}">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('front.blog') }}">Blog</a></li>
                 </ul>
             </nav>
             <div class="bottom-info">
@@ -121,20 +121,50 @@
 
     <div class="offcanvas-body lenis-scroll-disable">
         <div class="body-inner">
+            @php
+                $socials = DB::table('footer_social_links')->get();
+                $contact = $contact ?? DB::table('contact_pages')->first();
+                $aboutPanel = DB::table('about_us')->first();
+            @endphp
+            @if ($aboutPanel && !empty($aboutPanel->about_us))
+                <div class="about-info">
+                    <h4 class="title mb-3">About Us</h4>
+                    <p>{{ \Illuminate\Support\Str::limit(strip_tags($aboutPanel->about_us), 160) }}</p>
+                </div>
+            @endif
             <div class="socail-info">
                 <ul class="socail-list-item">
-                    @php
-                        $socials = DB::table('footer_social_links')->get();
-                    @endphp
                     @foreach ($socials as $social)
-                        <li><a href="{{ $social->link }}" target="blink"><i class="{{ $social->icon }}"></i></a></li>
+                        @php
+                            $iconClass = trim($social->icon ?? '');
+                            $iconLower = strtolower($iconClass);
+                            $label = 'Social';
+
+                            if (\Illuminate\Support\Str::contains($iconLower, 'facebook')) {
+                                $label = 'Facebook';
+                            } elseif (\Illuminate\Support\Str::contains($iconLower, 'instagram')) {
+                                $label = 'Instagram';
+                            } elseif (\Illuminate\Support\Str::contains($iconLower, 'twitter') || \Illuminate\Support\Str::contains($iconLower, 'x-')) {
+                                $label = 'Twitter';
+                            } elseif (\Illuminate\Support\Str::contains($iconLower, 'dribbble')) {
+                                $label = 'Dribbble';
+                            } elseif (\Illuminate\Support\Str::contains($iconLower, 'linkedin')) {
+                                $label = 'LinkedIn';
+                            } elseif (\Illuminate\Support\Str::contains($iconLower, 'youtube')) {
+                                $label = 'YouTube';
+                            } elseif (!empty($social->link)) {
+                                $host = parse_url($social->link, PHP_URL_HOST);
+                                if (!empty($host)) {
+                                    $host = preg_replace('/^www\\./', '', $host);
+                                    $label = ucfirst(preg_replace('/\\..*/', '', $host));
+                                }
+                            }
+                        @endphp
+                        <li><a href="{{ $social->link }}" target="blink"><i class="{{ $iconClass }}"></i>{{ $label }}</a></li>
                     @endforeach
                 </ul>
             </div>
             <div class="contact-info">
-                @php
-                    $contact = $contact ?? DB::table('contact_pages')->first();
-                @endphp
                 @if ($contact && $contact->phone)
                     <span class="number">{{ $contact->phone }}</span>
                 @endif

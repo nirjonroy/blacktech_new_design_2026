@@ -22,11 +22,8 @@
             <div class="row">
                 <div class="col-xl-3 col-md-5">
                     <div class="widget widget-address-info">
-                        <h5 class="widget-title">Where To Find Us</h5>
+                        <h5 class="widget-title">Contact Information</h5>
                         <ul class="address-info-list">
-                            @if ($contact && !empty($contact->address))
-                                <li><i class="icon"><img class="img-fluid" src="{{ asset('frontend/assets/images/svg/address-info-contacts.svg') }}" alt="" /></i><span class="info"><span>{{ $contact->address }}</span></span></li>
-                            @endif
                             @if ($contact && $contact->phone)
                                 <li><i class="icon"><img class="img-fluid" src="{{ asset('frontend/assets/images/svg/address-info-headphone.svg') }}" alt="" /></i><span class="info"><span>{{ $contact->phone }}</span></span></li>
                             @endif
@@ -39,6 +36,7 @@
                 <div class="col-xl-5 col-md-7">
                     <div class="widget">
                         <h5 class="widget-title">Newsletter</h5>
+                        <p class="mb-3">keep up to date - get updates with latest topics.</p>
                         <div class="widget widget-newsletter mb-4 pb-2">
                             <form class="newsletter-form">
                                 <input type="text" class="form-control" placeholder="Enter your email address">
@@ -46,7 +44,7 @@
                             </form>
                         </div>
                         <div class="widget widget-menu">
-                            <h6 class="widget-title">Quick Links</h6>
+                            <h6 class="widget-title">Quick Link</h6>
                             <ul class="list-unstyled list-col-3 mb-0">
                                 <li><a href="{{ route('front.home') }}">Home</a></li>
                                 <li><a href="{{ route('front.about-us') }}">About us</a></li>
@@ -60,7 +58,7 @@
                             </ul>
                         </div>
                         <div class="widget widget-recent-post mt-4">
-                            <h6 class="widget-title">Recent Post</h6>
+                            <h6 class="widget-title">Resent Post</h6>
                             <div class="recent-post-list">
                                 @foreach($blogs as $b)
                                     <a href="{{ route('front.blog_details', [$b->slug]) }}" class="d-flex align-items-center mb-3 text-decoration-none">
@@ -78,12 +76,10 @@
                     </div>
                 </div>
                 <div class="col-xl-3 col-md-12 ms-auto">
-                    <div class="widget widget-info">
-                        <h5 class="widget-title">Call Center</h5>
-                        @if ($contact && $contact->phone)
-                            <a class="number" href="tel:{{ $contact->phone }}">{{ $contact->phone }}</a>
-                        @endif
-                        <h6 class="title">and get a free estimate</h6>
+                    <div class="widget">
+                        <a href="{{ route('front.home') }}" class="d-inline-block mb-4">
+                            <img class="img-fluid" src="{{ asset(siteInfo()->logo) }}" alt="logo" style="max-width: 120px;">
+                        </a>
                     </div>
                     <div class="widget-socail">
                         <ul class="socail-icon">

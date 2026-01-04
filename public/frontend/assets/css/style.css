@@ -74,6 +74,12 @@ NOTE: This is main stylesheet of template, This file contains the styling for th
   Typography
 *****************************/
 
+html, body {
+    margin: 0;
+    padding: 0;
+    background-color: #000000;
+}
+
 body {
     font-family: "Jost", sans-serif;
     font-weight: normal;
@@ -7059,6 +7065,22 @@ form.form-dark .form-control:focus {
     overflow: visible;
     position: relative;
     height: 1070px;
+}
+
+.main-banner-1 .banner-carousel {
+    display: block;
+}
+
+.main-banner-1 .banner-carousel .item {
+    display: none;
+}
+
+.main-banner-1 .banner-carousel .item:first-child {
+    display: block;
+}
+
+.main-banner-1 .banner-carousel.owl-loaded .item {
+    display: block;
 }
 
 .main-banner-1 .banner-bg-one {
