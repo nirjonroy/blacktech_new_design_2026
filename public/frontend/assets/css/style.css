@@ -7083,6 +7083,10 @@ form.form-dark .form-control:focus {
     display: block;
 }
 
+.main-banner-1 .banner-carousel .rotate-img {
+    width: auto;
+}
+
 .main-banner-1 .banner-bg-one {
     position: absolute;
     top: 0;

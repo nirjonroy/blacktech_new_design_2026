@@ -88,19 +88,21 @@
     </div>
 
     <div class="main-banner main-banner-1">
-        <div class="owl-carousel banner-carousel" data-items="1" data-nav-dots="false" data-nav-arrow="false" data-autoplay="true" data-space="0" data-sm-items="1" data-md-items="1" data-lg-items="1">
-            @forelse($sliders as $slider)
-                @php
-                    $heroImage = !empty($slider->image) ? asset($slider->image) : asset('frontend/assets/images/banner/banner-01/banner-shape-01.png');
-                @endphp
-                <div class="item">
-                    <div class="banner-inner">
-                        <img class="img-fluid banner-bg-one" src="{{ asset('frontend/assets/images/banner/banner-01/banner-bg-01.png') }}" alt="">
-                        <h1 class="banner-title">blacktech</h1>
+        <div class="banner-inner">
+            <img class="img-fluid banner-bg-one" src="{{ asset('frontend/assets/images/banner/banner-01/banner-bg-01.png') }}" alt="">
+            <h1 class="banner-title">blacktech</h1>
+            <div class="owl-carousel banner-carousel" data-items="1" data-nav-dots="false" data-nav-arrow="false" data-autoplay="true" data-space="0" data-sm-items="1" data-md-items="1" data-lg-items="1">
+                @forelse($sliders as $slider)
+                    @php
+                        $heroShape = !empty($slider->image)
+                            ? asset($slider->image)
+                            : asset('frontend/assets/images/banner/banner-01/banner-shape-01.png');
+                    @endphp
+                    <div class="item">
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <img class="img-fluid rotate rotate-img" src="{{ $heroImage }}" alt="">
+                                    <img class="img-fluid rotate rotate-img" src="{{ $heroShape }}" alt="">
                                 </div>
                                 <div class="col-md-6 ms-auto">
                                     <div class="banner-content">
@@ -114,12 +116,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            @empty
-                <div class="item">
-                    <div class="banner-inner">
-                        <img class="img-fluid banner-bg-one" src="{{ asset('frontend/assets/images/banner/banner-01/banner-bg-01.png') }}" alt="">
-                        <h1 class="banner-title">blacktech</h1>
+                @empty
+                    <div class="item">
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-6">
@@ -137,8 +135,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            @endforelse
+                @endforelse
+            </div>
         </div>
     </div>
 

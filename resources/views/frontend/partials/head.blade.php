@@ -7,7 +7,10 @@
     <!-- ======== Page title ============ -->
     <title>@yield('title', 'Black Tech Consultancy')</title>
     <!-- ========== Favicon Icon ========== -->
-    <link rel="shortcut icon" href="{{ asset('frontend/assets/images/favicon.ico') }}">
+    @php
+        $faviconPath = optional(siteInfo())->favicon ?: 'frontend/assets/images/favicon.ico';
+    @endphp
+    <link rel="shortcut icon" href="{{ asset($faviconPath) }}" type="image/x-icon">
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&family=Russo+One&display=swap" rel="stylesheet">
     <!-- CSS Global Compulsory (Do not remove) -->

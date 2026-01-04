@@ -67,100 +67,76 @@
 <meta name="twitter:image" content="{{ $metaImage }}">
 @endsection
 @section('content')
-<div class="offcanvas-overlay"></div>
-    <!-- offcanvas-overlay -->
-    <!-- header end -->
-
-
-    <!-- header end -->
-
-    <!-- page-banner start -->
-    <section class="page-banner pt-xs-60 pt-sm-80 overflow-hidden">
+<div class="site-content">
+    @php
+        $headerImage = 'frontend/assets/images/banner/inner-header/page-header-01.jpg';
+        if (!file_exists(public_path($headerImage))) {
+            $headerImage = 'frontend/assets/images/banner/banner-01/banner-bg-01.png';
+        }
+    @endphp
+    <div class="inner-header bg-holder" style="background-image: url('{{ asset($headerImage) }}');">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <div class="page-banner__content mb-xs-10 mb-sm-15 mb-md-15 mb-20">
-                        <div class="transparent-text">Explore our</div>
-                        <div class="page-title">
-                            <h2 class="display-4 text-center"> Service </h2>
-                        </div>
-                    </div>
-
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{route('front.home')}}">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Explore Service</li>
-                        </ol>
-                    </nav>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="page-banner__media mt-xs-30 mt-sm-40">
-                        <img src="{{asset('frontend/assets/img/page-banner/page-banner-start.svg')}}" class="img-fluid start" alt="">
-                        <img src="{{asset('frontend/assets/img/page-banner/page-banner.jpg" class="img-fluid')}}" alt="">
-                    </div>
+            <div class="row justify-content-center">
+                <div class="col-md-12 text-center">
+                    <h1 class="title">{{ $title }}</h1>
+                    @if (!empty($desc))
+                        <p>{{ $desc }}</p>
+                    @endif
                 </div>
             </div>
         </div>
-    </section>
-    <!-- page-banner end -->
-    <!-- our projects  -->
-    <div class="container">
-    <div class="text-content-our-projects p-4">
-        <h1 class="text-uppercase text-center display-1 fs-2 fw-bold">{{ $title }}</h1>
     </div>
-    <div class="container projects-cards">
-        <div class="row mb-minus-30">
-            @foreach ($all_service  as $item)
-             @php
-                        $serviceSlug = optional($item->category)->slug ?? $item->slug;
-                        $serviceUrl = $serviceSlug ? route('front.shop', $serviceSlug) : 'javascript:void(0);';
-                    @endphp
-            <div class="col-lg-4 col-md-6">
-                <div class="similar-work__item mb-30 d-flex justify-content-between flex-column wow fadeInUp" data-wow-delay=".3s">
-                    <div class="top d-flex align-items-center">
 
-                        <h4 class="title color-secondary"><a href="{{ $serviceUrl }}">{{$item->name}} </a></h4>
-                    </div>
-
-                   
-                    <div class="bottom">
-                        <div class="media overflow-hidden">
-                            <a href="{{ $serviceUrl }}">
-                                <img src="{{ asset($item->image) }}" class="img-fluid" alt="">
-                            </a>
-                            
+    <div class="content-wrapper">
+        <section class="space-ptb ellipse-bottom">
+            <div class="container">
+                <div class="row justify-content-start">
+                    <div class="col-lg-12">
+                        @php
+                            $serviceIcons = [
+                                'Information-Security.svg',
+                                'Data-Synchronization.svg',
+                                'Mobile-Platforms.svg',
+                                'Process-Automation.svg',
+                                'Event-Processing.svg',
+                                'Content-Management.svg',
+                            ];
+                            $serviceIndex = 0;
+                        @endphp
+                        <div class="services grid-wrapper grid-xl-4 grid-lg-3 grid-md-2 grid-sm-1">
+                            @foreach ($all_service as $item)
+                                @php
+                                    $serviceSlug = optional($item->category)->slug ?? $item->slug;
+                                    $serviceUrl = $serviceSlug ? route('front.shop', $serviceSlug) : 'javascript:void(0);';
+                                    $icon = $serviceIcons[$serviceIndex % count($serviceIcons)];
+                                    $serviceIndex++;
+                                    $serviceDescription = \Illuminate\Support\Str::limit(strip_tags($item->short_description ?? ''), 140);
+                                @endphp
+                                <div class="service-wrapper service-style-1">
+                                    <div class="service-inner">
+                                        <div class="service-icon">
+                                            <img class="img-fluid" src="{{ asset('frontend/assets/images/svg/services/' . $icon) }}" alt="">
+                                        </div>
+                                        <div class="bg-icon">
+                                            <img class="img-fluid" src="{{ asset('frontend/assets/images/svg/services/color-icon/' . $icon) }}" alt="">
+                                        </div>
+                                        <div class="service-content">
+                                            <h5 class="service-title"><a href="{{ $serviceUrl }}">{{ $item->name }}</a></h5>
+                                            @if (!empty($serviceDescription))
+                                                <p>{{ $serviceDescription }}</p>
+                                            @endif
+                                            <div class="service-links">
+                                                <a class="btn-arrow" href="{{ $serviceUrl }}"><svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_923_133)"><path d="M8.70801 0.959961L9.29825 2.7665C10.2512 5.68321 12.8308 7.77453 15.8928 8.1128C12.8468 8.37564 10.2578 10.4348 9.3276 13.3343L8.70801 15.2657" stroke="inherit" stroke-width="2"/><path d="M15.7602 8.12158H0.1875" stroke="inherit" stroke-width="2"/></g><defs><clipPath id="clip0_923_133"><rect width="15.904" height="14.8437" fill="inherit" transform="translate(0.1875 0.578125)"/></clipPath></defs></svg></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
-
-                        <div class="text pt-30 pr-30 pb-30 pl-30 pt-sm-20 pt-xs-15 pr-sm-20 pr-xs-15 pb-sm-20 pb-xs-15 pl-sm-20 pl-xs-15 font-la">
-                            {{-- <p>Maximize your online presence and outrank your competitors with our tailored SEO services! 🚀</p> --}}
-                        </div>
-
-                        <a href="{{ $serviceUrl }}" class="theme-btn text-center fw-600 btn-yellow">Discover More <i class="fas fa-long-arrow-alt-right"></i></a>
                     </div>
                 </div>
             </div>
-            @endforeach
-
-
-
-        </div>
-
+        </section>
     </div>
-    </div>
-
-
-    <!-- our-company start -->
-
-    <!-- our-company end -->
-
-
-
-    <!-- company-skill start -->
-
-    <!-- company-skill end -->
-
-    <!-- counter-area start -->
-
-    <!-- counter-area end -->
+</div>
 @endsection
