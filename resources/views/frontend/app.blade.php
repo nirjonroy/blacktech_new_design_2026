@@ -11,6 +11,9 @@
     @include('frontend.partials.header')
 
     @yield('content')
+    <template id="consultation-cta-template">
+        @include('frontend.partials.consultation-cta')
+    </template>
 
     <style>
   /* Style for the floating button */

@@ -127,6 +127,38 @@
 <script src="{{ asset('frontend/assets/js/attractHover.js') }}"></script>
 <script src="{{ asset('frontend/assets/js/lenis.min.js') }}"></script>
 <script src="{{ asset('frontend/assets/js/custom.js') }}"></script>
+<script>
+    (function() {
+        function insertConsultationCta() {
+            var template = document.getElementById('consultation-cta-template');
+            if (!template || !template.content) {
+                return;
+            }
+
+            var wrappers = document.querySelectorAll('.content-wrapper, .main-wrapper');
+            wrappers.forEach(function(wrapper) {
+                var sections = Array.prototype.filter.call(wrapper.children, function(child) {
+                    return child.tagName === 'SECTION' && !child.classList.contains('consultation-cta');
+                });
+
+                for (var index = 1; index < sections.length; index += 2) {
+                    var insertAfter = sections[index];
+                    var nextElement = insertAfter.nextElementSibling;
+                    if (nextElement && nextElement.classList.contains('consultation-cta')) {
+                        continue;
+                    }
+                    insertAfter.after(template.content.cloneNode(true));
+                }
+            });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', insertConsultationCta);
+        } else {
+            insertConsultationCta();
+        }
+    })();
+</script>
 
 @include('sweetalert::alert')
 @include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@9"])

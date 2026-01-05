@@ -1,8 +1,14 @@
 @php
     $contactCta = $contactCta ?? DB::table('contact_pages')->first();
     $siteInfo = $siteInfo ?? siteInfo();
-    $ctaTitle = trim(optional($contactCta)->title ?? '') ?: 'Schedule A Free Consultation Today.';
-    $ctaSubtitleSource = trim(strip_tags(optional($contactCta)->description ?? ''));
+    $ctaTitleSource = trim(html_entity_decode(strip_tags(optional($contactCta)->title ?? ''), ENT_QUOTES, 'UTF-8'));
+    $ctaTitleSource = preg_replace('/\s+/', ' ', $ctaTitleSource);
+    $ctaTitle = $ctaTitleSource;
+    if ($ctaTitle === '' || preg_match('/^contact( information| us)?$/i', $ctaTitleSource)) {
+        $ctaTitle = 'Schedule A Free Consultation Today.';
+    }
+    $ctaSubtitleSource = trim(html_entity_decode(strip_tags(optional($contactCta)->description ?? ''), ENT_QUOTES, 'UTF-8'));
+    $ctaSubtitleSource = preg_replace('/\s+/', ' ', $ctaSubtitleSource);
     $ctaSubtitle = $ctaSubtitleSource
         ? \Illuminate\Support\Str::limit($ctaSubtitleSource, 120)
         : 'No Fee Unless You Win.';
