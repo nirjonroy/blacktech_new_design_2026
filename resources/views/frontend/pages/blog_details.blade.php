@@ -65,73 +65,93 @@
 @endsection
 
 @section('content')
+<div class="site-content">
+    @php
+        $headerImage = 'frontend/assets/images/banner/inner-header/page-header-01.jpg';
+        if (!file_exists(public_path($headerImage))) {
+            $headerImage = 'frontend/assets/images/banner/banner-01/banner-bg-01.png';
+        }
+        $headerTitle = 'Blog Details';
+        $headerDescription = \Illuminate\Support\Str::limit(strip_tags($metaDescription ?? $blog->description ?? ''), 120);
+        if (empty($headerDescription)) {
+            $headerDescription = 'Success is that it is a process';
+        }
+        $categoryName = optional($blog->category)->name ?? 'Blog';
+        $postDate = optional($blog->created_at)->format('M d, Y') ?? now()->format('M d, Y');
+        $authorName = $blog->author ?? optional($blog->admin)->name ?? 'admin';
+        $authorImage = optional($blog->admin)->image
+            ? asset($blog->admin->image)
+            : asset('frontend/assets/images/team/01.jpg');
+        $postImage = !empty($blog->image)
+            ? asset($blog->image)
+            : asset('frontend/assets/images/about/about-01.jpg');
+        $postUrl = !empty($blog->slug)
+            ? route('front.blog_details', [$blog->slug])
+            : 'javascript:void(0);';
+    @endphp
 
-<!--Page Header End-->
-
-
-<style>
-    ul{
-        list-style-type: auto !important;
-    }
-    li{
-        list-style: auto !important;
-    }
-</style>
-<section class="page-banner pt-xs-60 pt-sm-80 overflow-hidden">
+    <div class="inner-header bg-holder" style="background-image: url('{{ asset($headerImage) }}');">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <div class="page-banner__content mb-xs-10 mb-sm-15 mb-md-15 mb-20">
-                        <div class="transparent-text">Blog Details </div>
-                        <div class="page-title p-2 ">
-                            <h2 class="display-4 fw-bold text-uppercase text-white text-center">Blog Details</h2>
-                        </div>
-                    </div>
-
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{route('front.home')}}">Home</a></li>
-                            <li class="breadcrumb-item"><a href="{{route('front.blog')}}">Blog</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Blog Details</li>
-                        </ol>
-                    </nav>
+            <div class="row justify-content-center">
+                <div class="col-md-12 text-center">
+                    <h1 class="title">{{ $headerTitle }}</h1>
+                    @if (!empty($headerDescription))
+                        <p>{{ $headerDescription }}</p>
+                    @endif
                 </div>
-
-                <div class="col-md-6">
-                    <div class="page-banner__media mt-xs-30 mt-sm-40">
-                        <img src="{{asset('frontend/assets/img/page-banner/page-banner-start.svg')}}" class="img-fluid start" alt="">
-                        <img src="{{asset('frontend/assets/img/page-banner/page-banner.jpg" class="img-fluid')}}" alt="">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-<!--About Two Start-->
-<section class="pt-xs-40 pb-xs-40 pt-sm-60 pb-sm-100 pt-md-60 pb-md-60 pt-80 pb-80 overflow-hidden">
-    <div class="container" style="max-width:800px">
-        <div class="row g-4" >
-
-            <div class="col-xl-12 col-lg-12 col-12">
-
-                <div class="about-two__right">
-                    <div class="section-title text-left">
-                        <h1 class="section-title__title" style="text-align: center;
-    margin-bottom: 20px;
-    color: #ff9c00;">{{$blog->title}}</h1>
-                        <img src="{{asset($blog->image)}}" alt="" class="img-fluid rounded float-left" style="width: 100%; height:360px; margin-bottom:25px">
-                        
-                    </div>
-                    <p class="about-two__text-1">
-                        <p>{!! $blog->description !!}</p>
-                    </p>
-
-
-                </div>
-
             </div>
         </div>
     </div>
-</section>
-<!--About Two End-->
+
+    <div class="content-wrapper">
+        <section class="space-ptb ellipse-bottom">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+                        <div class="blog-single format-standard">
+                            <div class="post-content-header">
+                                <div class="post-meta">
+                                    <ul>
+                                        <li class="post-meta-category"><a href="javascript:void(0);">{{ $categoryName }}</a></li>
+                                        <li class="post-meta-date">{{ $postDate }}</li>
+                                    </ul>
+                                </div>
+                                <h3 class="post-title"><a href="{{ $postUrl }}">{{ $blog->title }}</a></h3>
+
+                                <div class="blog-single-info">
+                                    <div class="blog-author">
+                                        <img class="author-image img-fluid" src="{{ $authorImage }}" alt="{{ $authorName }}">
+                                        <div class="blog-info">
+                                            <h6 class="author-name">Written by</h6>
+                                            <p>{{ $authorName }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="social-icon">
+                                        <p class="mb-0 me-2 me-sm-4">Share</p>
+                                        <ul>
+                                            <li><a href="#">Fb</a></li>
+                                            <li><a href="#">IN</a></li>
+                                            <li><a href="#">X</a></li>
+                                            <li><a href="#">YT</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="blog-post-img">
+                                <img class="img-fluid radius-10" src="{{ $postImage }}" alt="{{ $blog->title }}" />
+                            </div>
+                            <div class="blog-post-content">
+                                <div class="post-content-body">
+                                    {!! $blog->description !!}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
 @endsection
+

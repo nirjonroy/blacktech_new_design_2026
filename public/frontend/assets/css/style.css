@@ -5691,12 +5691,12 @@ form.form-dark .form-control:focus {
 .header-default.header-absolute {
     position: fixed;
     left: 0;
-    background: transparent;
+    background-color: #000000;
 }
 
 .header.header-absolute:not(.is-sticky) {
-    background: transparent;
-    border-bottom-color: transparent;
+    background-color: #000000;
+    border-bottom-color: rgba(255, 255, 255, 0.1);
 }
 
 .header.is-sticky {
@@ -5716,7 +5716,7 @@ form.form-dark .form-control:focus {
 
 .header-default .site-logo .navbar-brand {
     display: block;
-    padding: 30px 0;
+    padding: 10px;
 }
 
 .header-default .site-menu .main-menu {

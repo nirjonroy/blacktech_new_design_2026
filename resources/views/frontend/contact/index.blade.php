@@ -57,166 +57,161 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 @endsection
 @section('content')
+<div class="site-content">
+    <div class="container-fluid">
+        <div class="item-efftect">
+            <div class="efftect overflow-hidden"></div>
+            <div class="efftect overflow-hidden"></div>
+            <div class="efftect overflow-hidden"></div>
+            <div class="efftect overflow-hidden"></div>
+            <div class="efftect overflow-hidden"></div>
+        </div>
+    </div>
 
-    <!-- page-banner start -->
-    <section class="page-banner pt-xs-60 pt-sm-80 overflow-hidden">
+    @php
+        $headerImage = 'frontend/assets/images/banner/inner-header/page-header-01.jpg';
+        if (!file_exists(public_path($headerImage))) {
+            $headerImage = 'frontend/assets/images/banner/banner-01/banner-bg-01.png';
+        }
+        $headerTitle = $contacts->title ?? 'Contact Us';
+        $headerDescription = \Illuminate\Support\Str::limit(strip_tags($contacts->description ?? $desc ?? ''), 120);
+        if (empty($headerDescription)) {
+            $headerDescription = 'Let success motivate you.';
+        }
+        $contactDescription = $contacts->description ?? '';
+        $locationItems = [
+            [
+                'name' => $contacts->title ?? 'Blacktech',
+                'image' => 'frontend/assets/images/about/about-03.jpg',
+            ],
+            [
+                'name' => $contacts->title ?? 'Blacktech',
+                'image' => 'frontend/assets/images/about/about-01.jpg',
+            ],
+            [
+                'name' => $contacts->title ?? 'Blacktech',
+                'image' => 'frontend/assets/images/case-studies/01.png',
+            ],
+            [
+                'name' => $contacts->title ?? 'Blacktech',
+                'image' => 'frontend/assets/images/case-studies/02.png',
+            ],
+        ];
+    @endphp
+
+    <div class="inner-header bg-holder" style="background-image: url('{{ asset($headerImage) }}');">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <div class="page-banner__content mb-xs-10 mb-sm-15 mb-md-15 mb-20">
-                        <div class="transparent-text">Contact Us</div>
-                        <div class="page-title p-2 ">
-                            <h2 class="display-4 fw-bold text-uppercase text-white text-center">Contact Us</h2>
-                        </div>
-                    </div>
-
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{route('front.home')}}">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Contact Us</li>
-                        </ol>
-                    </nav>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="page-banner__media mt-xs-30 mt-sm-40">
-                        <img src="{{asset('frontend/assets/img/page-banner/page-banner-start.svg')}}" class="img-fluid start" alt="">
-                        <img src="{{asset('frontend/assets/img/page-banner/page-banner.jpg" class="img-fluid')}}" alt="">
-                    </div>
+            <div class="row justify-content-center">
+                <div class="col-md-12 text-center">
+                    <h1 class="title">{{ $headerTitle }}</h1>
+                    @if (!empty($headerDescription))
+                        <p>{{ $headerDescription }}</p>
+                    @endif
                 </div>
             </div>
         </div>
-    </section>
-    <!-- page-banner end -->
+    </div>
 
-<div class="contact ptb-100">
-    <div class="container">
-        <div class="row align-items-center g-4">
-<div class="col-12 col-sm-12 col-md-6 col-lg-6">
-  <div class="contact-box p-4">
-  <!-- <h4>{{$contacts->title}}</h4>
-    <p>{!!$contacts->description!!}</p> -->
-
-    <h2 class="h2 fs-2 fw-bold text-start mb-4 text-uppercase "> Contacs us</h2>
-
-  <form id="contactForm" action="{{route('front.direct-message')}}"  method="post">
-
-
-                        @csrf
-                        <div class="row g-4">
-                            <div class="col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Name" id="name" name="name" required data-error="Please enter your name" >
-                                    <div class="help-block with-errors"></div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <input type="email" name="email" class="form-control" placeholder="Email" id="email"  required data-error="Please enter your Email">
-                                    <div class="help-block with-errors"></div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <input type="text" name="phone" class="form-control" placeholder="Phone Number" id="phone_number" required data-error="Please enter your phone number">
-                                    <div class="help-block with-errors"></div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <input type="text" name="subject" class="form-control" placeholder="Subject" id="msg_subject" required data-error="Please enter your subject">
-                                    <div class="help-block with-errors"></div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 col-sm-12 col-12">
-                                <div class="form-group">
-                                    <textarea name="message" id="message" class="form-control" placeholder="Your Messages.." cols="30" rows="5" required data-error="Please enter your message"></textarea>
-                                    <div class="help-block with-errors"></div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 col-sm-12 col-12">
-                                <button class="btn btn-warning px-4" type="submit"><span class="text-center text-white fw-bold">Send</span></button>
-                                <div id="msgSubmit" class="h6 text-center hidden"></div>
-                                <div class="clearfix"></div>
-                            </div>
+    <div class="content-wrapper">
+        <section class="space-ptb z-index-2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-6 col-lg-5">
+                        <div class="section-title is-sticky">
+                            <span class="sub-title"><img class="img-fluid" src="{{ asset('frontend/assets/images/subtitle-icon.png') }}" alt=""> Our Direction</span>
+                            <h2 class="title">Get in touch with us. We love talking about digital strategy</h2>
+                            @if (!empty($contactDescription))
+                                <p>{!! $contactDescription !!}</p>
+                            @else
+                                <p>So, make the decision to move forward. Commit your decision to paper, just to bring it into focus. Then, go for it!</p>
+                            @endif
                         </div>
-                    </form>
-  </div>
-</div>
-<div class="col-12 col-sm-12 col-md-6 col-lg-6">
-   <div class="map p-4 border border-1 rounded">
-    <h1>{{$contacts->title}}</h1>
-    <p>{!!$contacts->description!!}</p>
-   </div>
-</div>
-
-        </div>
-
-
-
-
-
-        <!-- <div class="row g-5">
-            <div class="col-lg-6">
-                <div class="contact-form-text-area">
-                    <form id="contactForm" action="{{route('front.direct-message')}}"  method="post">
-                        @csrf
-                        <div class="row">
-                            <div class="col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Name" id="name" name="name" required data-error="Please enter your name" >
-                                    <div class="help-block with-errors"></div>
+                    </div>
+                    <div class="col-xl-6 col-lg-7">
+                        <div class="location-items grid-wrapper grid-xl-2 grid-lg-2 grid-md-2 grid-sm-2 grid-xs-1">
+                            @foreach ($locationItems as $item)
+                                <div class="location-wrapper location-style-1 bg-black">
+                                    <div class="location-inner">
+                                        <div class="location-info">
+                                            <div class="city-image">
+                                                <img class="img-fluid" src="{{ asset($item['image']) }}" alt="">
+                                            </div>
+                                            <div class="city-info">
+                                                <h5 class="city-name"><a href="javascript:void(0);">{{ $item['name'] }}</a></h5>
+                                                <div class="city-location">
+                                                    @if (!empty($contacts->address))
+                                                        <div class="location-item">
+                                                            <i class="icon"><img class="img-fluid" src="{{ asset('frontend/assets/images/svg/address-info-contacts.svg') }}" alt=""></i>
+                                                            <div class="list-label">{{ $contacts->address }}</div>
+                                                        </div>
+                                                    @endif
+                                                    @if (!empty($contacts->phone))
+                                                        <div class="location-item">
+                                                            <i class="icon"><img class="img-fluid" src="{{ asset('frontend/assets/images/svg/address-info-headphone.svg') }}" alt=""></i>
+                                                            <div class="list-label">{{ $contacts->phone }}</div>
+                                                        </div>
+                                                    @endif
+                                                    @if (!empty($contacts->email))
+                                                        <div class="location-item">
+                                                            <i class="icon"><img class="img-fluid" src="{{ asset('frontend/assets/images/svg/address-info-email.svg') }}" alt=""></i>
+                                                            <div class="list-label">{{ $contacts->email }}</div>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <input type="email" name="email" class="form-control" placeholder="Email" id="email"  required data-error="Please enter your Email">
-                                    <div class="help-block with-errors"></div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <input type="text" name="phone" class="form-control" placeholder="Phone Number" id="phone_number" required data-error="Please enter your phone number">
-                                    <div class="help-block with-errors"></div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <input type="text" name="subject" class="form-control" placeholder="Subject" id="msg_subject" required data-error="Please enter your subject">
-                                    <div class="help-block with-errors"></div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 col-sm-12 col-12">
-                                <div class="form-group">
-                                    <textarea name="message" id="message" class="form-control" placeholder="Your Messages.." cols="30" rows="5" required data-error="Please enter your message"></textarea>
-                                    <div class="help-block with-errors"></div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 col-sm-12 col-12">
-                                <button class="default-button" type="submit"><span>Send Message</span></button>
-                                <div id="msgSubmit" class="h6 text-center hidden"></div>
-                                <div class="clearfix"></div>
-                            </div>
+                            @endforeach
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
-            <div class="col-lg-6">
-                <div class="customer-support-area">
+        </section>
 
-
+        <section class="space-pt ellipse-top bg-black">
+            <div class="space-pb ellipse-bottom">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-10">
+                            <div class="section-title text-center">
+                                <span class="sub-title d-flex justify-content-center"><img class="img-fluid" src="{{ asset('frontend/assets/images/subtitle-icon.png') }}" alt=""> contact us</span>
+                                <h2 class="title">Need assistance? please fill the form</h2>
+                            </div>
+                            <div class="form-wrapper">
+                                <form class="contact-form form-style-border" action="{{ route('front.direct-message') }}" method="post">
+                                    @csrf
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <input type="text" class="form-control" placeholder="Name" name="name" required>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input type="email" class="form-control" placeholder="Email" name="email" required>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input type="text" class="form-control" placeholder="Phone" name="phone" required>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <input type="text" class="form-control" placeholder="Subject" name="subject" required>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <textarea class="form-control" rows="6" placeholder="Message" name="message" required></textarea>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <button type="submit" class="btn btn-effect">
+                                                <span>Send Message</span>
+                                                <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_59_253)"><path d="M19.4854 11.4293L17.0513 12.221C13.1214 13.4993 10.3036 16.9595 9.84784 21.0668C9.49371 16.981 6.71926 13.5081 2.81255 12.2604L0.210283 11.4293" stroke="white" stroke-width="2"/><path d="M9.83594 20.8889L9.83594 0" stroke="white" stroke-width="2"/></g><defs><clipPath id="clip0_59_253"><rect width="21.3333" height="20" fill="white" transform="translate(20) rotate(90)"/></clipPath></defs></svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div> -->
+        </section>
     </div>
 </div>
-
-
-<!-- <div class="contact-google-map">
-    <iframe class="g-map" src="{{$contacts->map}}"></iframe>
-</div> -->
-
-
-
-
 @endsection
+

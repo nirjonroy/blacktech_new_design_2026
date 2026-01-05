@@ -15,16 +15,6 @@
                         @endforeach
                     </ul>
                 </li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('front.industry.all') }}">Industries <i class="fa-solid fa-chevron-down"></i></a>
-                    <ul class="submenu">
-                        @php
-                            $industries = DB::table('child_categories')->where('status', 1)->get();
-                        @endphp
-                        @foreach ($industries as $indu)
-                            <li><a class="nav-link" href="{{ route('front.industry', $indu->slug) }}">{{ $indu->name }}</a></li>
-                        @endforeach
-                    </ul>
-                </li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('front.our-project') }}">Our Project</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('front.about-us') }}">About</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('front.contact') }}">Contact</a></li>
@@ -76,18 +66,6 @@
                             <li><a class="dropdown-item" href="{{ route('front.all.service') }}">All Services</a></li>
                             @foreach(categories() as $item)
                                 <li><a class="dropdown-item" href="{{ route('front.shop', $item->slug) }}">{{ $item->name }}</a></li>
-                            @endforeach
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Industries</a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('front.industry.all') }}">All Industries</a></li>
-                            @php
-                                $industries = DB::table('child_categories')->where('status', 1)->get();
-                            @endphp
-                            @foreach ($industries as $indu)
-                                <li><a class="dropdown-item" href="{{ route('front.industry', $indu->slug) }}">{{ $indu->name }}</a></li>
                             @endforeach
                         </ul>
                     </li>

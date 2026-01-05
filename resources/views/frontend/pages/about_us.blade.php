@@ -1,8 +1,6 @@
 @extends('frontend.app')
 
 @push('css')
-    <link rel="stylesheet" href="{{ asset('frontend/css/home.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontend/css/food.css') }}">
 @endpush
 @php
         $SeoSettings = DB::table('seo_settings')->where('id', 2)->first();
@@ -62,253 +60,313 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 @endsection
 @section('content')
-<div class="container mx-4 p-4" >
-<div class="offcanvas-overlay" ></div>
-</div>
-
-    <!-- offcanvas-overlay -->
-    <!-- header end -->
-
-   
-    <!-- header end -->
-
-    <!-- page-banner start -->
-    <section class="page-banner overflow-hidden">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <div class="page-banner__content mb-xs-10 mb-sm-15 mb-md-15 mb-20">
-                        <div class="transparent-text">About Us</div>
-                        <div class="page-title p-2 ">
-                            <h2 class="display-4 fw-bold text-uppercase text-white text-center">About Blacktech</h2>
-                        </div>
-                    </div>
-
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{route('front.home')}}">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">About Us</li>
-                        </ol>
-                    </nav>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="page-banner__media mt-xs-30 mt-sm-40">
-                        <img src="{{asset('frontend/assets/img/page-banner/page-banner-start.svg')}}" class="img-fluid start" alt="">
-                        <img src="{{asset('frontend/assets/img/page-banner/page-banner.jpg" class="img-fluid')}}" alt="">
-                    </div>
-                </div>
-            </div>
+<div class="site-content">
+    <div class="container-fluid">
+        <div class="item-efftect">
+            <div class="efftect overflow-hidden"></div>
+            <div class="efftect overflow-hidden"></div>
+            <div class="efftect overflow-hidden"></div>
+            <div class="efftect overflow-hidden"></div>
+            <div class="efftect overflow-hidden"></div>
         </div>
-    </section>
-    <!-- page-banner end -->
+    </div>
 
-    <!-- our-company start -->
-    <section class="our-company  pt-xs-80 pb-xs-80 pt-sm-100 pb-sm-100 pt-md-100 pb-md-100 pt-120 pb-120 overflow-hidden">
-        <div class="container mx-auto">
-            <div class="row">
-                <div class="col-lg-3 col-sm-6">
-                    <div class="our-company__midea wow fadeInUp" data-wow-delay=".3s">
-                        <img src="assets/img/about/our-company-1.png" alt="" class="img-fluid">
+    @php
+        $headerImage = 'frontend/assets/images/banner/inner-header/page-header-01.jpg';
+        if (!file_exists(public_path($headerImage))) {
+            $headerImage = 'frontend/assets/images/banner/banner-01/banner-bg-01.png';
+        }
+        $headerTitle = 'About ' . ($siteName ?? 'Blacktech');
+        $headerDescription = \Illuminate\Support\Str::limit(strip_tags($about_us->description_three ?? $desc ?? ''), 140);
+        if (empty($headerDescription)) {
+            $headerDescription = 'Our Expertise. Know more about what we do';
+        }
+        $aboutImage = !empty($about_us->video_background)
+            ? asset($about_us->video_background)
+            : asset('frontend/assets/images/about/about-01.jpg');
+        $historyIntro = \Illuminate\Support\Str::limit(strip_tags($about_us->description_three ?? $about_us->about_us ?? ''), 240);
+        $now = now();
+        $historyItems = [];
+        if (!empty($about_us->description_three)) {
+            $historyItems[] = [
+                'year' => $now->year,
+                'content' => \Illuminate\Support\Str::limit(strip_tags($about_us->description_three), 320),
+            ];
+        }
+        if (!empty($about_us->about_us)) {
+            $historyItems[] = [
+                'year' => $now->copy()->subYear()->year,
+                'content' => \Illuminate\Support\Str::limit(strip_tags($about_us->about_us), 320),
+            ];
+        }
+        if (empty($historyItems)) {
+            $historyItems[] = [
+                'year' => $now->year,
+                'content' => 'We are focused on delivering measurable results and long-term partnerships.',
+            ];
+        }
+        $staffMembers = [
+            [
+                'name' => 'Blacktech Team',
+                'role' => 'Strategy',
+                'image' => 'frontend/assets/images/team/01.jpg',
+            ],
+            [
+                'name' => 'Blacktech Team',
+                'role' => 'Design',
+                'image' => 'frontend/assets/images/team/02.jpg',
+            ],
+            [
+                'name' => 'Blacktech Team',
+                'role' => 'Development',
+                'image' => 'frontend/assets/images/team/03.jpg',
+            ],
+            [
+                'name' => 'Blacktech Team',
+                'role' => 'Marketing',
+                'image' => 'frontend/assets/images/team/04.jpg',
+            ],
+        ];
+        $testimonials = \App\Models\Testimonial::where('status', 1)->get();
+    @endphp
 
-                        <div class="years-experience overflow-hidden mt-20 mt-sm-10 mt-xs-10 text-center">
-                            <div class="number mb-5 color-white">
-                                <span class="counter">5</span><sup>+</sup>
-                            </div>
-
-                            <h5 class="title color-white">Years Experience</h5>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 col-sm-6">
-                    <div class="our-company__meida border-radius wow fadeInUp" data-wow-delay=".5s">
-                        <img src="{{ asset($about_us->video_background) }}" alt="" class="img-fluid">
-
-                        <div class="horizental-bar"></div>
-                    </div>
-                </div>
-
-                <div class="col-lg-6">
-                    <div class="our-company__content mt-md-50 mt-sm-40 mt-xs-35 wow fadeInUp" data-wow-delay=".3s">
-                        <span class="sub-title fw-500 color-primary text-uppercase mb-sm-10 mb-xs-5 mb-20 d-block"><img src="assets/img/team-details/badge-line.svg" class="img-fluid mr-10" alt="" class="text-uppercase"> Know About Our Company</span>
-                        <!--<h2 class="title color-d_black mb-20 mb-sm-15 mb-xs-10">Our Company Provide High Quality Idea</h2>-->
-
-                        <div class="descriiption font-la mb-30 mb-md-25 mb-sm-20 mb-xs-15">
-                            <p>
-                                {!!$about_us->about_us!!}
-                            </p>
-                        </div>
-
-                        <div class="client-feedback d-flex flex-column flex-sm-row">
-                            <div class="client-feedback__item text-center">
-                                <div class="client-feedback__item-header">
-                                    <span class="color-primary font-la fw-600 text-uppercase">Success Project</span>
-                                </div>
-
-                                <div class="client-feedback__item-body">
-                                    <div class="number mb-10 mb-xs-5 color-d_black fw-600">+<span class="counter">95</span>%</div>
-                                    <div class="description font-la mb-10 mb-xs-5">
-                                        
-                                    </div>
-                                    <div class="starts">
-                                        <ul>
-                                            <li><span></span></li>
-                                            <li><span></span></li>
-                                            <li><span></span></li>
-                                            <li><span></span></li>
-                                            <li><span></span></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="client-feedback__item text-center">
-                                <div class="client-feedback__item-header">
-                                    <span class="color-primary font-la fw-600 text-uppercase">Customer Review</span>
-                                </div>
-
-                                <div class="client-feedback__item-body">
-                                    <div class="number mb-10 mb-xs-5 color-d_black fw-600">+<span class="counter">4.7</span></div>
-                                    <div class="description font-la mb-10 mb-xs-5">
-                                        
-                                    </div>
-                                    <div class="starts">
-                                        <ul>
-                                            <li><span></span></li>
-                                            <li><span></span></li>
-                                            <li><span></span></li>
-                                            <li><span></span></li>
-                                            <li><span></span></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- our-company end -->
-
-   
-
-    <!-- company-skill start -->
-    <section class="company-skill pt-xs-80 pb-xs-80 pt-sm-100 pt-md-100 pt-120 pb-100 overflow-hidden">
+    <div class="inner-header bg-holder" style="background-image: url('{{ asset($headerImage) }}');">
         <div class="container">
-            <div class="row">
-                <div class="col-xl-6">
-                    <div class="company-skill__content wow fadeInUp" data-wow-delay=".3s">
-                        <span class="sub-title d-block fw-500 color-primary text-uppercase mb-sm-10 mb-xs-5 mb-md-15 mb-20"><img src="assets/img/team-details/badge-line.svg" class="img-fluid mr-10" alt="">Company Skills</span>
-                        <h2 class="title text-uppercase "><span class="text-warning fw-bold">Our Company Provide</span></h2>
-
-                        <div class="description font-la">
-                            
-                        </div>
-
-                        <div class="progress-bar__wrapper mt-40 mt-sm-35 mt-xs-30">
-                            <div class="single-progress-bar mb-30 wow fadeInUp" data-wow-delay=".3s">
-                                <h6 class="title color-d_black mb-10">Web Design</h6>
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="max-width: 100%">
-                                        <span class="placeholder" style="left: 100%">100%</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="single-progress-bar mb-30 wow fadeInUp" data-wow-delay=".5s">
-                                <h6 class="title color-d_black mb-10">Web Development</h6>
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100" style="max-width: 100%">
-                                        <span class="placeholder" style="left: 100%">100%</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="single-progress-bar mb-30 wow fadeInUp" data-wow-delay=".7s">
-                                <h6 class="title color-d_black mb-10">SEO</h6>
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="max-width: 90%">
-                                        <span class="placeholder" style="left: 90%">90%</span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="single-progress-bar mb-30 wow fadeInUp" data-wow-delay=".7s">
-                                <h6 class="title color-d_black mb-10">Graphics Design</h6>
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="max-width: 90%">
-                                        <span class="placeholder" style="left: 90%">90%</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xl-6">
-                    <!-- <div class="company-skill__media-wrapper d-flex flex-column mt-lg-60 mt-md-50 mt-sm-45 mt-xs-40 align-items-center wow fadeInUp" data-wow-delay=".3s">
-                        <a href="https://www.youtube.com/watch?v=9xwazD5SyVg" class="popup-video" data-effect="mfp-move-from-top"><i class="icon-play"></i></a>
-
-                        <div class="company-skill__media">
-                            <img src="assets/img/about/company-skill-meida.png" alt="" class="img-fluid">
-                        </div>
-                    </div> -->
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- company-skill end -->
-
-    <!-- counter-area start -->
-    <div class="counter-area pb-xs-80 pb-sm-120 pb-md-120 pb-lg-120 pb-xl-140 pb-170 overflow-hidden">
-        <div class="container">
-            <div class="row mb-minus-30">
-                <div class="col-xl-6 col-lg-4 col-sm-6">
-                    <div class="counter-area__item d-flex align-items-center wow fadeInUp" data-wow-delay=".3s">
-                        <div class="icon color-primary">
-                            <i class="icon-process-1"></i>
-                        </div>
-
-                        <div class="text text-center">
-                            <div class="number fw-600 color-primary"><span class="counter">5620</span>+</div>
-                            <div class="description font-la">Successful Project</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xl-3 col-lg-4 col-sm-6">
-                    <div class="counter-area__item d-flex align-items-center wow fadeInUp" data-wow-delay=".5s">
-                        <div class="icon color-primary">
-                            <i class="icon-support-2"></i>
-                        </div>
-
-                        <div class="text text-center">
-                            <div class="number fw-600 color-primary"><span class="counter">150</span>+</div>
-                            <div class="description font-la">Expert Consulter</div>
-                        </div>
-                    </div>
-                </div>
-
-               
-
-                <div class="col-xl-3 col-lg-4 col-sm-6">
-                    <div class="counter-area__item d-flex align-items-center wow fadeInUp" data-wow-delay=".9s">
-                        <div class="icon color-primary">
-                            <i class="icon-teamwork-1"></i>
-                        </div>
-
-                        <div class="text text-center">
-                            <div class="number fw-600 color-primary"><span class="counter">3225</span>+</div>
-                            <div class="description font-la">Client Satisfaction</div>
-                        </div>
-                    </div>
+            <div class="row justify-content-center">
+                <div class="col-md-12 text-center">
+                    <h1 class="title">{{ $headerTitle }}</h1>
+                    @if (!empty($headerDescription))
+                        <p>{{ $headerDescription }}</p>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
-    <!-- counter-area end -->
 
-   
+    <div class="content-wrapper">
+        <section class="space-pt z-index-2">
+            <div class="container">
+                <div class="row justify-content-between">
+                    <div class="col-lg-7 mb-5 mb-lg-0">
+                        <div class="section-title pb-0 pb-lg-4">
+                            <span class="sub-title"><img class="img-fluid" src="{{ asset('frontend/assets/images/subtitle-icon.png') }}" alt=""> About Us</span>
+                            <h2 class="title">Your Experience Is Everything To Us</h2>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <img class="img-fluid" src="{{ asset('frontend/assets/images/about/about-03.jpg') }}" alt="About Blacktech">
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="ps-lg-3 mt-4 mt-sm-0">
+                                    {!! $about_us->about_us !!}
+                                </div>
+                                <div class="d-flex justify-content-center mt-5 ms-sm-5 ms-0">
+                                    <a class="btn btn-effect" href="{{ route('front.about-us') }}">
+                                        <span>About Us</span>
+                                        <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_59_253)"><path d="M19.4854 11.4293L17.0513 12.221C13.1214 13.4993 10.3036 16.9595 9.84784 21.0668C9.49371 16.981 6.71926 13.5081 2.81255 12.2604L0.210283 11.4293" stroke="white" stroke-width="2"/><path d="M9.83594 20.8889L9.83594 0" stroke="white" stroke-width="2"/></g><defs><clipPath id="clip0_59_253"><rect width="21.3333" height="20" fill="white" transform="translate(20) rotate(90)"/></clipPath></defs></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-4 mt-sm-5">
+                            <div class="col-sm-6">
+                                <div class="counter counter-style-1">
+                                    <div class="counter-number"><span class="timer mb-0" data-to="240" data-speed="2000">240</span><span class="suffix">+</span></div>
+                                    <div class="counter-info"><span class="counter-title">Business Peoples</span></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="counter counter-style-1">
+                                    <div class="counter-number"><span class="timer mb-0" data-to="100" data-speed="2000">100</span><span class="suffix">%</span></div>
+                                    <div class="counter-info"><span class="counter-title">Customer Satisfaction</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <img class="img-fluid ps-lg-5" src="{{ $aboutImage }}" alt="Blacktech Team">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="space-ptb">
+            <div class="container-fluid p-0">
+                <div class="row g-0">
+                    <div class="col-md-12">
+                        <div class="marquee-wrapper">
+                            <div class="marquee-inner">
+                                <div class="marquee-item">
+                                    <span class="icon"><img class="img-fluid" src="{{ asset('frontend/assets/images/client-logo/brand-icon1.png') }}" alt="" /></span>
+                                    <span class="title">Web Design</span>
+                                </div>
+                                <div class="marquee-item">
+                                    <span class="icon"><img class="img-fluid" src="{{ asset('frontend/assets/images/client-logo/brand-icon2.png') }}" alt="" /></span>
+                                    <span class="title">UI/UX Design</span>
+                                </div>
+                                <div class="marquee-item">
+                                    <span class="icon"><img class="img-fluid" src="{{ asset('frontend/assets/images/client-logo/brand-icon3.png') }}" alt="" /></span>
+                                    <span class="title">Developer</span>
+                                </div>
+                                <div class="marquee-item">
+                                    <span class="icon"><img class="img-fluid" src="{{ asset('frontend/assets/images/client-logo/brand-icon4.png') }}" alt="" /></span>
+                                    <span class="title">ISO Developer</span>
+                                </div>
+                                <div class="marquee-item">
+                                    <span class="icon"><img class="img-fluid" src="{{ asset('frontend/assets/images/client-logo/brand-icon5.png') }}" alt="" /></span>
+                                    <span class="title">Digital Agency</span>
+                                </div>
+                                <div class="marquee-item">
+                                    <span class="icon"><img class="img-fluid" src="{{ asset('frontend/assets/images/client-logo/brand-icon1.png') }}" alt="" /></span>
+                                    <span class="title">Web Design</span>
+                                </div>
+                                <div class="marquee-item">
+                                    <span class="icon"><img class="img-fluid" src="{{ asset('frontend/assets/images/client-logo/brand-icon2.png') }}" alt="" /></span>
+                                    <span class="title">UI/UX Design</span>
+                                </div>
+                                <div class="marquee-item">
+                                    <span class="icon"><img class="img-fluid" src="{{ asset('frontend/assets/images/client-logo/brand-icon3.png') }}" alt="" /></span>
+                                    <span class="title">Developer</span>
+                                </div>
+                                <div class="marquee-item">
+                                    <span class="icon"><img class="img-fluid" src="{{ asset('frontend/assets/images/client-logo/brand-icon4.png') }}" alt="" /></span>
+                                    <span class="title">ISO Developer</span>
+                                </div>
+                                <div class="marquee-item">
+                                    <span class="icon"><img class="img-fluid" src="{{ asset('frontend/assets/images/client-logo/brand-icon5.png') }}" alt="" /></span>
+                                    <span class="title">Digital Agency</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="space-pt bg-black ellipse-top">
+            <div class="space-pb ellipse-bottom">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <div class="sticky-top" style="top: 80px;">
+                                <div class="section-title mb-0">
+                                    <span class="sub-title"><img class="img-fluid" src="{{ asset('frontend/assets/images/subtitle-icon.png') }}" alt="" /> Our History</span>
+                                    <h2 class="title">Our History</h2>
+                                </div>
+                                @if (!empty($historyIntro))
+                                    <p class="mb-5 mb-lg-0 ms-lg-5">{{ $historyIntro }}</p>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-lg-7">
+                            @foreach ($historyItems as $index => $item)
+                                <div class="history-wrapper{{ $index ? ' mt-4 mb-4' : '' }}">
+                                    <div class="history-year-sm">{{ $item['year'] }}</div>
+                                    <div class="history-info">
+                                        <div class="history-year-lg">{{ $item['year'] }}</div>
+                                        <div class="history-content">
+                                            <p>{{ $item['content'] }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="space-ptb bg-black z-index-2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xxl-6 col-lg-8">
+                        <div class="section-title mb-lg-0">
+                            <span class="sub-title"><img class="img-fluid" src="{{ asset('frontend/assets/images/subtitle-icon.png') }}" alt=""> Our Staff</span>
+                            <h2 class="title mb-0">Our team is friendly, talkative, and fully reliable.</h2>
+                        </div>
+                    </div>
+                    <div class="col-xxl-6 col-lg-4 align-self-end">
+                        <p class="mb-0 ps-xxl-5">We build partnerships that grow with your business.</p>
+                    </div>
+                </div>
+
+                <div class="row mt-xl-5 pt-5">
+                    <div class="col-md-12">
+                        <div class="team-boxs grid-wrapper grid-xl-4 grid-lg-3 grid-md-2 grid-sm-2 grid-xs-1">
+                            @foreach ($staffMembers as $member)
+                                <div class="team-item team-style-1">
+                                    <div class="team-img">
+                                        <img class="img-fluid" src="{{ asset($member['image']) }}" alt="{{ $member['name'] }}" />
+                                        <div class="image-overlay"><img class="img-fluid" src="{{ asset('frontend/assets/images/team/symbol.png') }}" alt="" /></div>
+                                    </div>
+                                    <div class="team-info">
+                                        <a href="javascript:void(0);" class="team-title">{{ $member['name'] }}</a>
+                                        <span class="team-destination">{{ $member['role'] }}</span>
+                                        <div class="team-social">
+                                            <ul>
+                                                <li><a href="javascript:void(0);">Fb</a></li>
+                                                <li><a href="javascript:void(0);">Dr</a></li>
+                                                <li><a href="javascript:void(0);">Tw</a></li>
+                                                <li><a href="javascript:void(0);">Be</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="space-pt testimonial-section overflow-hidden bg-black ellipse-top">
+            <div class="space-pb ellipse-bottom">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-10">
+                            <div class="section-title text-center">
+                                <span class="sub-title justify-content-center"><img class="img-fluid" src="{{ asset('frontend/assets/images/subtitle-icon.png') }}" alt=""> Our Testimonial</span>
+                                <h2 class="title">Over 500 clients and 5,000 projects across the globe.</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-start">
+                        <div class="col-md-11">
+                            @if ($testimonials->isNotEmpty())
+                                <div class="owl-carousel slider-overflow" data-cursor-type="text" data-custom-text="Drag" data-nav-arrow="false" data-items="2" data-lg-items="1" data-md-items="1" data-sm-items="1" data-space="50">
+                                    @foreach ($testimonials as $testimonial)
+                                        @php
+                                            $rating = (int) round($testimonial->rating ?? 0);
+                                            $rating = max(0, min(5, $rating));
+                                        @endphp
+                                        <div class="item">
+                                            <div class="testimonial-wrapper testimonial-style-2">
+                                                <div class="testimonial-ratings">
+                                                    @for ($i = 1; $i <= 5; $i++)
+                                                        <i class="fa-{{ $i <= $rating ? 'solid' : 'regular' }} fa-star"></i>
+                                                    @endfor
+                                                </div>
+                                                <div class="testimonial-quote"><img class="img-fluid" src="{{ asset('frontend/assets/images/quote-icon-01.png') }}" alt="" /></div>
+                                                <div class="testimonial-content">
+                                                    <p>{{ $testimonial->comment }}</p>
+                                                </div>
+                                                <div class="testimonial-author">
+                                                    <div class="author-info">
+                                                        <h6 class="author-name">{{ $testimonial->name }}</h6>
+                                                        <span class="author-position">{{ $testimonial->designation }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
 @endsection
+

@@ -62,136 +62,78 @@
 <meta name="twitter:image" content="{{ $metaImage }}">
 @endsection
 @section('content')
+<div class="site-content">
+    @php
+        $headerImage = 'frontend/assets/images/banner/inner-header/page-header-01.jpg';
+        if (!file_exists(public_path($headerImage))) {
+            $headerImage = 'frontend/assets/images/banner/banner-01/banner-bg-01.png';
+        }
+        $headerTitle = $title ?? 'Blog';
+        $headerDescription = \Illuminate\Support\Str::limit(strip_tags($desc ?? ''), 120);
+        if (empty($headerDescription)) {
+            $headerDescription = 'When asked the question';
+        }
+    @endphp
 
-<style>
-    .active>.page-link, .page-link.active {
-    z-index: 3;
-    color: var(--bs-pagination-active-color);
-    background-color: rgba(13, 110, 253, 0.25);
-    border-color: var(--bs-pagination-active-border-color);
-}
-</style>
-<!--
-
-   <!-- page-banner start -->
-   <section class="page-banner pt-xs-60 pt-sm-80 overflow-hidden">
+    <div class="inner-header bg-holder" style="background-image: url('{{ asset($headerImage) }}');">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <div class="page-banner__content mb-xs-10 mb-sm-15 mb-md-15 mb-20">
-                        <div class="transparent-text">Blog </div>
-                        <div class="page-title p-2 ">
-                            <h1 class="display-4 fw-bold text-uppercase text-white text-center">{{$title}}</h1>
-                        </div>
-                    </div>
-
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{route('front.home')}}">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Blog Posts</li>
-                        </ol>
-                    </nav>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="page-banner__media mt-xs-30 mt-sm-40">
-                        <img src="{{asset('frontend/assets/img/page-banner/page-banner-start.svg')}}" class="img-fluid start" alt="">
-                        <img src="{{asset('frontend/assets/img/page-banner/page-banner.jpg" class="img-fluid')}}" alt="">
-                    </div>
+            <div class="row justify-content-center">
+                <div class="col-md-12 text-center">
+                    <h1 class="title">{{ $headerTitle }}</h1>
+                    @if (!empty($headerDescription))
+                        <p>{{ $headerDescription }}</p>
+                    @endif
                 </div>
             </div>
         </div>
-    </section>
-    <!-- page-banner end -->
+    </div>
 
-<main class=" my-4">
-
-<!-- <div class="text-content-blog bg-dark text-dark p-4 mb-4">
-    <h2 class="text-center fw-bold display-6">Blog Posts</h2>
-</div> -->
-<div class="container">
-
-
-    <div class="row">
-        <!-- Blog entries-->
-        <div class="col-lg-12">
-            <!-- Featured blog post-->
-
-
-            <div class="row">
-                @foreach($blog as $b)
-                <div class="col-lg-4">
-                    <!-- Blog post-->
-                    
-                    <div class="card mb-4">
-                        <a href="{{route('front.blog_details', [$b->slug])}}"><img class="card-img-top"
-                                src="{{asset($b->image)}}"
-                                alt="..." height="300px" /></a>
-                        <div class="card-body">
-                            <div class="small text-muted">{{date('m/d/Y', strtotime($b->created_at))}}</div>
-                            <a href="{{route('front.blog_details', [$b->slug])}}">
-                            <h2 class="card-title h4" style="color: black;">
-                                {!! Str::limit($b->title, 90, ' ...') !!}
-                                </h2>
-                            </a>
-                            <!--<p class="card-text">{!! Str::limit($b->description, 100, ' ...') !!}-->
-                            </p>
-                            <!-- <a class="btn btn-danger" href="{{route('front.blog_details', [$b->slug])}}">Read more →</a> -->
+    <div class="content-wrapper">
+        <section class="space-ptb ellipse-top ellipse-bottom">
+            <div class="container">
+                <div class="row justify-content-start">
+                    <div class="col-lg-12">
+                        <div class="blog-items grid-wrapper grid-xl-3 grid-md-2 grid-sm-1">
+                            @forelse($blog as $b)
+                                @php
+                                    $postTitle = $b->title ?? 'Blog Post';
+                                    $postDate = optional($b->created_at)->format('F d, Y');
+                                    $postCategory = optional($b->category)->name ?? 'Blog';
+                                    $postImage = !empty($b->image)
+                                        ? asset($b->image)
+                                        : asset('frontend/assets/images/about/about-01.jpg');
+                                    $postUrl = !empty($b->slug)
+                                        ? route('front.blog_details', [$b->slug])
+                                        : 'javascript:void(0);';
+                                @endphp
+                                <div class="blog-post-wrapper blog-style-1">
+                                    <div class="blog-post-info">
+                                        <div class="post-meta">
+                                            <div class="post-meta-date">{{ $postDate }}</div>
+                                        </div>
+                                        <h5 class="post-title"><a href="{{ $postUrl }}">{{ $postTitle }}</a></h5>
+                                    </div>
+                                    <div class="blog-post-img"><img class="img-fluid" src="{{ $postImage }}" alt="{{ $postTitle }}" /></div>
+                                    <div class="blog-action-info">
+                                        <h5 class="post-category"><a href="javascript:void(0);">{{ $postCategory }}</a></h5>
+                                        <div class="post-link">
+                                            <a class="btn-arrow" href="{{ $postUrl }}"><svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_923_133)"><path d="M8.70801 0.959961L9.29825 2.7665C10.2512 5.68321 12.8308 7.77453 15.8928 8.1128C12.8468 8.37564 10.2578 10.4348 9.3276 13.3343L8.70801 15.2657" stroke="inherit" stroke-width="2"/><path d="M15.7602 8.12158H0.1875" stroke="inherit" stroke-width="2"/></g><defs><clipPath id="clip0_923_133"><rect width="15.904" height="14.8437" fill="inherit" transform="translate(0.1875 0.578125)"/></clipPath></defs></svg></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            @empty
+                                <div class="blog-post-wrapper blog-style-1">
+                                    <div class="blog-post-info">
+                                        <h5 class="post-title">No blog posts available yet.</h5>
+                                    </div>
+                                </div>
+                            @endforelse
                         </div>
                     </div>
-                    
-                    <!-- Blog post-->
-
                 </div>
-                @endforeach
-
-
             </div>
-            <!-- Pagination-->
-
-        </div>
-        <!-- Side widgets-->
-        <div class="col-lg-4">
-            <!-- Search widget-->
-
-            <!-- Categories widget-->
-
-        </div>
+        </section>
     </div>
 </div>
-</main>
-
-<!-- <div class="blog pt-70 pb-100">
-    <div class="container">
-        <div class="row justify-content-center">
-            @foreach($blog as $b)
-            <div class="col-lg-4 col-md-6 col-sm-12 col-12">
-                <div class="blog-card">
-                    <div class="blog-card-img">
-                        <a href="{{route('front.blog_details', [$b->slug])}}"><img src="{{asset($b->image)}}" alt="image"></a>
-                    </div>
-                    <div class="blog-card-text">
-                        <span class="blog-date"><i class="flaticon-deadline"></i> {{$b->created_at}}</span>
-                        <h4><a href="{{route('front.blog_details', [$b->slug])}}">{{$b->title}}</a></h4>
-                        <p>{!! Str::limit($b->description, 100, ' ...') !!}</p>
-                        <a class="read-more-btn" href="{{route('front.blog_details', [$b->slug])}}">Read More <i class="flaticon-right-arrow"></i></a>
-                    </div>
-                </div>
-            </div>
-            @endforeach
-
-        </div>
-        <div class="paginations mt-30">
-            <ul>
-                <li><a href="posted-by.html"><span><i class="fas fa-angle-left"></i></span></a></li>
-                <li class="active"><a href="posted-by.html"><span>1</span></a></li>
-                <li><a href="posted-by.html"><span>2</span></a></li>
-                <li><a href="posted-by.html"><span>3</span></a></li>
-                <li><a href="posted-by.html"><span><i class="fas fa-angle-right"></i></span></a></li>
-            </ul>
-        </div>
-    </div>
-</div> -->
-
-
 @endsection
+
