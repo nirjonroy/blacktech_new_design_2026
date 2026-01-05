@@ -222,14 +222,24 @@
                                                 @php
                                                     $icon = $serviceIcons[$serviceIndex % count($serviceIcons)];
                                                     $serviceIndex++;
+                                                    $serviceImage = $item->thumb_image ?? $item->image ?? null;
+                                                    $serviceImageUrl = $serviceImage ? asset($serviceImage) : null;
                                                 @endphp
                                                 <div class="service-wrapper service-style-1">
                                                     <div class="service-inner">
                                                         <div class="service-icon">
-                                                            <img class="img-fluid" src="{{ asset('frontend/assets/images/svg/services/' . $icon) }}" alt="">
+                                                            @if ($serviceImageUrl)
+                                                                <img class="img-fluid" src="{{ $serviceImageUrl }}" alt="{{ $item->name }}">
+                                                            @else
+                                                                <img class="img-fluid" src="{{ asset('frontend/assets/images/svg/services/' . $icon) }}" alt="">
+                                                            @endif
                                                         </div>
                                                         <div class="bg-icon">
-                                                            <img class="img-fluid" src="{{ asset('frontend/assets/images/svg/services/color-icon/' . $icon) }}" alt="">
+                                                            @if ($serviceImageUrl)
+                                                                <img class="img-fluid" src="{{ $serviceImageUrl }}" alt="{{ $item->name }}">
+                                                            @else
+                                                                <img class="img-fluid" src="{{ asset('frontend/assets/images/svg/services/color-icon/' . $icon) }}" alt="">
+                                                            @endif
                                                         </div>
                                                         <div class="service-content">
                                                             <h5 class="service-title"><a href="{{ route('front.shop', $item->category->slug) }}">{{ $item->name }}</a></h5>
@@ -294,36 +304,71 @@ Partner with us to elevate your digital presence and achieve sustainable growth 
                         </div>
 
                         <div class="row mt-4">
-                            <div class="col-sm-6">
-                                <div class="service-wrapper service-style-1">
-                                    <div class="service-inner">
-                                        <div class="service-icon">
-                                            <img class="img-fluid" src="{{ asset('frontend/assets/images/svg/services/Information-Security.svg') }}" alt="">
-                                        </div>
-                                        <div class="bg-icon">
-                                            <img class="img-fluid" src="{{ asset('frontend/assets/images/svg/services/color-icon/Information-Security.svg') }}" alt="">
-                                        </div>
-                                        <div class="service-content">
-                                            <h5 class="service-title">Business Consulting</h5>
+                            @php
+                                $highlightServices = collect($products)->take(2);
+                                $highlightIcons = ['Information-Security.svg', 'Process-Automation.svg'];
+                            @endphp
+                            @forelse ($highlightServices as $highlightIndex => $highlightService)
+                                @php
+                                    $highlightImage = $highlightService->thumb_image ?? $highlightService->image ?? null;
+                                    $highlightImageUrl = $highlightImage ? asset($highlightImage) : null;
+                                    $highlightIcon = $highlightIcons[$highlightIndex % count($highlightIcons)];
+                                @endphp
+                                <div class="col-sm-6">
+                                    <div class="service-wrapper service-style-1">
+                                        <div class="service-inner">
+                                            <div class="service-icon">
+                                                @if ($highlightImageUrl)
+                                                    <img class="img-fluid" src="{{ $highlightImageUrl }}" alt="{{ $highlightService->name }}">
+                                                @else
+                                                    <img class="img-fluid" src="{{ asset('frontend/assets/images/svg/services/' . $highlightIcon) }}" alt="">
+                                                @endif
+                                            </div>
+                                            <div class="bg-icon">
+                                                @if ($highlightImageUrl)
+                                                    <img class="img-fluid" src="{{ $highlightImageUrl }}" alt="{{ $highlightService->name }}">
+                                                @else
+                                                    <img class="img-fluid" src="{{ asset('frontend/assets/images/svg/services/color-icon/' . $highlightIcon) }}" alt="">
+                                                @endif
+                                            </div>
+                                            <div class="service-content">
+                                                <h5 class="service-title">{{ $highlightService->name }}</h5>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="service-wrapper service-style-1">
-                                    <div class="service-inner">
-                                        <div class="service-icon">
-                                            <img class="img-fluid" src="{{ asset('frontend/assets/images/svg/services/Process-Automation.svg') }}" alt="">
-                                        </div>
-                                        <div class="bg-icon">
-                                            <img class="img-fluid" src="{{ asset('frontend/assets/images/svg/services/color-icon/Process-Automation.svg') }}" alt="">
-                                        </div>
-                                        <div class="service-content">
-                                            <h5 class="service-title">IT Management</h5>
+                            @empty
+                                <div class="col-sm-6">
+                                    <div class="service-wrapper service-style-1">
+                                        <div class="service-inner">
+                                            <div class="service-icon">
+                                                <img class="img-fluid" src="{{ asset('frontend/assets/images/svg/services/Information-Security.svg') }}" alt="">
+                                            </div>
+                                            <div class="bg-icon">
+                                                <img class="img-fluid" src="{{ asset('frontend/assets/images/svg/services/color-icon/Information-Security.svg') }}" alt="">
+                                            </div>
+                                            <div class="service-content">
+                                                <h5 class="service-title">Business Consulting</h5>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                                <div class="col-sm-6">
+                                    <div class="service-wrapper service-style-1">
+                                        <div class="service-inner">
+                                            <div class="service-icon">
+                                                <img class="img-fluid" src="{{ asset('frontend/assets/images/svg/services/Process-Automation.svg') }}" alt="">
+                                            </div>
+                                            <div class="bg-icon">
+                                                <img class="img-fluid" src="{{ asset('frontend/assets/images/svg/services/color-icon/Process-Automation.svg') }}" alt="">
+                                            </div>
+                                            <div class="service-content">
+                                                <h5 class="service-title">IT Management</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforelse
                         </div>
                     </div>
                 </div>

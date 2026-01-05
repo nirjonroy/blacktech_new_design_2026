@@ -2204,6 +2204,13 @@ blockquote.blockquote-style-1:before {
     transition: all 0.3s ease-in-out;
 }
 
+.service-wrapper.service-style-1 .service-icon img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
 .service-wrapper.service-style-1 .service-icon svg {
     width: 70px;
     fill: url(#mygradient);
@@ -2216,6 +2223,13 @@ blockquote.blockquote-style-1:before {
     right: 20px;
     opacity: 0;
     transition: all 0.3s ease-in-out;
+}
+
+.service-wrapper.service-style-1 .bg-icon img {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 .service-wrapper.service-style-1 .bg-icon svg {
