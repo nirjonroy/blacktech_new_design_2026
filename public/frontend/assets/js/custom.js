@@ -493,51 +493,56 @@ NOTE: This file contains all scripts for the actual Template.
     /*************************
       Gsap
     *************************/
-    gsap.set('.awards-wrapper img.gsap-img-animation, .case-studies-wrapper img.gsap-img-animation, .blog-style-3 img.gsap-img-animation', {
-        yPercent: -50,
-        xPercent: -50
-    });
-    let activeImage;
-    gsap.utils.toArray(".awards-item, .case-studies-item, .blog-style-3").forEach((el) => {
-        let image = el.querySelector('.gsap-img-animation'),
-            setX, setY,
-            align = e => {
-                setX(e.clientX);
-                setY(e.clientY);
-            },
-            startFollow = () => document.addEventListener("mousemove", align),
-            stopFollow = () => document.removeEventListener("mousemove", align),
-            fade = gsap.to(image, {
-                autoAlpha: 1,
-                ease: "none",
-                paused: true,
-                onReverseComplete: stopFollow
+    const gsapTargets = document.querySelectorAll('.awards-wrapper img.gsap-img-animation, .case-studies-wrapper img.gsap-img-animation, .blog-style-3 img.gsap-img-animation');
+    if (gsapTargets.length) {
+        gsap.set(gsapTargets, {
+            yPercent: -50,
+            xPercent: -50
+        });
+        let activeImage;
+        gsap.utils.toArray(".awards-item, .case-studies-item, .blog-style-3").forEach((el) => {
+            let image = el.querySelector('.gsap-img-animation');
+            if (!image) {
+                return;
+            }
+            let setX, setY,
+                align = e => {
+                    setX(e.clientX);
+                    setY(e.clientY);
+                },
+                startFollow = () => document.addEventListener("mousemove", align),
+                stopFollow = () => document.removeEventListener("mousemove", align),
+                fade = gsap.to(image, {
+                    autoAlpha: 1,
+                    ease: "none",
+                    paused: true,
+                    onReverseComplete: stopFollow
+                });
+
+            el.addEventListener('mouseenter', (e) => {
+                fade.play();
+                startFollow();
+                if (activeImage) { // if there's an actively-animating one, we should match its position here
+                    gsap.set(image, {
+                        x: gsap.getProperty(activeImage, "x"),
+                        y: gsap.getProperty(activeImage, "y")
+                    });
+                }
+                activeImage = image;
+                setX = gsap.quickTo(image, "x", {
+                        duration: 0.5,
+                        ease: "power3"
+                    }),
+                    setY = gsap.quickTo(image, "y", {
+                        duration: 0.5,
+                        ease: "power3"
+                    })
+                align(e);
             });
 
-        el.addEventListener('mouseenter', (e) => {
-            fade.play();
-            startFollow();
-            if (activeImage) { // if there's an actively-animating one, we should match its position here
-                gsap.set(image, {
-                    x: gsap.getProperty(activeImage, "x"),
-                    y: gsap.getProperty(activeImage, "y")
-                });
-            }
-            activeImage = image;
-            setX = gsap.quickTo(image, "x", {
-                    duration: 0.5,
-                    ease: "power3"
-                }),
-                setY = gsap.quickTo(image, "y", {
-                    duration: 0.5,
-                    ease: "power3"
-                })
-            align(e);
+            el.addEventListener('mouseleave', () => fade.reverse());
         });
-
-        el.addEventListener('mouseleave', () => fade.reverse());
-
-    });
+    }
 
     /*************************
       Lenis Smooth Scroll
