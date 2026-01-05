@@ -10159,3 +10159,53 @@ form.form-dark .form-control:focus {
         margin-bottom: 30px;
     }
 }
+
+/* Consultation CTA */
+.consultation-cta {
+    background: linear-gradient(90deg, #5A460D 0%, #FFD700 100%);
+    color: #ffffff;
+}
+
+.consultation-cta__content {
+    padding: 18px 0;
+}
+
+.consultation-cta__text {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-size: 26px;
+    line-height: 1.4;
+    font-weight: 700;
+    text-align: center;
+    color: #ffffff;
+}
+
+.consultation-cta__subtitle {
+    color: #ffffff;
+}
+
+.consultation-cta__call a {
+    color: #1b3a57;
+    font-weight: 700;
+}
+
+.consultation-cta__call a:hover {
+    color: #0f2a3f;
+}
+
+@media (max-width: 991px) {
+    .consultation-cta__text {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 575px) {
+    .consultation-cta__text {
+        font-size: 18px;
+        gap: 6px;
+    }
+}

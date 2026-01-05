@@ -1,34 +1,43 @@
 ﻿@php
     $contact = DB::table('contact_pages')->first();
+    $footer = DB::table('footers')->first();
     $socials = DB::table('footer_social_links')->get();
     $pages = DB::table('custom_pages')->where('status', 1)->get();
-    $blogs = DB::table('blogs')->limit(2)->latest()->get();
+    $siteInfo = siteInfo();
+
+    $contactDescription = optional($contact)->description;
+    $contactAddress = optional($contact)->address
+        ?? optional($footer)->address
+        ?? trim((optional($siteInfo)->address_1 ?? '') . ' ' . (optional($siteInfo)->address_2 ?? ''));
+    $contactPhone = optional($contact)->phone
+        ?? optional($footer)->phone
+        ?? (optional($siteInfo)->topbar_phone ?? null);
+    $contactEmail = optional($contact)->email
+        ?? optional($footer)->email
+        ?? (optional($siteInfo)->contact_email ?? optional($siteInfo)->topbar_email ?? null);
+    $callCenterTitle = optional($footer)->third_column ?? 'Call Center';
+    $callCenterNote = !empty($contactDescription)
+        ? \Illuminate\Support\Str::limit(strip_tags($contactDescription), 80)
+        : 'and get a free estimate';
+    $footerCopyright = optional($footer)->copyright ?? 'Design By Blacktech Developer';
 @endphp
 
 <footer class="site-footer footer-dark">
     <div class="footer-main">
         <div class="container">
-            <div class="row mb-5">
-                <div class="col-12 text-center">
-                    <div class="section-title">
-                        <h2 class="title">Feel Free To Contatct Us</h2>
-                    </div>
-                    <a class="btn btn-effect" href="{{ route('front.contact') }}">
-                        <span>Contact Us</span>
-                        <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_59_256)"><path d="M19.4854 11.4293L17.0513 12.221C13.1214 13.4993 10.3036 16.9595 9.84784 21.0668C9.49371 16.981 6.71926 13.5081 2.81255 12.2604L0.210283 11.4293" stroke="white" stroke-width="2"/><path d="M9.83594 20.8889L9.83594 0" stroke="white" stroke-width="2"/></g><defs><clipPath id="clip0_59_256"><rect width="21.3333" height="20" fill="white" transform="translate(20) rotate(90)"/></clipPath></defs></svg>
-                    </a>
-                </div>
-            </div>
             <div class="row">
                 <div class="col-xl-3 col-md-5">
                     <div class="widget widget-address-info">
-                        <h5 class="widget-title">Contact Information</h5>
+                        <h5 class="widget-title">Where To Find Us</h5>
                         <ul class="address-info-list">
-                            @if ($contact && $contact->phone)
-                                <li><i class="icon"><img class="img-fluid" src="{{ asset('frontend/assets/images/svg/address-info-headphone.svg') }}" alt="" /></i><span class="info"><span>{{ $contact->phone }}</span></span></li>
+                            @if (!empty($contactAddress))
+                                <li><i class="icon"><img class="img-fluid" src="{{ asset('frontend/assets/images/svg/address-info-contacts.svg') }}" alt="" /></i><span class="info"><span>{{ $contactAddress }}</span></span></li>
                             @endif
-                            @if ($contact && $contact->email)
-                                <li><i class="icon"><img class="img-fluid" src="{{ asset('frontend/assets/images/svg/address-info-email.svg') }}" alt="" /></i><span class="info"><span>{{ $contact->email }}</span></span></li>
+                            @if (!empty($contactPhone))
+                                <li><i class="icon"><img class="img-fluid" src="{{ asset('frontend/assets/images/svg/address-info-headphone.svg') }}" alt="" /></i><span class="info"><span>{{ $contactPhone }}</span></span></li>
+                            @endif
+                            @if (!empty($contactEmail))
+                                <li><i class="icon"><img class="img-fluid" src="{{ asset('frontend/assets/images/svg/address-info-email.svg') }}" alt="" /></i><span class="info"><span>{{ $contactEmail }}</span></span></li>
                             @endif
                         </ul>
                     </div>
@@ -36,15 +45,14 @@
                 <div class="col-xl-5 col-md-7">
                     <div class="widget">
                         <h5 class="widget-title">Newsletter</h5>
-                        <p class="mb-3">keep up to date - get updates with latest topics.</p>
                         <div class="widget widget-newsletter mb-4 pb-2">
                             <form class="newsletter-form">
-                                <input type="text" class="form-control" placeholder="Enter your email address">
-                                <button type="submit" class="subscribe-btn">Subscribe Now <i class="fa-solid fa-paper-plane"></i></button>
+                                <input type="text" class="form-control" placeholder="Enter Your Email">
+                                <button type="submit" class="subscribe-btn"><i class="fa-solid fa-paper-plane"></i></button>
                             </form>
                         </div>
                         <div class="widget widget-menu">
-                            <h6 class="widget-title">Quick Link</h6>
+                            <h6 class="widget-title">Quick Links</h6>
                             <ul class="list-unstyled list-col-3 mb-0">
                                 <li><a href="{{ route('front.home') }}">Home</a></li>
                                 <li><a href="{{ route('front.about-us') }}">About us</a></li>
@@ -57,34 +65,22 @@
                                 @endforeach
                             </ul>
                         </div>
-                        <div class="widget widget-recent-post mt-4">
-                            <h6 class="widget-title">Resent Post</h6>
-                            <div class="recent-post-list">
-                                @foreach($blogs as $b)
-                                    <a href="{{ route('front.blog_details', [$b->slug]) }}" class="d-flex align-items-center mb-3 text-decoration-none">
-                                        <div class="me-3">
-                                            <img class="img-fluid" src="{{ asset($b->image) }}" alt="{{ $b->title }}">
-                                        </div>
-                                        <div>
-                                            <h6 class="mb-1 text-white">{{ $b->title }}</h6>
-                                            <span class="text-white-50 d-flex align-items-center"><i class="fa-regular fa-clock me-2"></i>{{ date('d/m/Y', strtotime($b->created_at)) }}</span>
-                                        </div>
-                                    </a>
-                                @endforeach
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="col-xl-3 col-md-12 ms-auto">
-                    <div class="widget">
-                        <a href="{{ route('front.home') }}" class="d-inline-block mb-4">
-                            <img class="img-fluid" src="{{ asset(siteInfo()->logo) }}" alt="logo" style="max-width: 120px;">
-                        </a>
+                    <div class="widget widget-info">
+                        <h5 class="widget-title">{{ $callCenterTitle }}</h5>
+                        @if (!empty($contactPhone))
+                            <a class="number" href="tel:{{ $contactPhone }}">{{ $contactPhone }}</a>
+                        @endif
+                        @if (!empty($callCenterNote))
+                            <h6 class="title">{{ $callCenterNote }}</h6>
+                        @endif
                     </div>
                     <div class="widget-socail">
                         <ul class="socail-icon">
                             @foreach ($socials as $social)
-                                <li><a href="{{ $social->link }}" target="blink"><i class="{{ $social->icon }}"></i></a></li>
+                                <li><a href="{{ $social->link }}" target="_blank" rel="noopener"><i class="{{ $social->icon }}"></i></a></li>
                             @endforeach
                         </ul>
                     </div>
@@ -96,10 +92,10 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6">
-                    <p><a class="footer-logo" href="{{ route('front.home') }}"><img class="img-fluid" src="{{ asset(siteInfo()->logo) }}" alt="logo" width="15%" /></a></p>
+                    <p><a class="footer-logo" href="{{ route('front.home') }}"><img class="img-fluid" src="{{ asset(optional($siteInfo)->logo ?? 'frontend/assets/images/logo.png') }}" alt="logo" width="15%" /></a></p>
                 </div>
                 <div class="col-lg-6 text-lg-end">
-                    <p>Design By Blacktech Developer</p>
+                    <p>{{ $footerCopyright }}</p>
                     <ul class="list-unstyled d-inline-flex gap-3 mb-0">
                         <li><a href="#">Terms & Conditions</a></li>
                         <li><a href="#">Privacy Policy</a></li>

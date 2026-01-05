@@ -335,6 +335,8 @@
             </div>
         </section>
 
+        @include('frontend.partials.consultation-cta')
+
         @if ($projects->isNotEmpty())
             <section class="space-ptb z-index-2">
                 <div class="container">
