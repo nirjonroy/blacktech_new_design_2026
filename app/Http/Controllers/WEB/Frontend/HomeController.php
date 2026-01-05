@@ -54,7 +54,7 @@ class HomeController extends Controller
         $title         = Footer::first();
       	$social_links = FooterSocialLink::all();
         $about = AboutUs::first();
-        $faqs = Faq::all();
+        $faqs = Faq::where('status', 1)->orderBy('id', 'asc')->get();
         $projects = SubCategory::where('status', 1)->orderBy('serial', 'ASC')->get();
       	// dd($products);
 

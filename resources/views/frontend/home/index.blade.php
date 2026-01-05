@@ -62,6 +62,10 @@
         'frontend/assets/images/case-studies/02.png',
         'frontend/assets/images/case-studies/03.png',
     ];
+    $faqItems = collect($faqs ?? []);
+    $faqColumns = $faqItems->isNotEmpty()
+        ? $faqItems->values()->chunk((int) ceil($faqItems->count() / 2))
+        : collect();
 
     $whyChooseSubtitle = !empty($about->title_one) ? $about->title_one : 'Why choose us';
     $whyChooseTitle = !empty($about->title_two) ? $about->title_two : 'Innovative Solutions for Your Business';
@@ -398,6 +402,54 @@
                                     </div>
                                 @endforeach
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        @endif
+
+        @if ($faqItems->isNotEmpty())
+            <section class="space-pt ellipse-top">
+                <div class="space-pb ellipse-bottom">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <div class="section-title">
+                                    <span class="sub-title justify-content-center"><img class="img-fluid" src="{{ asset('frontend/assets/images/subtitle-icon.png') }}" alt=""> FAQ</span>
+                                    <h2 class="title mb-0">Frequently Asked Questions</h2>
+                                </div>
+                            </div>
+                        </div>
+
+                        @php
+                            $faqNumber = 1;
+                        @endphp
+                        <div class="row">
+                            @foreach ($faqColumns as $columnIndex => $faqColumn)
+                                <div class="col-md-6{{ $columnIndex ? ' mt-4 mt-md-0' : '' }}">
+                                    <div class="accordion" id="homeFaq{{ $columnIndex }}">
+                                        @foreach ($faqColumn as $faq)
+                                            @php
+                                                $displayNumber = $faqNumber;
+                                                $headingId = "homeFaqHeading{$columnIndex}{$displayNumber}";
+                                                $collapseId = "homeFaqCollapse{$columnIndex}{$displayNumber}";
+                                                $isOpen = $displayNumber === 1;
+                                                $faqNumber++;
+                                            @endphp
+                                            <div class="accordion-item">
+                                                <h5 class="accordion-header" id="{{ $headingId }}">
+                                                    <button class="accordion-button {{ $isOpen ? '' : 'collapsed' }}" type="button" data-bs-toggle="collapse" data-bs-target="#{{ $collapseId }}" aria-expanded="{{ $isOpen ? 'true' : 'false' }}" aria-controls="{{ $collapseId }}">
+                                                        {{ str_pad($displayNumber, 2, '0', STR_PAD_LEFT) }}. {{ $faq->question }}
+                                                    </button>
+                                                </h5>
+                                                <div id="{{ $collapseId }}" class="accordion-collapse collapse {{ $isOpen ? 'show' : '' }}" aria-labelledby="{{ $headingId }}" data-bs-parent="#homeFaq{{ $columnIndex }}">
+                                                    <div class="accordion-body">{!! $faq->answer !!}</div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
