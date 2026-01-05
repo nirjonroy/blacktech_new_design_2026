@@ -20,6 +20,17 @@
     $publisher  = $SeoSettings->publisher ?? $siteName;
     $copyright  = $SeoSettings->copyright ?? null;
     $keywords   = $SeoSettings->keywords ?? null;
+
+    $serviceSeoSettings = DB::table('seo_settings')->where('page_name', 'Service')->first();
+    $serviceMetaTitle = optional($serviceSeoSettings)->meta_title
+        ?? optional($serviceSeoSettings)->seo_title
+        ?? null;
+    $serviceMetaDescription = optional($serviceSeoSettings)->meta_description
+        ?? optional($serviceSeoSettings)->seo_description
+        ?? null;
+    $serviceMetaDescription = $serviceMetaDescription
+        ? \Illuminate\Support\Str::limit(strip_tags($serviceMetaDescription), 180)
+        : null;
 @endphp
 @section('title', $title)
 @section('seos')
@@ -197,7 +208,10 @@
                         <div class="col-xxl-5 col-xl-5 mb-5 mb-xl-0">
                             <div class="sticky-top" style="top: 80px;">
                                 <div class="section-title">
-                                    <h2 class="title">Our Provide Specialized</h2>
+                                    <h2 class="title">{{ $serviceMetaTitle ?: 'Our Provide Specialized' }}</h2>
+                                    @if (!empty($serviceMetaDescription))
+                                        <p>{{ $serviceMetaDescription }}</p>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -224,6 +238,7 @@
                                                     $serviceIndex++;
                                                     $serviceImage = $item->thumb_image ?? $item->image ?? null;
                                                     $serviceImageUrl = $serviceImage ? asset($serviceImage) : null;
+                                                    $serviceDescription = \Illuminate\Support\Str::limit(strip_tags($item->short_description ?? $item->long_description ?? ''), 120);
                                                 @endphp
                                                 <div class="service-wrapper service-style-1">
                                                     <div class="service-inner">
@@ -243,6 +258,9 @@
                                                         </div>
                                                         <div class="service-content">
                                                             <h5 class="service-title"><a href="{{ route('front.shop', $item->category->slug) }}">{{ $item->name }}</a></h5>
+                                                            @if (!empty($serviceDescription))
+                                                                <p>{{ $serviceDescription }}</p>
+                                                            @endif
                                                             <div class="service-links">
                                                                 <a class="btn-arrow" href="{{ route('front.shop', $item->category->slug) }}"><svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_923_133)"><path d="M8.70801 0.959961L9.29825 2.7665C10.2512 5.68321 12.8308 7.77453 15.8928 8.1128C12.8468 8.37564 10.2578 10.4348 9.3276 13.3343L8.70801 15.2657" stroke="inherit" stroke-width="2"/><path d="M15.7602 8.12158H0.1875" stroke="inherit" stroke-width="2"/></g><defs><clipPath id="clip0_923_133"><rect width="15.904" height="14.8437" fill="inherit" transform="translate(0.1875 0.578125)"/></clipPath></defs></svg></a>
                                                             </div>
@@ -289,18 +307,16 @@
                         <div class="description mt-4">
                             <p>Choosing the right digital partner can make all the difference in growing your business online. Our team of experts specializes in website development, SEO, digital marketing, social media management, and graphic design, creating strategies that are tailored to your unique goals.
 
-By combining creativity with technical expertise, we deliver solutions that boost online visibility, attract the right audience, and drive measurable results. Every project is carefully crafted to reflect your brand identity while maximizing engagement and performance.
+                                By combining creativity with technical expertise, we deliver solutions that boost online visibility, attract the right audience, and drive measurable results. Every project is carefully crafted to reflect your brand identity while maximizing engagement and performance.
 
-Partner with us to elevate your digital presence and achieve sustainable growth and lasting success.
-
-
-</p>
-    <br />
-    <p style="font-weight:bold">Get in touch today:</p>
-  <br />
-  <p style="">  Email: admin@blacktechcorp.com </p>
- <br />
- <p style="">  Phone:Aÿƒ?¦+1Aÿ571-478-2431</p>
+                                Partner with us to elevate your digital presence and achieve sustainable growth and lasting success.
+                            </p>
+                            <br />
+                            <p style="font-weight:bold">Get in touch today:</p>
+                        <br />
+                        <p style="">  Email: admin@blacktechcorp.com </p>
+                        <br />
+                        <p style="">  Phone:+1 571-478-2431</p>
                         </div>
 
                         <div class="row mt-4">
