@@ -33,6 +33,36 @@
         ? \Illuminate\Support\Str::limit(strip_tags($serviceMetaDescription), 180)
         : null;
 
+    $projectSeoSettings = DB::table('seo_settings')->where('page_name', 'Project')->first();
+    $projectSectionTitle = optional($projectSeoSettings)->meta_title
+        ?? optional($projectSeoSettings)->seo_title
+        ?? 'Projects For Our Amazing Clients';
+    $projectSectionDescription = optional($projectSeoSettings)->meta_description
+        ?? optional($projectSeoSettings)->seo_description
+        ?? null;
+    $projectSectionDescription = $projectSectionDescription
+        ? \Illuminate\Support\Str::limit(strip_tags($projectSectionDescription), 180)
+        : 'Explore a few of our recent projects and the results we delivered.';
+    $caseStudyTags = [
+        'Web Design',
+        'UI/UX Design',
+        'Developer',
+        'ISO Developer',
+        'Digital Agency',
+    ];
+    $caseStudyIcons = [
+        'frontend/assets/images/client-logo/brand-icon1.png',
+        'frontend/assets/images/client-logo/brand-icon2.png',
+        'frontend/assets/images/client-logo/brand-icon3.png',
+        'frontend/assets/images/client-logo/brand-icon4.png',
+        'frontend/assets/images/client-logo/brand-icon5.png',
+    ];
+    $caseStudyFallbackImages = [
+        'frontend/assets/images/case-studies/01.png',
+        'frontend/assets/images/case-studies/02.png',
+        'frontend/assets/images/case-studies/03.png',
+    ];
+
     $whyChooseSubtitle = !empty($about->title_one) ? $about->title_one : 'Why choose us';
     $whyChooseTitle = !empty($about->title_two) ? $about->title_two : 'Innovative Solutions for Your Business';
     $whyChooseDefaultDescription = "Choosing the right digital partner can make all the difference in growing your business online. Our team of experts specializes in website development, SEO, digital marketing, social media management, and graphic design, creating strategies that are tailored to your unique goals.\n\nBy combining creativity with technical expertise, we deliver solutions that boost online visibility, attract the right audience, and drive measurable results. Every project is carefully crafted to reflect your brand identity while maximizing engagement and performance.\n\nPartner with us to elevate your digital presence and achieve sustainable growth and lasting success.";
@@ -300,6 +330,79 @@
                 </div>
             </div>
         </section>
+
+        @if ($projects->isNotEmpty())
+            <section class="space-ptb z-index-2">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-xl-5 col-lg-5">
+                            <div class="section-title mb-4 mb-lg-0">
+                                <span class="sub-title"><img class="img-fluid" src="{{ asset('frontend/assets/images/subtitle-icon.png') }}" alt=""> Case Studies</span>
+                                <h2 class="title">{{ $projectSectionTitle }}</h2>
+                            </div>
+                        </div>
+                        <div class="col-xl-5 col-lg-4">
+                            @if (!empty($projectSectionDescription))
+                                <p>{{ $projectSectionDescription }}</p>
+                            @endif
+                        </div>
+                        <div class="col-xl-2 col-lg-3 text-end">
+                            <a class="btn btn-effect" href="{{ route('front.about-us') }}">
+                                <span>About Us</span>
+                                <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_59_255)"><path d="M19.4854 11.4293L17.0513 12.221C13.1214 13.4993 10.3036 16.9595 9.84784 21.0668C9.49371 16.981 6.71926 13.5081 2.81255 12.2604L0.210283 11.4293" stroke="white" stroke-width="2"/><path d="M9.83594 20.8889L9.83594 0" stroke="white" stroke-width="2"/></g><defs><clipPath id="clip0_59_255"><rect width="21.3333" height="20" fill="white" transform="translate(20) rotate(90)"/></clipPath></defs></svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="case-studies-wrapper case-studies-style-2">
+                                @foreach ($projects as $index => $project)
+                                    @php
+                                        $projectUrl = !empty($project->slug)
+                                            ? route('front.project.show', $project->slug)
+                                            : route('front.our-project');
+                                        $projectImage = !empty($project->image)
+                                            ? asset($project->image)
+                                            : asset($caseStudyFallbackImages[$index % count($caseStudyFallbackImages)]);
+                                        $projectDescription = \Illuminate\Support\Str::limit(strip_tags($project->description ?? ''), 140);
+                                    @endphp
+                                    <div class="case-studies-item">
+                                        <div class="item-inner">
+                                            <h3 class="case-studies-title">{{ $project->name }}</h3>
+                                            @if (!empty($projectDescription))
+                                                <div class="case-studies-description">{{ $projectDescription }}</div>
+                                            @endif
+                                            <div class="case-studies-action">
+                                                <a class="btn-arrow" href="{{ $projectUrl }}"><svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_923_139)"><path d="M8.70801 0.959961L9.29825 2.7665C10.2512 5.68321 12.8308 7.77453 15.8928 8.1128C12.8468 8.37564 10.2578 10.4348 9.3276 13.3343L8.70801 15.2657" stroke="inherit" stroke-width="2"/><path d="M15.7602 8.12158H0.1875" stroke="inherit" stroke-width="2"/></g><defs><clipPath id="clip0_923_139"><rect width="15.904" height="14.8437" fill="inherit" transform="translate(0.1875 0.578125)"/></clipPath></defs></svg></a>
+                                            </div>
+                                        </div>
+                                        <div class="case-studies-image">
+                                            <img class="img-fluid gsap-img-animation" src="{{ $projectImage }}" alt="{{ $project->name }}">
+                                        </div>
+                                        <div class="marquee-wrapper">
+                                            <div class="marquee-inner">
+                                                @for ($loopIndex = 0; $loopIndex < 2; $loopIndex++)
+                                                    @foreach ($caseStudyTags as $tagIndex => $tag)
+                                                        @php
+                                                            $caseStudyIcon = $caseStudyIcons[$tagIndex % count($caseStudyIcons)];
+                                                        @endphp
+                                                        <div class="marquee-item">
+                                                            <span class="icon"><img class="img-fluid" src="{{ asset($caseStudyIcon) }}" alt=""></span>
+                                                            <span class="title">{{ $tag }}</span>
+                                                        </div>
+                                                    @endforeach
+                                                @endfor
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        @endif
 
         <section class="space-ptb z-index-2">
             <div class="container">

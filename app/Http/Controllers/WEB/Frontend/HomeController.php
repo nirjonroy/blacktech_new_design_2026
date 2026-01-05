@@ -55,6 +55,7 @@ class HomeController extends Controller
       	$social_links = FooterSocialLink::all();
         $about = AboutUs::first();
         $faqs = Faq::all();
+        $projects = SubCategory::where('status', 1)->orderBy('serial', 'ASC')->get();
       	// dd($products);
 
         return view('frontend.home.index', compact(
@@ -67,7 +68,8 @@ class HomeController extends Controller
           		'sliders',
           		'flash_sale_products',
                 'about',
-                'faqs'));
+                'faqs',
+                'projects'));
     }
 
   	public function about_us_page(){
