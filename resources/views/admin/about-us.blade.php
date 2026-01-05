@@ -62,6 +62,41 @@
                                         <hr>
                                     </div>
 
+                                    <div class="col-12">
+                                        <h5 class="header_title">Why Choose Us Section</h5>
+                                        <hr>
+                                    </div>
+
+                                    <div class="form-group col-12">
+                                        <label for="">Why Choose Us Sub Title</label>
+                                        <input type="text" name="title_one" class="form-control" value="{{ $aboutUs->title_one }}">
+                                    </div>
+
+                                    <div class="form-group col-12">
+                                        <label for="">Why Choose Us Title</label>
+                                        <input type="text" name="title_two" class="form-control" value="{{ $aboutUs->title_two }}">
+                                    </div>
+
+                                    <div class="form-group col-12">
+                                        <label for="">Why Choose Us Description</label>
+                                        <textarea name="description_one" cols="30" rows="6" class="form-control text-area-3">{{ $aboutUs->description_one }}</textarea>
+                                    </div>
+
+                                    <div class="form-group col-12">
+                                        <label for="">Why Choose Us Contact Label</label>
+                                        <input type="text" name="description_two" class="form-control" value="{{ $aboutUs->description_two }}">
+                                    </div>
+
+                                    <div class="form-group col-12">
+                                        <label for="">Why Choose Us Image</label>
+                                        @if (!empty($aboutUs->banner_image))
+                                            <div class="mb-3">
+                                                <img src="{{ asset($aboutUs->banner_image) }}" alt="" class="w_300">
+                                            </div>
+                                        @endif
+                                        <input type="file" name="banner_image" class="form-control-file">
+                                    </div>
+
                                     {{-- <div class="form-group col-12">
                                         <label for="">{{__('admin.Icon')}} <span class="text-danger">*</span></label>
                                         <input type="text" name="icon_one" class="form-control custom-icon-picker" value="{{ $aboutUs->icon_one }}" required>
@@ -170,4 +205,3 @@
         </section>
       </div>
 @endsection
-

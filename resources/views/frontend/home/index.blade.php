@@ -9,7 +9,8 @@
     $desc     = \Illuminate\Support\Str::limit(strip_tags($rawDesc ?? ''), 180);
     $url      = url()->current();
 
-    $fallbackLogo = siteInfo()->logo ?? null;
+    $siteInfo = siteInfo();
+    $fallbackLogo = $siteInfo->logo ?? null;
     $defaultImage = $fallbackLogo ? asset($fallbackLogo) : asset('images/og-default.jpg');
     $ogImage      = $SeoSettings->meta_image ? asset($SeoSettings->meta_image) : $defaultImage;
 
@@ -31,6 +32,20 @@
     $serviceMetaDescription = $serviceMetaDescription
         ? \Illuminate\Support\Str::limit(strip_tags($serviceMetaDescription), 180)
         : null;
+
+    $whyChooseSubtitle = !empty($about->title_one) ? $about->title_one : 'Why choose us';
+    $whyChooseTitle = !empty($about->title_two) ? $about->title_two : 'Innovative Solutions for Your Business';
+    $whyChooseDefaultDescription = "Choosing the right digital partner can make all the difference in growing your business online. Our team of experts specializes in website development, SEO, digital marketing, social media management, and graphic design, creating strategies that are tailored to your unique goals.\n\nBy combining creativity with technical expertise, we deliver solutions that boost online visibility, attract the right audience, and drive measurable results. Every project is carefully crafted to reflect your brand identity while maximizing engagement and performance.\n\nPartner with us to elevate your digital presence and achieve sustainable growth and lasting success.";
+    $whyChooseDescription = !empty($about->description_one)
+        ? $about->description_one
+        : $whyChooseDefaultDescription;
+    $whyChooseContactLabel = !empty($about->description_two) ? $about->description_two : 'Get in touch today:';
+    $whyChooseImagePath = !empty($about->banner_image) ? $about->banner_image : null;
+    $whyChooseImage = $whyChooseImagePath
+        ? asset($whyChooseImagePath)
+        : asset('frontend/assets/images/about/about-01.jpg');
+    $contactEmail = $siteInfo->contact_email ?? $siteInfo->topbar_email ?? 'admin@blacktechcorp.com';
+    $contactPhone = $siteInfo->topbar_phone ?? '+1 571-478-2431';
 @endphp
 @section('title', $title)
 @section('seos')
@@ -290,7 +305,7 @@
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-6 mb-5 mb-lg-0">
-                        <img class="img-fluid" src="{{ asset('frontend/assets/images/about/about-01.jpg') }}" alt="">
+                        <img class="img-fluid" src="{{ $whyChooseImage }}" alt="{{ $whyChooseTitle }}">
                         <div class="mt-4">
                             <div class="counter counter-style-1">
                                 <div class="counter-number"><span class="timer mb-0" data-to="120" data-speed="2000">120</span><span class="suffix">+</span></div>
@@ -300,23 +315,23 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="section-title">
-                            <span class="sub-title"><img class="img-fluid" src="{{ asset('frontend/assets/images/subtitle-icon.png') }}" alt=""> Why choose us</span>
-                            <h2 class="title">Innovative Solutions for Your Business</h2>
+                            <span class="sub-title"><img class="img-fluid" src="{{ asset('frontend/assets/images/subtitle-icon.png') }}" alt=""> {{ $whyChooseSubtitle }}</span>
+                            <h2 class="title">{{ $whyChooseTitle }}</h2>
                         </div>
 
                         <div class="description mt-4">
-                            <p>Choosing the right digital partner can make all the difference in growing your business online. Our team of experts specializes in website development, SEO, digital marketing, social media management, and graphic design, creating strategies that are tailored to your unique goals.
-
-                                By combining creativity with technical expertise, we deliver solutions that boost online visibility, attract the right audience, and drive measurable results. Every project is carefully crafted to reflect your brand identity while maximizing engagement and performance.
-
-                                Partner with us to elevate your digital presence and achieve sustainable growth and lasting success.
-                            </p>
-                            <br />
-                            <p style="font-weight:bold">Get in touch today:</p>
-                        <br />
-                        <p style="">  Email: admin@blacktechcorp.com </p>
-                        <br />
-                        <p style="">  Phone:+1 571-478-2431</p>
+                            <p>{!! nl2br(e($whyChooseDescription)) !!}</p>
+                            @if (!empty($whyChooseContactLabel))
+                                <p style="font-weight:bold">{{ $whyChooseContactLabel }}</p>
+                                <br />
+                            @endif
+                            @if (!empty($contactEmail))
+                                <p style="">  Email: {{ $contactEmail }} </p>
+                                <br />
+                            @endif
+                            @if (!empty($contactPhone))
+                                <p style="">  Phone: {{ $contactPhone }}</p>
+                            @endif
                         </div>
 
                         <div class="row mt-4">
