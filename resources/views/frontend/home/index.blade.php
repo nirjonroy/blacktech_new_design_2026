@@ -203,19 +203,22 @@
     <div class="content-wrapper">
         <section class="space-pt">
             <div class="container">
+                @php
+                    $aboutVideoBackgroundPath = !empty($about->video_background)
+                        ? $about->video_background
+                        : (optional($slider)->image ?: null);
+                    $aboutVideoBackground = $aboutVideoBackgroundPath ? asset($aboutVideoBackgroundPath) : null;
+                    $aboutTextColClass = $aboutVideoBackground ? 'col-lg-7' : 'col-12';
+                @endphp
+                <div class="section-title pb-0 pb-lg-4">
+                    <span class="sub-title"><img class="img-fluid" src="{{ asset('frontend/assets/images/subtitle-icon.png') }}" alt=""> About Us</span>
+                    <h2 class="title">About Us</h2>
+                </div>
                 <div class="row justify-content-between">
-                    <div class="col-lg-7 mb-5 mb-lg-0">
-                        <div class="section-title pb-0 pb-lg-4">
-                            <span class="sub-title"><img class="img-fluid" src="{{ asset('frontend/assets/images/subtitle-icon.png') }}" alt=""> About Us</span>
-                            <h2 class="title">About Us</h2>
-                        </div>
-
+                    <div class="{{ $aboutTextColClass }} mb-5 mb-lg-0">
                         <div class="row">
-                            <div class="col-sm-4">
-                                <img class="img-fluid" src="{{ asset('frontend/assets/images/about/about-03.jpg') }}" alt="About">
-                            </div>
-                            <div class="col-sm-8">
-                                <div class="ps-lg-3 mt-4 mt-sm-0">
+                            <div class="col-12">
+                                <div class="mt-3">
                                     {!! $about->about_us !!}
                                 </div>
                                 <div class="d-flex justify-content-center mt-5 ms-sm-5 ms-0">
@@ -243,9 +246,11 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-5">
-                        <img class="img-fluid ps-lg-5" src="{{ asset($about->video_background) }}" alt="About Blacktech Consultency Service">
-                    </div>
+                    @if ($aboutVideoBackground)
+                        <div class="col-lg-5">
+                            <img class="img-fluid ps-lg-5 mt-3" src="{{ $aboutVideoBackground }}" alt="About Blacktech Consultency Service">
+                        </div>
+                    @endif
                 </div>
             </div>
         </section>
