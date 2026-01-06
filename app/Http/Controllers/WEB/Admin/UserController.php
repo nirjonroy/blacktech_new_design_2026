@@ -250,8 +250,8 @@ class UserController extends Controller
             return redirect()->route('admin.dashboard')->with($notification);
         }
         else{
-            return redirect()->route('login')->with('error', 'Invalid credentials');
-
+            $notification = array('messege'=>'Invalid credentials','alert-type'=>'error');
+            return redirect()->route('admin.login')->with($notification);
         }
 
         return response()->json([

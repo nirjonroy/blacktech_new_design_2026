@@ -57,5 +57,3 @@
   </div>
 
 @include('admin.footer')
-
-
