@@ -294,7 +294,7 @@
                                                     $serviceImageUrl = $serviceImage ? asset($serviceImage) : null;
                                                     $serviceDescription = \Illuminate\Support\Str::limit(strip_tags($item->short_description ?? $item->long_description ?? ''), 120);
                                                 @endphp
-                                                <div class="service-wrapper service-style-1">
+                                                <div class="service-wrapper service-style-1{{ $serviceImageUrl ? ' service-has-image-icon' : '' }}">
                                                     <div class="service-inner">
                                                         <div class="service-icon">
                                                             @if ($serviceImageUrl)
@@ -506,7 +506,7 @@
                                     $highlightIcon = $highlightIcons[$highlightIndex % count($highlightIcons)];
                                 @endphp
                                 <div class="col-sm-6">
-                                    <div class="service-wrapper service-style-1">
+                                    <div class="service-wrapper service-style-1{{ $highlightImageUrl ? ' service-has-image-icon' : '' }}">
                                         <div class="service-inner">
                                             <div class="service-icon">
                                                 @if ($highlightImageUrl)

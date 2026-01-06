@@ -2242,6 +2242,18 @@ blockquote.blockquote-style-1:before {
     margin-bottom: 20px;
 }
 
+.service-wrapper.service-style-1 .service-content .service-title a,
+.service-wrapper.service-style-2 .service-content .service-title a {
+    color: #ffffff;
+}
+
+.service-wrapper.service-style-1 .service-content .service-title a:hover,
+.service-wrapper.service-style-1 .service-content .service-title a:focus,
+.service-wrapper.service-style-2 .service-content .service-title a:hover,
+.service-wrapper.service-style-2 .service-content .service-title a:focus {
+    color: #FFD700;
+}
+
 .service-wrapper.service-style-1 .service-content p {
     margin-bottom: 0;
 }
@@ -2292,6 +2304,15 @@ blockquote.blockquote-style-1:before {
 .service-wrapper.service-style-1:hover .service-content .service-links {
     margin-bottom: 0;
     opacity: 1;
+}
+
+.service-wrapper.service-style-1.service-has-image-icon:hover .service-icon {
+    margin-top: 0;
+    opacity: 1;
+}
+
+.service-wrapper.service-style-1.service-has-image-icon:hover .bg-icon {
+    opacity: 0;
 }
 
 /* Service Style 2 */
@@ -6800,14 +6821,18 @@ form.form-dark .form-control:focus {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #2563ad;
+    background-color: #FFD700;
     background-blend-mode: multiply;
 }
 
 .inner-header .title {
-    color: #ffffff;
+    color: #000000;
     font-size: 42px;
     margin-bottom: 20px;
+}
+
+.inner-header p {
+    color: #000000;
 }
 
 /*====================================================*/
