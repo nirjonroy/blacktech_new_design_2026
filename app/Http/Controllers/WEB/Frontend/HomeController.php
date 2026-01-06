@@ -74,7 +74,11 @@ class HomeController extends Controller
 
   	public function about_us_page(){
     	$about_us = AboutUs::first();
-      	return view('frontend.pages.about_us', compact('about_us'));
+        $services = Product::where('status', 1)
+            ->orderBy('id', 'desc')
+            ->take(10)
+            ->get();
+      	return view('frontend.pages.about_us', compact('about_us', 'services'));
     }
   	public function privacy_policy(){
     	$tarms = TermsAndCondition::first();

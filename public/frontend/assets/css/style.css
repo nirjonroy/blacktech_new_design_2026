@@ -5159,6 +5159,11 @@ form.form-dark .form-control:focus {
     padding-bottom: 1px;
 }
 
+.marquee-wrapper .marquee-inner .marquee-item .icon img {
+    max-width: 48px;
+    max-height: 48px;
+}
+
 .marquee-wrapper .marquee-inner .marquee-item .title {
     position: relative;
     top: 3px;

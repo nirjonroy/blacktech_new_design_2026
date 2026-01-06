@@ -196,47 +196,33 @@
                 <div class="row g-0">
                     <div class="col-md-12">
                         <div class="marquee-wrapper">
+                            @php
+                                $marqueeServices = collect($services ?? []);
+                                $marqueeFallback = collect([
+                                    ['name' => 'Web Design', 'image' => 'frontend/assets/images/client-logo/brand-icon1.png'],
+                                    ['name' => 'UI/UX Design', 'image' => 'frontend/assets/images/client-logo/brand-icon2.png'],
+                                    ['name' => 'Developer', 'image' => 'frontend/assets/images/client-logo/brand-icon3.png'],
+                                    ['name' => 'ISO Developer', 'image' => 'frontend/assets/images/client-logo/brand-icon4.png'],
+                                    ['name' => 'Digital Agency', 'image' => 'frontend/assets/images/client-logo/brand-icon5.png'],
+                                ]);
+                                $marqueeItems = $marqueeServices->isNotEmpty() ? $marqueeServices : $marqueeFallback;
+                            @endphp
                             <div class="marquee-inner">
-                                <div class="marquee-item">
-                                    <span class="icon"><img class="img-fluid" src="{{ asset('frontend/assets/images/client-logo/brand-icon1.png') }}" alt="" /></span>
-                                    <span class="title">Web Design</span>
-                                </div>
-                                <div class="marquee-item">
-                                    <span class="icon"><img class="img-fluid" src="{{ asset('frontend/assets/images/client-logo/brand-icon2.png') }}" alt="" /></span>
-                                    <span class="title">UI/UX Design</span>
-                                </div>
-                                <div class="marquee-item">
-                                    <span class="icon"><img class="img-fluid" src="{{ asset('frontend/assets/images/client-logo/brand-icon3.png') }}" alt="" /></span>
-                                    <span class="title">Developer</span>
-                                </div>
-                                <div class="marquee-item">
-                                    <span class="icon"><img class="img-fluid" src="{{ asset('frontend/assets/images/client-logo/brand-icon4.png') }}" alt="" /></span>
-                                    <span class="title">ISO Developer</span>
-                                </div>
-                                <div class="marquee-item">
-                                    <span class="icon"><img class="img-fluid" src="{{ asset('frontend/assets/images/client-logo/brand-icon5.png') }}" alt="" /></span>
-                                    <span class="title">Digital Agency</span>
-                                </div>
-                                <div class="marquee-item">
-                                    <span class="icon"><img class="img-fluid" src="{{ asset('frontend/assets/images/client-logo/brand-icon1.png') }}" alt="" /></span>
-                                    <span class="title">Web Design</span>
-                                </div>
-                                <div class="marquee-item">
-                                    <span class="icon"><img class="img-fluid" src="{{ asset('frontend/assets/images/client-logo/brand-icon2.png') }}" alt="" /></span>
-                                    <span class="title">UI/UX Design</span>
-                                </div>
-                                <div class="marquee-item">
-                                    <span class="icon"><img class="img-fluid" src="{{ asset('frontend/assets/images/client-logo/brand-icon3.png') }}" alt="" /></span>
-                                    <span class="title">Developer</span>
-                                </div>
-                                <div class="marquee-item">
-                                    <span class="icon"><img class="img-fluid" src="{{ asset('frontend/assets/images/client-logo/brand-icon4.png') }}" alt="" /></span>
-                                    <span class="title">ISO Developer</span>
-                                </div>
-                                <div class="marquee-item">
-                                    <span class="icon"><img class="img-fluid" src="{{ asset('frontend/assets/images/client-logo/brand-icon5.png') }}" alt="" /></span>
-                                    <span class="title">Digital Agency</span>
-                                </div>
+                                @for ($repeat = 0; $repeat < 2; $repeat++)
+                                    @foreach ($marqueeItems as $service)
+                                        @php
+                                            $serviceName = $service->name ?? ($service['name'] ?? 'Service');
+                                            $serviceImagePath = $service->thumb_image ?? $service->image ?? ($service['image'] ?? null);
+                                            $serviceImage = $serviceImagePath
+                                                ? asset($serviceImagePath)
+                                                : asset('frontend/assets/images/client-logo/brand-icon1.png');
+                                        @endphp
+                                        <div class="marquee-item">
+                                            <span class="icon"><img class="img-fluid" src="{{ $serviceImage }}" alt="{{ $serviceName }}" /></span>
+                                            <span class="title">{{ $serviceName }}</span>
+                                        </div>
+                                    @endforeach
+                                @endfor
                             </div>
                         </div>
                     </div>
