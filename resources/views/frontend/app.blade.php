@@ -19,10 +19,10 @@
   /* Style for the floating button */
   .call-button {
     position: fixed;
-    bottom: 65px;
+    bottom: 110px;
     right: 20px;
     background-color: #007bff;
-    color: #fff;
+    color: #FFD700;
     border: none;
     border-radius: 50%;
     width: 60px;

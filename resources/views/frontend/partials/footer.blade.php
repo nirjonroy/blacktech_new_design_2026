@@ -6,6 +6,13 @@
     $siteInfo = siteInfo();
 
     $contactDescription = optional($contact)->description;
+    $contactDescription = $contactDescription
+        ? preg_replace(
+            '/\\s+/u',
+            ' ',
+            trim(strip_tags(html_entity_decode($contactDescription, ENT_QUOTES, 'UTF-8')))
+        )
+        : null;
     $contactAddress = optional($contact)->address
         ?? optional($footer)->address
         ?? trim((optional($siteInfo)->address_1 ?? '') . ' ' . (optional($siteInfo)->address_2 ?? ''));
@@ -17,7 +24,7 @@
         ?? (optional($siteInfo)->contact_email ?? optional($siteInfo)->topbar_email ?? null);
     $callCenterTitle = optional($footer)->third_column ?? 'Call Center';
     $callCenterNote = !empty($contactDescription)
-        ? \Illuminate\Support\Str::limit(strip_tags($contactDescription), 80)
+        ? \Illuminate\Support\Str::limit($contactDescription, 80)
         : 'and get a free estimate';
     $footerCopyright = optional($footer)->copyright ?? 'Design By Blacktech Developer';
 @endphp
