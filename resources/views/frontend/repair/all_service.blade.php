@@ -110,15 +110,25 @@
                                     $serviceUrl = $serviceSlug ? route('front.shop', $serviceSlug) : 'javascript:void(0);';
                                     $icon = $serviceIcons[$serviceIndex % count($serviceIcons)];
                                     $serviceIndex++;
+                                    $serviceImage = $item->thumb_image ?? $item->image ?? null;
+                                    $serviceImageUrl = $serviceImage ? asset($serviceImage) : null;
                                     $serviceDescription = \Illuminate\Support\Str::limit(strip_tags($item->short_description ?? ''), 140);
                                 @endphp
                                 <div class="service-wrapper service-style-1">
                                     <div class="service-inner">
                                         <div class="service-icon">
-                                            <img class="img-fluid" src="{{ asset('frontend/assets/images/svg/services/' . $icon) }}" alt="">
+                                            @if ($serviceImageUrl)
+                                                <img class="img-fluid" src="{{ $serviceImageUrl }}" alt="{{ $item->name }}">
+                                            @else
+                                                <img class="img-fluid" src="{{ asset('frontend/assets/images/svg/services/' . $icon) }}" alt="">
+                                            @endif
                                         </div>
                                         <div class="bg-icon">
-                                            <img class="img-fluid" src="{{ asset('frontend/assets/images/svg/services/color-icon/' . $icon) }}" alt="">
+                                            @if ($serviceImageUrl)
+                                                <img class="img-fluid" src="{{ $serviceImageUrl }}" alt="{{ $item->name }}">
+                                            @else
+                                                <img class="img-fluid" src="{{ asset('frontend/assets/images/svg/services/color-icon/' . $icon) }}" alt="">
+                                            @endif
                                         </div>
                                         <div class="service-content">
                                             <h5 class="service-title"><a href="{{ $serviceUrl }}">{{ $item->name }}</a></h5>
