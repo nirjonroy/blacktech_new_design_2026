@@ -66,7 +66,7 @@
         if (!file_exists(public_path($headerImage))) {
             $headerImage = 'frontend/assets/images/banner/banner-01/banner-bg-01.png';
         }
-        $headerTitle = 'Project Details';
+        $headerTitle = $project->name ?? 'Project Details';
         $headerDescription = \Illuminate\Support\Str::limit(strip_tags($desc ?? $project->description ?? ''), 120);
         if (empty($headerDescription)) {
             $headerDescription = 'See how we delivered results for our clients.';
