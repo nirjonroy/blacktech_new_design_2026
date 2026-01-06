@@ -81,9 +81,11 @@
         if (empty($headerDescription)) {
             $headerDescription = 'Our Expertise. Know more about what we do';
         }
-        $aboutImage = !empty($about_us->video_background)
-            ? asset($about_us->video_background)
-            : asset('frontend/assets/images/about/about-01.jpg');
+        $aboutImagePath = !empty($about_us->video_background)
+            ? $about_us->video_background
+            : optional(\App\Models\Slider::select('image')->where('status', 1)->first())->image;
+        $aboutImage = $aboutImagePath ? asset($aboutImagePath) : null;
+        $aboutTextColClass = $aboutImage ? 'col-lg-7' : 'col-12';
         $historyIntro = \Illuminate\Support\Str::limit(strip_tags($about_us->description_three ?? $about_us->about_us ?? ''), 240);
         $now = now();
         $historyItems = [];
@@ -146,18 +148,15 @@
     <div class="content-wrapper">
         <section class="space-pt z-index-2">
             <div class="container">
+                <div class="section-title pb-0 pb-lg-4">
+                    <span class="sub-title"><img class="img-fluid" src="{{ asset('frontend/assets/images/subtitle-icon.png') }}" alt=""> About Us</span>
+                    <h2 class="title">Your Experience Is Everything To Us</h2>
+                </div>
                 <div class="row justify-content-between">
-                    <div class="col-lg-7 mb-5 mb-lg-0">
-                        <div class="section-title pb-0 pb-lg-4">
-                            <span class="sub-title"><img class="img-fluid" src="{{ asset('frontend/assets/images/subtitle-icon.png') }}" alt=""> About Us</span>
-                            <h2 class="title">Your Experience Is Everything To Us</h2>
-                        </div>
+                    <div class="{{ $aboutTextColClass }} mb-5 mb-lg-0">
                         <div class="row">
-                            <div class="col-sm-4">
-                                <img class="img-fluid" src="{{ asset('frontend/assets/images/about/about-03.jpg') }}" alt="About Blacktech">
-                            </div>
-                            <div class="col-sm-8">
-                                <div class="ps-lg-3 mt-4 mt-sm-0">
+                            <div class="col-12">
+                                <div class="mt-3">
                                     {!! $about_us->about_us !!}
                                 </div>
                                 <div class="d-flex justify-content-center mt-5 ms-sm-5 ms-0">
@@ -183,9 +182,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-5">
-                        <img class="img-fluid ps-lg-5" src="{{ $aboutImage }}" alt="Blacktech Team">
-                    </div>
+                    @if ($aboutImage)
+                        <div class="col-lg-5">
+                            <img class="img-fluid ps-lg-5 mt-3" src="{{ $aboutImage }}" alt="Blacktech Team">
+                        </div>
+                    @endif
                 </div>
             </div>
         </section>
