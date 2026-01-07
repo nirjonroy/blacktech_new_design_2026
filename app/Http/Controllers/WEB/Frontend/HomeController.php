@@ -23,6 +23,7 @@ use App\Models\Footer;
 use App\Models\CustomPage;
 use App\Models\ContactMessage;
 use App\Models\TeamMember;
+use App\Models\Career;
 // use App\Models\AboutUs;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\FooterSocialLink;
@@ -90,6 +91,17 @@ class HomeController extends Controller
         $teamFallbackImage = optional(BannerImage::select('image')->find(15))->image;
         $testimonials = Testimonial::where('status', 1)->get();
       	return view('frontend.pages.about_us', compact('about_us', 'services', 'teamMembers', 'teamFallbackImage', 'testimonials'));
+    }
+
+    public function careers()
+    {
+        $about_us = AboutUs::first();
+        $careers = Career::where('status', 1)
+            ->orderBy('serial', 'asc')
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return view('frontend.pages.careers', compact('about_us', 'careers'));
     }
 
     public function team_member($slug)

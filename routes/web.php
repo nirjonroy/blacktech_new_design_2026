@@ -28,6 +28,7 @@ use App\Http\Controllers\WEB\Admin\ProductVariantController;
 use App\Http\Controllers\WEB\Admin\ProductVariantItemController;
 use App\Http\Controllers\WEB\Admin\SettingController;
 use App\Http\Controllers\WEB\Admin\TeamMemberController;
+use App\Http\Controllers\WEB\Admin\CareerController;
 use App\Http\Controllers\WEB\Admin\SubscriberController;
 use App\Http\Controllers\WEB\Admin\ContactMessageController;
 use App\Http\Controllers\WEB\Admin\EmailConfigurationController;
@@ -355,6 +356,8 @@ Route::group(['as'=> 'admin.', 'prefix' => 'admin'],function (){
 
     Route::resource('testimonial', TestimonialController::class);
     Route::put('testimonial-status/{id}', [TestimonialController::class,'changeStatus'])->name('testimonial.status');
+    Route::resource('career', CareerController::class);
+    Route::put('career-status/{id}', [CareerController::class,'changeStatus'])->name('career.status');
     Route::resource('team-member', TeamMemberController::class);
 
     Route::resource('product', ProductController::class);
@@ -745,6 +748,7 @@ Route::group(['as' => 'front.'], function(){
         Route::get('/flash-selling-product', 'flashSellProducts')->name('flash-sell');
         Route::get('/most-selling-product', 'mostSellingProducts')->name('popular');
         Route::get('/about-us', 'about_us_page')->name('about-us');
+        Route::get('/careers', 'careers')->name('careers');
         Route::get('/team/{slug}', 'team_member')->name('team.member');
       	Route::get('/privacy-policy', 'privacy_policy')->name('privacy_policy');
       	Route::get('/faq', 'faq')->name('faq');
