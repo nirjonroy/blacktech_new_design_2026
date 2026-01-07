@@ -30,6 +30,10 @@
                                     <input type="text" class="form-control" name="name" value="{{ $teamMember->name }}">
                                 </div>
                                 <div class="form-group col-12">
+                                    <label>Slug</label>
+                                    <input type="text" class="form-control" name="slug" value="{{ $teamMember->slug }}" placeholder="leave blank to auto-generate">
+                                </div>
+                                <div class="form-group col-12">
                                     <label>Designation <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="designation" value="{{ $teamMember->designation }}">
                                 </div>

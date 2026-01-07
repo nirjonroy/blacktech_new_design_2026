@@ -309,6 +309,10 @@
                                             ? \Illuminate\Support\Str::limit(strip_tags($member->biography), 120)
                                             : null;
                                         $memberImage = !empty($member->image) ? asset($member->image) : $teamFallbackImage;
+                                        $memberSlug = $member->slug ?? null;
+                                        $memberUrl = !empty($memberSlug)
+                                            ? route('front.team.member', $memberSlug)
+                                            : 'javascript:void(0);';
                                         $socialLinks = [
                                             ['label' => 'Fb', 'url' => $normalizeSocialUrl($member->facebook ?? null)],
                                             ['label' => 'Ig', 'url' => $normalizeSocialUrl($member->instagram ?? null)],
@@ -319,14 +323,15 @@
                                         $socialLinks = array_values(array_filter($socialLinks, function ($link) {
                                             return !empty($link['url']);
                                         }));
-                                    @endphp
+                                @endphp
                                     <div class="team-item team-style-1">
                                         <div class="team-img">
-                                            <img class="img-fluid" src="{{ $memberImage }}" alt="{{ $memberName }}" />
-                                            <div class="image-overlay"><img class="img-fluid" src="{{ asset('frontend/assets/images/team/symbol.png') }}" alt="" /></div>
+                                            <a href="{{ $memberUrl }}" aria-label="{{ $memberName }}">
+                                                <img class="img-fluid" src="{{ $memberImage }}" alt="{{ $memberName }}" />
+                                            </a>
                                         </div>
                                         <div class="team-info">
-                                            <a href="javascript:void(0);" class="team-title">{{ $memberName }}</a>
+                                            <a href="{{ $memberUrl }}" class="team-title">{{ $memberName }}</a>
                                         <span class="team-destination">{{ $memberRole }}</span>
                                         @if (!empty($memberBio))
                                             <p class="team-bio">{{ $memberBio }}</p>
@@ -348,7 +353,6 @@
                                     <div class="team-item team-style-1">
                                         <div class="team-img">
                                             <img class="img-fluid" src="{{ asset($member['image']) }}" alt="{{ $member['name'] }}" />
-                                            <div class="image-overlay"><img class="img-fluid" src="{{ asset('frontend/assets/images/team/symbol.png') }}" alt="" /></div>
                                         </div>
                                         <div class="team-info">
                                             <a href="javascript:void(0);" class="team-title">{{ $member['name'] }}</a>

@@ -80,7 +80,7 @@ class HomeController extends Controller
                 'projects'));
     }
 
-  	public function about_us_page(){
+    public function about_us_page(){
     	$about_us = AboutUs::first();
         $services = Product::where('status', 1)
             ->orderBy('id', 'desc')
@@ -90,6 +90,14 @@ class HomeController extends Controller
         $teamFallbackImage = optional(BannerImage::select('image')->find(15))->image;
         $testimonials = Testimonial::where('status', 1)->get();
       	return view('frontend.pages.about_us', compact('about_us', 'services', 'teamMembers', 'teamFallbackImage', 'testimonials'));
+    }
+
+    public function team_member($slug)
+    {
+        $member = TeamMember::where('slug', $slug)->firstOrFail();
+        $teamFallbackImage = optional(BannerImage::select('image')->find(15))->image;
+
+        return view('frontend.pages.team_single', compact('member', 'teamFallbackImage'));
     }
   	public function privacy_policy(){
     	$tarms = TermsAndCondition::first();

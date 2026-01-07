@@ -26,6 +26,7 @@
                                 <tr>
                                     <th>SN</th>
                                     <th>Name</th>
+                                    <th>Slug</th>
                                     <th>Designation</th>
                                     <th>Image</th>
                                     <th>Social</th>
@@ -37,6 +38,7 @@
                                     <tr>
                                         <td>{{ ++$index }}</td>
                                         <td>{{ $member->name }}</td>
+                                        <td>{{ $member->slug ?? '-' }}</td>
                                         <td>{{ $member->designation }}</td>
                                         <td>
                                             @if (!empty($member->image))

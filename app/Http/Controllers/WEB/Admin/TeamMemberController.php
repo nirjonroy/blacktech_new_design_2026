@@ -31,6 +31,7 @@ class TeamMemberController extends Controller
     {
         $rules = [
             'name' => 'required',
+            'slug' => 'nullable|string|max:255',
             'designation' => 'required',
             'image' => 'required|image',
             'facebook' => 'nullable|string|max:255',
@@ -46,6 +47,23 @@ class TeamMemberController extends Controller
             'image.required' => trans('admin_validation.Image is required'),
         ];
         $this->validate($request, $rules, $customMessages);
+
+        $slugInput = $request->input('slug');
+        $slugBase = $slugInput ?: $request->name;
+        $slug = Str::slug($slugBase);
+        if ($slug === '') {
+            $slug = 'team-member';
+        }
+        if (!empty($slugInput)) {
+            $slugExists = TeamMember::where('slug', $slug)->exists();
+            if ($slugExists) {
+                return back()
+                    ->withErrors(['slug' => trans('admin_validation.Slug already exist')])
+                    ->withInput();
+            }
+        } else {
+            $slug = $this->generateUniqueSlug($slug);
+        }
 
         $imageName = null;
         if ($request->image) {
@@ -64,6 +82,7 @@ class TeamMemberController extends Controller
 
         $teamMember = new TeamMember();
         $teamMember->name = $request->name;
+        $teamMember->slug = $slug;
         $teamMember->designation = $request->designation;
         $teamMember->image = $imageName;
         $teamMember->facebook = $request->facebook;
@@ -90,6 +109,7 @@ class TeamMemberController extends Controller
         $teamMember = TeamMember::findOrFail($id);
         $rules = [
             'name' => 'required',
+            'slug' => 'nullable|string|max:255',
             'designation' => 'required',
             'image' => 'nullable|image',
             'facebook' => 'nullable|string|max:255',
@@ -104,6 +124,25 @@ class TeamMemberController extends Controller
             'designation.required' => trans('admin_validation.Designation is required'),
         ];
         $this->validate($request, $rules, $customMessages);
+
+        $slugInput = $request->input('slug');
+        $slugBase = $slugInput ?: $request->name;
+        $slug = Str::slug($slugBase);
+        if ($slug === '') {
+            $slug = 'team-member';
+        }
+        if (!empty($slugInput)) {
+            $slugExists = TeamMember::where('slug', $slug)
+                ->where('id', '!=', $teamMember->id)
+                ->exists();
+            if ($slugExists) {
+                return back()
+                    ->withErrors(['slug' => trans('admin_validation.Slug already exist')])
+                    ->withInput();
+            }
+        } else {
+            $slug = $this->generateUniqueSlug($slug, $teamMember->id);
+        }
 
         if ($request->image) {
             $uploadPath = public_path('uploads/team-members');
@@ -126,6 +165,7 @@ class TeamMemberController extends Controller
         }
 
         $teamMember->name = $request->name;
+        $teamMember->slug = $slug;
         $teamMember->designation = $request->designation;
         $teamMember->facebook = $request->facebook;
         $teamMember->instagram = $request->instagram;
@@ -153,5 +193,22 @@ class TeamMemberController extends Controller
         $notification = trans('admin_validation.Delete Successfully');
         $notification = ['messege' => $notification, 'alert-type' => 'success'];
         return redirect()->route('admin.team-member.index')->with($notification);
+    }
+
+    private function generateUniqueSlug(string $slug, ?int $ignoreId = null): string
+    {
+        $baseSlug = $slug;
+        $suffix = 1;
+
+        while (TeamMember::where('slug', $slug)
+            ->when($ignoreId, function ($query) use ($ignoreId) {
+                return $query->where('id', '!=', $ignoreId);
+            })
+            ->exists()) {
+            $slug = $baseSlug . '-' . $suffix;
+            $suffix++;
+        }
+
+        return $slug;
     }
 }
