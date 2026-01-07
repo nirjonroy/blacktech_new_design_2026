@@ -107,6 +107,9 @@
                 'content' => 'We are focused on delivering measurable results and long-term partnerships.',
             ];
         }
+        $teamMembers = collect($teamMembers ?? []);
+        $teamFallbackImagePath = $teamFallbackImage ?? 'frontend/assets/images/team/01.jpg';
+        $teamFallbackImage = asset($teamFallbackImagePath);
         $staffMembers = [
             [
                 'name' => 'Blacktech Team',
@@ -129,7 +132,7 @@
                 'image' => 'frontend/assets/images/team/04.jpg',
             ],
         ];
-        $testimonials = \App\Models\Testimonial::where('status', 1)->get();
+        $testimonials = $testimonials ?? \App\Models\Testimonial::where('status', 1)->get();
     @endphp
 
     <div class="inner-header bg-holder" style="background-image: url('{{ asset($headerImage) }}');">
@@ -280,26 +283,56 @@
                 <div class="row mt-xl-5 pt-5">
                     <div class="col-md-12">
                         <div class="team-boxs grid-wrapper grid-xl-4 grid-lg-3 grid-md-2 grid-sm-2 grid-xs-1">
-                            @foreach ($staffMembers as $member)
-                                <div class="team-item team-style-1">
-                                    <div class="team-img">
-                                        <img class="img-fluid" src="{{ asset($member['image']) }}" alt="{{ $member['name'] }}" />
-                                        <div class="image-overlay"><img class="img-fluid" src="{{ asset('frontend/assets/images/team/symbol.png') }}" alt="" /></div>
-                                    </div>
-                                    <div class="team-info">
-                                        <a href="javascript:void(0);" class="team-title">{{ $member['name'] }}</a>
-                                        <span class="team-destination">{{ $member['role'] }}</span>
-                                        <div class="team-social">
-                                            <ul>
-                                                <li><a href="javascript:void(0);">Fb</a></li>
-                                                <li><a href="javascript:void(0);">Dr</a></li>
-                                                <li><a href="javascript:void(0);">Tw</a></li>
-                                                <li><a href="javascript:void(0);">Be</a></li>
-                                            </ul>
+                            @if ($teamMembers->isNotEmpty())
+                                @foreach ($teamMembers as $member)
+                                    @php
+                                        $memberName = $member->name ?? 'Team Member';
+                                        $memberRole = $member->about_us
+                                            ? \Illuminate\Support\Str::limit(strip_tags($member->about_us), 40)
+                                            : ($member->admin_type == 1 ? 'Administrator' : 'Team Member');
+                                        $memberImage = !empty($member->image) ? asset($member->image) : $teamFallbackImage;
+                                    @endphp
+                                    <div class="team-item team-style-1">
+                                        <div class="team-img">
+                                            <img class="img-fluid" src="{{ $memberImage }}" alt="{{ $memberName }}" />
+                                            <div class="image-overlay"><img class="img-fluid" src="{{ asset('frontend/assets/images/team/symbol.png') }}" alt="" /></div>
+                                        </div>
+                                        <div class="team-info">
+                                            <a href="javascript:void(0);" class="team-title">{{ $memberName }}</a>
+                                            <span class="team-destination">{{ $memberRole }}</span>
+                                            <div class="team-social">
+                                                <ul>
+                                                    <li><a href="javascript:void(0);">Fb</a></li>
+                                                    <li><a href="javascript:void(0);">Dr</a></li>
+                                                    <li><a href="javascript:void(0);">Tw</a></li>
+                                                    <li><a href="javascript:void(0);">Be</a></li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            @endforeach
+                                @endforeach
+                            @else
+                                @foreach ($staffMembers as $member)
+                                    <div class="team-item team-style-1">
+                                        <div class="team-img">
+                                            <img class="img-fluid" src="{{ asset($member['image']) }}" alt="{{ $member['name'] }}" />
+                                            <div class="image-overlay"><img class="img-fluid" src="{{ asset('frontend/assets/images/team/symbol.png') }}" alt="" /></div>
+                                        </div>
+                                        <div class="team-info">
+                                            <a href="javascript:void(0);" class="team-title">{{ $member['name'] }}</a>
+                                            <span class="team-destination">{{ $member['role'] }}</span>
+                                            <div class="team-social">
+                                                <ul>
+                                                    <li><a href="javascript:void(0);">Fb</a></li>
+                                                    <li><a href="javascript:void(0);">Dr</a></li>
+                                                    <li><a href="javascript:void(0);">Tw</a></li>
+                                                    <li><a href="javascript:void(0);">Be</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -325,6 +358,9 @@
                                         @php
                                             $rating = (int) round($testimonial->rating ?? 0);
                                             $rating = max(0, min(5, $rating));
+                                            $authorName = $testimonial->name ?? 'Client';
+                                            $authorRole = $testimonial->designation ?? 'Client';
+                                            $authorImage = !empty($testimonial->image) ? asset($testimonial->image) : $teamFallbackImage;
                                         @endphp
                                         <div class="item">
                                             <div class="testimonial-wrapper testimonial-style-2">
@@ -338,9 +374,12 @@
                                                     <p>{{ $testimonial->comment }}</p>
                                                 </div>
                                                 <div class="testimonial-author">
+                                                    <div class="author-image">
+                                                        <img class="img-fluid" src="{{ $authorImage }}" alt="{{ $authorName }}">
+                                                    </div>
                                                     <div class="author-info">
-                                                        <h6 class="author-name">{{ $testimonial->name }}</h6>
-                                                        <span class="author-position">{{ $testimonial->designation }}</span>
+                                                        <h6 class="author-name">{{ $authorName }}</h6>
+                                                        <span class="author-position">{{ $authorRole }}</span>
                                                     </div>
                                                 </div>
                                             </div>

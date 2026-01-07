@@ -24,9 +24,6 @@
                     @if (!empty($ctaTitle))
                         <span>{{ $ctaTitle }}</span>
                     @endif
-                    @if (!empty($ctaSubtitle))
-                        <span class="consultation-cta__subtitle">{{ $ctaSubtitle }}</span>
-                    @endif
                     @if (!empty($ctaPhone))
                         <span class="consultation-cta__call">
                             Call

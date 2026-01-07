@@ -2896,6 +2896,13 @@ blockquote.blockquote-style-1:before {
     margin-top: 25px;
 }
 
+.testimonial-wrapper.testimonial-style-2 .testimonial-author .author-image img {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
 .testimonial-wrapper.testimonial-style-2 .testimonial-author .author-name {
     font-size: 22px;
     line-height: 32px;
