@@ -34,15 +34,24 @@ class CareerController extends Controller
     {
         $rules = [
             'title' => 'required',
+            'slug' => 'nullable|string|max:255',
             'employment_type' => 'nullable|string|max:255',
             'location' => 'nullable|string|max:255',
             'short_description' => 'nullable|string',
+            'key_responsibilities' => 'nullable|string',
+            'requirements' => 'nullable|string',
+            'why_join_us' => 'nullable|string',
             'experience' => 'nullable|string|max:255',
             'salary' => 'nullable|string|max:255',
             'deadline' => 'nullable|date',
             'apply_url' => 'nullable|string|max:255',
+            'apply_email' => 'nullable|email|max:255',
+            'apply_details' => 'nullable|string',
             'serial' => 'nullable|integer',
             'status' => 'required|in:0,1',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string',
+            'meta_keywords' => 'nullable|string',
             'image' => 'required|image',
         ];
         $customMessages = [
@@ -51,6 +60,23 @@ class CareerController extends Controller
             'status.required' => 'Status is required',
         ];
         $this->validate($request, $rules, $customMessages);
+
+        $slugInput = $request->input('slug');
+        $slugBase = $slugInput ?: $request->title;
+        $slug = Str::slug($slugBase);
+        if ($slug === '') {
+            $slug = 'career';
+        }
+        if (!empty($slugInput)) {
+            $slugExists = Career::where('slug', $slug)->exists();
+            if ($slugExists) {
+                return back()
+                    ->withErrors(['slug' => trans('admin_validation.Slug already exist')])
+                    ->withInput();
+            }
+        } else {
+            $slug = $this->generateUniqueSlug($slug);
+        }
 
         $imageName = null;
         if ($request->image) {
@@ -69,16 +95,25 @@ class CareerController extends Controller
 
         $career = new Career();
         $career->title = $request->title;
+        $career->slug = $slug;
         $career->employment_type = $request->employment_type;
         $career->location = $request->location;
         $career->short_description = $request->short_description;
+        $career->key_responsibilities = $request->key_responsibilities;
+        $career->requirements = $request->requirements;
+        $career->why_join_us = $request->why_join_us;
         $career->experience = $request->experience;
         $career->salary = $request->salary;
         $career->deadline = $request->deadline;
         $career->image = $imageName;
         $career->apply_url = $request->apply_url;
+        $career->apply_email = $request->apply_email;
+        $career->apply_details = $request->apply_details;
         $career->serial = $request->serial ?? 0;
         $career->status = $request->status;
+        $career->meta_title = $request->meta_title;
+        $career->meta_description = $request->meta_description;
+        $career->meta_keywords = $request->meta_keywords;
         $career->save();
 
         $notification = trans('admin_validation.Created Successfully');
@@ -97,15 +132,24 @@ class CareerController extends Controller
         $career = Career::findOrFail($id);
         $rules = [
             'title' => 'required',
+            'slug' => 'nullable|string|max:255',
             'employment_type' => 'nullable|string|max:255',
             'location' => 'nullable|string|max:255',
             'short_description' => 'nullable|string',
+            'key_responsibilities' => 'nullable|string',
+            'requirements' => 'nullable|string',
+            'why_join_us' => 'nullable|string',
             'experience' => 'nullable|string|max:255',
             'salary' => 'nullable|string|max:255',
             'deadline' => 'nullable|date',
             'apply_url' => 'nullable|string|max:255',
+            'apply_email' => 'nullable|email|max:255',
+            'apply_details' => 'nullable|string',
             'serial' => 'nullable|integer',
             'status' => 'required|in:0,1',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string',
+            'meta_keywords' => 'nullable|string',
             'image' => 'nullable|image',
         ];
         $customMessages = [
@@ -113,6 +157,25 @@ class CareerController extends Controller
             'status.required' => 'Status is required',
         ];
         $this->validate($request, $rules, $customMessages);
+
+        $slugInput = $request->input('slug');
+        $slugBase = $slugInput ?: $request->title;
+        $slug = Str::slug($slugBase);
+        if ($slug === '') {
+            $slug = 'career';
+        }
+        if (!empty($slugInput)) {
+            $slugExists = Career::where('slug', $slug)
+                ->where('id', '!=', $career->id)
+                ->exists();
+            if ($slugExists) {
+                return back()
+                    ->withErrors(['slug' => trans('admin_validation.Slug already exist')])
+                    ->withInput();
+            }
+        } else {
+            $slug = $this->generateUniqueSlug($slug, $career->id);
+        }
 
         if ($request->image) {
             $uploadPath = public_path('uploads/careers');
@@ -135,15 +198,24 @@ class CareerController extends Controller
         }
 
         $career->title = $request->title;
+        $career->slug = $slug;
         $career->employment_type = $request->employment_type;
         $career->location = $request->location;
         $career->short_description = $request->short_description;
+        $career->key_responsibilities = $request->key_responsibilities;
+        $career->requirements = $request->requirements;
+        $career->why_join_us = $request->why_join_us;
         $career->experience = $request->experience;
         $career->salary = $request->salary;
         $career->deadline = $request->deadline;
         $career->apply_url = $request->apply_url;
+        $career->apply_email = $request->apply_email;
+        $career->apply_details = $request->apply_details;
         $career->serial = $request->serial ?? 0;
         $career->status = $request->status;
+        $career->meta_title = $request->meta_title;
+        $career->meta_description = $request->meta_description;
+        $career->meta_keywords = $request->meta_keywords;
         $career->save();
 
         $notification = trans('admin_validation.Update Successfully');
@@ -180,5 +252,22 @@ class CareerController extends Controller
         }
 
         return response()->json($message);
+    }
+
+    private function generateUniqueSlug(string $slug, ?int $ignoreId = null): string
+    {
+        $baseSlug = $slug;
+        $suffix = 1;
+
+        while (Career::where('slug', $slug)
+            ->when($ignoreId, function ($query) use ($ignoreId) {
+                return $query->where('id', '!=', $ignoreId);
+            })
+            ->exists()) {
+            $slug = $baseSlug . '-' . $suffix;
+            $suffix++;
+        }
+
+        return $slug;
     }
 }

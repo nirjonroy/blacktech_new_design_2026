@@ -282,7 +282,7 @@
 
                                     <div class="section-title mt-5">
 
-                                        <span class="sub-title"><img class="img-fluid" src="{{ asset('frontend/assets/images/subtitle-icon.png') }}" alt=""> FAQ</span>
+                                        <span class="sub-title"><img class="img-fluid" src="{{ asset(optional(siteInfo())->favicon ?? 'frontend/assets/images/favicon.ico') }}" alt=""> FAQ</span>
 
                                         <h5 class="title mb-0">Frequently Asked Questions</h5>
 

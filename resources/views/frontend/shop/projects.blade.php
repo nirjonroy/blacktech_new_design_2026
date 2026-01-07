@@ -100,7 +100,7 @@
                 <div class="row align-items-center">
                     <div class="col-xl-5 col-lg-5">
                         <div class="section-title mb-4 mb-lg-0">
-                            <span class="sub-title"><img class="img-fluid" src="{{ asset('frontend/assets/images/subtitle-icon.png') }}" alt=""> Projects</span>
+                            <span class="sub-title"><img class="img-fluid" src="{{ asset(optional(siteInfo())->favicon ?? 'frontend/assets/images/favicon.ico') }}" alt=""> Projects</span>
                             <h2 class="title">Projects For Our Amazing Clients</h2>
                         </div>
                     </div>

@@ -169,7 +169,7 @@
         <section class="space-pt z-index-2">
             <div class="container">
                 <div class="section-title pb-0 pb-lg-4">
-                    <span class="sub-title"><img class="img-fluid" src="{{ asset('frontend/assets/images/subtitle-icon.png') }}" alt=""> About Us</span>
+                    <span class="sub-title"><img class="img-fluid" src="{{ asset(optional(siteInfo())->favicon ?? 'frontend/assets/images/favicon.ico') }}" alt=""> About Us</span>
                     <h2 class="title">Your Experience Is Everything To Us</h2>
                 </div>
                 <div class="row justify-content-between">
@@ -257,7 +257,7 @@
                         <div class="col-lg-5">
                             <div class="sticky-top" style="top: 80px;">
                                 <div class="section-title mb-0">
-                                    <span class="sub-title"><img class="img-fluid" src="{{ asset('frontend/assets/images/subtitle-icon.png') }}" alt="" /> Our History</span>
+                                    <span class="sub-title"><img class="img-fluid" src="{{ asset(optional(siteInfo())->favicon ?? 'frontend/assets/images/favicon.ico') }}" alt="" /> Our History</span>
                                     <h2 class="title">Our History</h2>
                                 </div>
                                 @if (!empty($historyIntro))
@@ -288,7 +288,7 @@
                 <div class="row">
                     <div class="col-xxl-6 col-lg-8">
                         <div class="section-title mb-lg-0">
-                            <span class="sub-title"><img class="img-fluid" src="{{ asset('frontend/assets/images/subtitle-icon.png') }}" alt=""> Our Staff</span>
+                            <span class="sub-title"><img class="img-fluid" src="{{ asset(optional(siteInfo())->favicon ?? 'frontend/assets/images/favicon.ico') }}" alt=""> Our Staff</span>
                             <h2 class="title mb-0">Our team is friendly, talkative, and fully reliable.</h2>
                         </div>
                     </div>
@@ -381,7 +381,7 @@
                     <div class="row justify-content-center">
                         <div class="col-md-10">
                             <div class="section-title text-center">
-                                <span class="sub-title justify-content-center"><img class="img-fluid" src="{{ asset('frontend/assets/images/subtitle-icon.png') }}" alt=""> Our Testimonial</span>
+                                <span class="sub-title justify-content-center"><img class="img-fluid" src="{{ asset(optional(siteInfo())->favicon ?? 'frontend/assets/images/favicon.ico') }}" alt=""> Our Testimonial</span>
                                 <h2 class="title">Over 500 clients and 5,000 projects across the globe.</h2>
                             </div>
                         </div>

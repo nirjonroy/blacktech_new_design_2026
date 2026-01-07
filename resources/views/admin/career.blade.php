@@ -26,6 +26,7 @@
                                 <tr>
                                     <th>SN</th>
                                     <th>Title</th>
+                                    <th>Slug</th>
                                     <th>Type</th>
                                     <th>Location</th>
                                     <th>Deadline</th>
@@ -39,6 +40,7 @@
                                     <tr>
                                         <td>{{ ++$index }}</td>
                                         <td>{{ $career->title }}</td>
+                                        <td>{{ $career->slug ?? '-' }}</td>
                                         <td>{{ $career->employment_type ?? '-' }}</td>
                                         <td>{{ $career->location ?? '-' }}</td>
                                         <td>{{ $career->deadline ? $career->deadline->format('d M Y') : '-' }}</td>

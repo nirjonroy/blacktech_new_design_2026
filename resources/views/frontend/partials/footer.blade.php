@@ -67,9 +67,21 @@
                                 <li><a href="{{ route('front.all.service') }}">Our Services</a></li>
                                 <li><a href="{{ route('front.blog') }}">Blog</a></li>
                                 <li><a href="{{ route('front.contact') }}">Contact</a></li>
+                                @php
+                                    $insertedCareers = false;
+                                @endphp
                                 @foreach($pages as $p)
                                     <li><a href="{{ route('front.customPages', [$p->slug]) }}">{{ $p->page_name }}</a></li>
+                                    @if (!$insertedCareers && \Illuminate\Support\Str::lower($p->page_name) === 'sitemap')
+                                        <li><a href="{{ route('front.careers') }}">Careers</a></li>
+                                        @php
+                                            $insertedCareers = true;
+                                        @endphp
+                                    @endif
                                 @endforeach
+                                @if (!$insertedCareers)
+                                    <li><a href="{{ route('front.careers') }}">Careers</a></li>
+                                @endif
                             </ul>
                         </div>
                     </div>
@@ -104,8 +116,8 @@
                 <div class="col-lg-6 text-lg-end">
                     <p>{{ $footerCopyright }}</p>
                     <ul class="list-unstyled d-inline-flex gap-3 mb-0">
-                        <li><a href="#">Terms & Conditions</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="{{ route('front.customPages', ['terms-and-conditions']) }}">Terms & Conditions</a></li>
+                        <li><a href="{{ route('front.customPages', ['privacy-policy']) }}">Privacy Policy</a></li>
                     </ul>
                 </div>
             </div>

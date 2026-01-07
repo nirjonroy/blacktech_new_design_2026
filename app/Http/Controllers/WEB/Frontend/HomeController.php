@@ -104,6 +104,15 @@ class HomeController extends Controller
         return view('frontend.pages.careers', compact('about_us', 'careers'));
     }
 
+    public function career_details($slug)
+    {
+        $career = Career::where('slug', $slug)
+            ->where('status', 1)
+            ->firstOrFail();
+
+        return view('frontend.pages.career_single', compact('career'));
+    }
+
     public function team_member($slug)
     {
         $member = TeamMember::where('slug', $slug)->firstOrFail();

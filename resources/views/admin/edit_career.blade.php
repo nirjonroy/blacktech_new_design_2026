@@ -29,6 +29,10 @@
                                     <label>Title <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="title" value="{{ $career->title }}">
                                 </div>
+                                <div class="form-group col-12">
+                                    <label>Slug</label>
+                                    <input type="text" class="form-control" name="slug" value="{{ $career->slug }}" placeholder="leave blank to auto-generate">
+                                </div>
                                 <div class="form-group col-md-6">
                                     <label>Employment Type</label>
                                     <input type="text" class="form-control" name="employment_type" value="{{ $career->employment_type }}">
@@ -40,6 +44,18 @@
                                 <div class="form-group col-12">
                                     <label>Short Description</label>
                                     <textarea name="short_description" cols="30" rows="4" class="form-control text-area-5">{{ $career->short_description }}</textarea>
+                                </div>
+                                <div class="form-group col-12">
+                                    <label>Key Responsibilities</label>
+                                    <textarea name="key_responsibilities" cols="30" rows="4" class="form-control text-area-5" placeholder="One per line">{{ $career->key_responsibilities }}</textarea>
+                                </div>
+                                <div class="form-group col-12">
+                                    <label>Requirements</label>
+                                    <textarea name="requirements" cols="30" rows="4" class="form-control text-area-5" placeholder="One per line">{{ $career->requirements }}</textarea>
+                                </div>
+                                <div class="form-group col-12">
+                                    <label>Why Join Us</label>
+                                    <textarea name="why_join_us" cols="30" rows="4" class="form-control text-area-5" placeholder="One per line">{{ $career->why_join_us }}</textarea>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Experience</label>
@@ -56,6 +72,14 @@
                                 <div class="form-group col-md-6">
                                     <label>Apply URL</label>
                                     <input type="text" class="form-control" name="apply_url" value="{{ $career->apply_url }}">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Apply Email</label>
+                                    <input type="email" class="form-control" name="apply_email" value="{{ $career->apply_email }}">
+                                </div>
+                                <div class="form-group col-12">
+                                    <label>Apply Details</label>
+                                    <textarea name="apply_details" cols="30" rows="4" class="form-control text-area-5">{{ $career->apply_details }}</textarea>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Serial</label>
@@ -81,6 +105,18 @@
                                 <div class="form-group col-12">
                                     <label>New Image</label>
                                     <input type="file" name="image" class="form-control-file">
+                                </div>
+                                <div class="form-group col-12">
+                                    <label>Meta Title</label>
+                                    <input type="text" class="form-control" name="meta_title" value="{{ $career->meta_title }}">
+                                </div>
+                                <div class="form-group col-12">
+                                    <label>Meta Description</label>
+                                    <textarea name="meta_description" cols="30" rows="3" class="form-control text-area-5">{{ $career->meta_description }}</textarea>
+                                </div>
+                                <div class="form-group col-12">
+                                    <label>Meta Keywords</label>
+                                    <textarea name="meta_keywords" cols="30" rows="2" class="form-control text-area-5" placeholder="comma separated">{{ $career->meta_keywords }}</textarea>
                                 </div>
                             </div>
                             <div class="row">

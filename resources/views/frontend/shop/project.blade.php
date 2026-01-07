@@ -102,7 +102,7 @@
                     </div>
                     <div class="col-lg-6 mt-5 mt-lg-0">
                         <div class="section-title">
-                            <span class="sub-title"><img class="img-fluid" src="{{ asset('frontend/assets/images/subtitle-icon.png') }}" alt=""> Project</span>
+                            <span class="sub-title"><img class="img-fluid" src="{{ asset(optional(siteInfo())->favicon ?? 'frontend/assets/images/favicon.ico') }}" alt=""> Project</span>
                             <h2 class="title">{{ $project->name }}</h2>
                         </div>
                         <div class="description">

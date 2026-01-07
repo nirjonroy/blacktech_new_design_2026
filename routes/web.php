@@ -749,6 +749,7 @@ Route::group(['as' => 'front.'], function(){
         Route::get('/most-selling-product', 'mostSellingProducts')->name('popular');
         Route::get('/about-us', 'about_us_page')->name('about-us');
         Route::get('/careers', 'careers')->name('careers');
+        Route::get('/career/{slug}', 'career_details')->name('career.details');
         Route::get('/team/{slug}', 'team_member')->name('team.member');
       	Route::get('/privacy-policy', 'privacy_policy')->name('privacy_policy');
       	Route::get('/faq', 'faq')->name('faq');

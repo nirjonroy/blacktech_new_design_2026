@@ -118,7 +118,7 @@
                 <div class="row">
                     <div class="col-xl-6 col-lg-5">
                         <div class="section-title is-sticky">
-                            <span class="sub-title"><img class="img-fluid" src="{{ asset('frontend/assets/images/subtitle-icon.png') }}" alt=""> Our Direction</span>
+                            <span class="sub-title"><img class="img-fluid" src="{{ asset(optional(siteInfo())->favicon ?? 'frontend/assets/images/favicon.ico') }}" alt=""> Our Direction</span>
                             <h2 class="title">Get in touch with us. We love talking about digital strategy</h2>
                             @if (!empty($contactDescription))
                                 <p>{!! $contactDescription !!}</p>
@@ -175,7 +175,7 @@
                     <div class="row justify-content-center">
                         <div class="col-md-10">
                             <div class="section-title text-center">
-                                <span class="sub-title d-flex justify-content-center"><img class="img-fluid" src="{{ asset('frontend/assets/images/subtitle-icon.png') }}" alt=""> contact us</span>
+                                <span class="sub-title d-flex justify-content-center"><img class="img-fluid" src="{{ asset(optional(siteInfo())->favicon ?? 'frontend/assets/images/favicon.ico') }}" alt=""> contact us</span>
                                 <h2 class="title">Need assistance? please fill the form</h2>
                             </div>
                             <div class="form-wrapper">

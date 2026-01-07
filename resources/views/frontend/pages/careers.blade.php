@@ -150,7 +150,7 @@
                     </div>
                     <div class="col-md-7">
                         <div class="section-title pe-xl-5">
-                            <span class="sub-title"><img class="img-fluid" src="{{ asset('frontend/assets/images/subtitle-icon.png') }}" alt=""> About Us</span>
+                            <span class="sub-title"><img class="img-fluid" src="{{ asset(optional(siteInfo())->favicon ?? 'frontend/assets/images/favicon.ico') }}" alt=""> About Us</span>
                             <h2 class="title">{{ $aboutTitle }}</h2>
                         </div>
                         <div class="ps-sm-5">
@@ -173,7 +173,7 @@
                 <div class="row justify-content-center">
                     <div class="col-md-10">
                         <div class="section-title text-center">
-                            <span class="sub-title justify-content-center"><img class="img-fluid" src="{{ asset('frontend/assets/images/subtitle-icon.png') }}" alt=""> Open Positions</span>
+                            <span class="sub-title justify-content-center"><img class="img-fluid" src="{{ asset(optional(siteInfo())->favicon ?? 'frontend/assets/images/favicon.ico') }}" alt=""> Open Positions</span>
                             <h2 class="title">Find Your Job Here</h2>
                         </div>
                     </div>
@@ -191,7 +191,9 @@
                                         $careerExperience = $career->experience ?? 'N/A';
                                         $careerSalary = $career->salary ?? 'Negotiable';
                                         $careerDeadline = $career->deadline ? $career->deadline->format('d M Y') : 'Open';
-                                        $applyUrl = !empty($career->apply_url) ? $career->apply_url : route('front.contact');
+                                        $detailUrl = !empty($career->slug)
+                                            ? route('front.career.details', $career->slug)
+                                            : route('front.contact');
                                     @endphp
                                     <div class="find-job-item">
                                         <div class="job-title">
@@ -210,7 +212,7 @@
                                                 </div>
                                             </div>
                                             <div class="job-action">
-                                                <a class="btn btn-effect" href="{{ $applyUrl }}">
+                                                <a class="btn btn-effect" href="{{ $detailUrl }}">
                                                     <span>Apply Now</span>
                                                     <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_59_253)"><path d="M19.4854 11.4293L17.0513 12.221C13.1214 13.4993 10.3036 16.9595 9.84784 21.0668C9.49371 16.981 6.71926 13.5081 2.81255 12.2604L0.210283 11.4293" stroke="white" stroke-width="2"/><path d="M9.83594 20.8889L9.83594 0" stroke="white" stroke-width="2"/></g><defs><clipPath id="clip0_59_253"><rect width="21.3333" height="20" fill="white" transform="translate(20) rotate(90)"/></clipPath></defs></svg>
                                                 </a>
@@ -249,7 +251,7 @@
                         <div class="col-lg-7">
                             <div class="sticky-top" style="top: 80px;">
                                 <div class="section-title mb-0">
-                                    <span class="sub-title"><img class="img-fluid" src="{{ asset('frontend/assets/images/subtitle-icon.png') }}" alt="" /> How It Works</span>
+                                    <span class="sub-title"><img class="img-fluid" src="{{ asset(optional(siteInfo())->favicon ?? 'frontend/assets/images/favicon.ico') }}" alt="" /> How It Works</span>
                                     <h2 class="title">Four reasons why you should choose our service</h2>
                                 </div>
                                 <div class="ps-xxl-5 ms-0 ms-md-5 pb-5 pb-lg-0">

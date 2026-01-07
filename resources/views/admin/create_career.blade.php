@@ -28,6 +28,10 @@
                                     <label>Title <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="title">
                                 </div>
+                                <div class="form-group col-12">
+                                    <label>Slug</label>
+                                    <input type="text" class="form-control" name="slug" placeholder="leave blank to auto-generate">
+                                </div>
                                 <div class="form-group col-md-6">
                                     <label>Employment Type</label>
                                     <input type="text" class="form-control" name="employment_type" placeholder="Full Time">
@@ -39,6 +43,18 @@
                                 <div class="form-group col-12">
                                     <label>Short Description</label>
                                     <textarea name="short_description" cols="30" rows="4" class="form-control text-area-5"></textarea>
+                                </div>
+                                <div class="form-group col-12">
+                                    <label>Key Responsibilities</label>
+                                    <textarea name="key_responsibilities" cols="30" rows="4" class="form-control text-area-5" placeholder="One per line"></textarea>
+                                </div>
+                                <div class="form-group col-12">
+                                    <label>Requirements</label>
+                                    <textarea name="requirements" cols="30" rows="4" class="form-control text-area-5" placeholder="One per line"></textarea>
+                                </div>
+                                <div class="form-group col-12">
+                                    <label>Why Join Us</label>
+                                    <textarea name="why_join_us" cols="30" rows="4" class="form-control text-area-5" placeholder="One per line"></textarea>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Experience</label>
@@ -57,6 +73,14 @@
                                     <input type="text" class="form-control" name="apply_url" placeholder="https://">
                                 </div>
                                 <div class="form-group col-md-6">
+                                    <label>Apply Email</label>
+                                    <input type="email" class="form-control" name="apply_email" placeholder="jobs@blacktechcorp.com">
+                                </div>
+                                <div class="form-group col-12">
+                                    <label>Apply Details</label>
+                                    <textarea name="apply_details" cols="30" rows="4" class="form-control text-area-5"></textarea>
+                                </div>
+                                <div class="form-group col-md-6">
                                     <label>Serial</label>
                                     <input type="number" class="form-control" name="serial" value="0">
                                 </div>
@@ -70,6 +94,18 @@
                                 <div class="form-group col-12">
                                     <label>Image <span class="text-danger">*</span></label>
                                     <input type="file" name="image" class="form-control-file">
+                                </div>
+                                <div class="form-group col-12">
+                                    <label>Meta Title</label>
+                                    <input type="text" class="form-control" name="meta_title">
+                                </div>
+                                <div class="form-group col-12">
+                                    <label>Meta Description</label>
+                                    <textarea name="meta_description" cols="30" rows="3" class="form-control text-area-5"></textarea>
+                                </div>
+                                <div class="form-group col-12">
+                                    <label>Meta Keywords</label>
+                                    <textarea name="meta_keywords" cols="30" rows="2" class="form-control text-area-5" placeholder="comma separated"></textarea>
                                 </div>
                             </div>
                             <div class="row">

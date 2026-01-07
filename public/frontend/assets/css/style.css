@@ -289,6 +289,12 @@ label {
     -webkit-text-fill-color: transparent;
 }
 
+.section-title .sub-title img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
 .section-title .title {
     margin-bottom: 25px;
     text-transform: capitalize;

@@ -211,7 +211,7 @@
                     $aboutTextColClass = $aboutVideoBackground ? 'col-lg-7' : 'col-12';
                 @endphp
                 <div class="section-title pb-0 pb-lg-4">
-                    <span class="sub-title"><img class="img-fluid" src="{{ asset('frontend/assets/images/subtitle-icon.png') }}" alt=""> About Us</span>
+                    <span class="sub-title"><img class="img-fluid" src="{{ asset(optional(siteInfo())->favicon ?? 'frontend/assets/images/favicon.ico') }}" alt=""> About Us</span>
                     <h2 class="title">About Us</h2>
                 </div>
                 <div class="row justify-content-between">
@@ -346,7 +346,7 @@
                     <div class="row align-items-center">
                         <div class="col-xl-5 col-lg-5">
                             <div class="section-title mb-4 mb-lg-0">
-                                <span class="sub-title"><img class="img-fluid" src="{{ asset('frontend/assets/images/subtitle-icon.png') }}" alt=""> Case Studies</span>
+                                <span class="sub-title"><img class="img-fluid" src="{{ asset(optional(siteInfo())->favicon ?? 'frontend/assets/images/favicon.ico') }}" alt=""> Case Studies</span>
                                 <h2 class="title">{{ $projectSectionTitle }}</h2>
                             </div>
                         </div>
@@ -436,7 +436,7 @@
                         <div class="row">
                             <div class="col-md-12 text-center">
                                 <div class="section-title">
-                                    <span class="sub-title justify-content-center"><img class="img-fluid" src="{{ asset('frontend/assets/images/subtitle-icon.png') }}" alt=""> FAQ</span>
+                                    <span class="sub-title justify-content-center"><img class="img-fluid" src="{{ asset(optional(siteInfo())->favicon ?? 'frontend/assets/images/favicon.ico') }}" alt=""> FAQ</span>
                                     <h2 class="title mb-0">Frequently Asked Questions</h2>
                                 </div>
                             </div>
@@ -491,7 +491,7 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="section-title">
-                            <span class="sub-title"><img class="img-fluid" src="{{ asset('frontend/assets/images/subtitle-icon.png') }}" alt=""> {{ $whyChooseSubtitle }}</span>
+                            <span class="sub-title"><img class="img-fluid" src="{{ asset(optional(siteInfo())->favicon ?? 'frontend/assets/images/favicon.ico') }}" alt=""> {{ $whyChooseSubtitle }}</span>
                             <h2 class="title">{{ $whyChooseTitle }}</h2>
                         </div>
 
