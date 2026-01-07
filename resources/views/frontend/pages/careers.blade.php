@@ -145,8 +145,8 @@
         <section class="space-ptb ellipse-bottom">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-5 mb-5 mb-md-0">
-                        <img class="img-fluid mx-lg-5 radius-10" src="{{ $aboutImage }}" alt="About">
+                    <div class="col-md-5 mb-5 mb-md-0 pe-lg-4">
+                        <img class="img-fluid radius-10 w-100" src="{{ $aboutImage }}" alt="About">
                     </div>
                     <div class="col-md-7">
                         <div class="section-title pe-xl-5">
