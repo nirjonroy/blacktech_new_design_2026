@@ -71,7 +71,7 @@
         if (!file_exists(public_path($headerImage))) {
             $headerImage = 'frontend/assets/images/banner/banner-01/banner-bg-01.png';
         }
-        $headerTitle = 'Blog Details';
+        $headerTitle = $blog->title ?? 'Blog Details';
         $headerDescription = \Illuminate\Support\Str::limit(strip_tags($metaDescription ?? $blog->description ?? ''), 120);
         if (empty($headerDescription)) {
             $headerDescription = 'Success is that it is a process';
