@@ -250,7 +250,7 @@
 
 
 
-          <li class="nav-item dropdown {{ Route::is('admin.footer.*') || Route::is('admin.social-link.*') || Route::is('admin.footer-link.*') || Route::is('admin.second-col-footer-link') || Route::is('admin.third-col-footer-link') ? 'active' : '' }}">
+          {{-- <li class="nav-item dropdown {{ Route::is('admin.footer.*') || Route::is('admin.social-link.*') || Route::is('admin.footer-link.*') || Route::is('admin.second-col-footer-link') || Route::is('admin.third-col-footer-link') ? 'active' : '' }}">
 
             <a href="#" class="nav-link has-dropdown">
             <div class="icon">
@@ -273,7 +273,7 @@
 
             </ul>
 
-          </li>
+          </li> --}}
 
           <li class="nav-item dropdown {{ Route::is('admin.about-us.*') || Route::is('admin.custom-page.*') || Route::is('admin.terms-and-condition.*') || Route::is('admin.privacy-policy.*') || Route::is('admin.faq.*') || Route::is('admin.error-page.*') || Route::is('admin.contact-us.*') || Route::is('admin.login-page') ? 'active' : '' }}">
 
@@ -463,11 +463,11 @@
 
 
 
-            <li class="{{ Route::is('admin.admin.index') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.admin.index') }}">
+             <li class="{{ Route::is('admin.team-member.*') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.team-member.index') }}">
              <div class="icon">
              <i class="fas fa-user"></i>
              </div>
-             <span>Admins</span></a></li>
+             <span>Team</span></a></li>
 
 
 
