@@ -365,6 +365,18 @@
 
                     <div class="row">
                         <div class="col-md-12">
+                            @php
+                                $caseStudyMarqueeServices = collect($marqueeServices ?? []);
+                                $caseStudyFallback = collect($caseStudyTags)->values()->map(function ($tag, $index) use ($caseStudyIcons) {
+                                    return [
+                                        'name' => $tag,
+                                        'image' => $caseStudyIcons[$index % count($caseStudyIcons)],
+                                    ];
+                                });
+                                $caseStudyMarqueeItems = $caseStudyMarqueeServices->isNotEmpty()
+                                    ? $caseStudyMarqueeServices
+                                    : $caseStudyFallback;
+                            @endphp
                             <div class="case-studies-wrapper case-studies-style-2">
                                 @foreach ($projects as $index => $project)
                                     @php
@@ -392,13 +404,17 @@
                                         <div class="marquee-wrapper">
                                             <div class="marquee-inner">
                                                 @for ($loopIndex = 0; $loopIndex < 2; $loopIndex++)
-                                                    @foreach ($caseStudyTags as $tagIndex => $tag)
+                                                    @foreach ($caseStudyMarqueeItems as $item)
                                                         @php
-                                                            $caseStudyIcon = $caseStudyIcons[$tagIndex % count($caseStudyIcons)];
+                                                            $serviceName = $item->name ?? ($item['name'] ?? 'Service');
+                                                            $serviceImagePath = $item->thumb_image ?? $item->image ?? ($item['image'] ?? null);
+                                                            $serviceImage = $serviceImagePath
+                                                                ? asset($serviceImagePath)
+                                                                : asset('frontend/assets/images/client-logo/brand-icon1.png');
                                                         @endphp
                                                         <div class="marquee-item">
-                                                            <span class="icon"><img class="img-fluid" src="{{ asset($caseStudyIcon) }}" alt=""></span>
-                                                            <span class="title">{{ $tag }}</span>
+                                                            <span class="icon"><img class="img-fluid" src="{{ $serviceImage }}" alt="{{ $serviceName }}"></span>
+                                                            <span class="title">{{ $serviceName }}</span>
                                                         </div>
                                                     @endforeach
                                                 @endfor

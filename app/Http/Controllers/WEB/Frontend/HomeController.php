@@ -48,6 +48,10 @@ class HomeController extends Controller
                                         ->latest()
                                         ->take(12)
                                         ->get();
+        $marqueeServices = Product::where('status', 1)
+            ->orderBy('id', 'desc')
+            ->take(10)
+            ->get();
         $flash_sale_products = flashSaleProduct::with('product')->where('status', 1)->latest()->get();
 
         $firstColumns  = FooterLink::where('column', 1)->get();
@@ -63,6 +67,7 @@ class HomeController extends Controller
 
         return view('frontend.home.index', compact(
                 'slider', 'feateuredCategories', 'products',
+                'marqueeServices',
                 'firstColumns',
                 'secondColumns',
                 'thirdColumns',

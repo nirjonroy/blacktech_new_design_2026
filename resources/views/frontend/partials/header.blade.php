@@ -1,4 +1,12 @@
-﻿<header class="header header-default header-sticky header-absolute fixed-top">
+﻿@php
+    $isHome = request()->routeIs('front.home');
+    $isService = request()->routeIs('front.all.service', 'front.shop', 'front.single.service', 'front.repair', 'front.industry', 'front.industry.all');
+    $isProject = request()->routeIs('front.our-project', 'front.project.show');
+    $isAbout = request()->routeIs('front.about-us');
+    $isContact = request()->routeIs('front.contact', 'front.contact_us');
+    $isBlog = request()->routeIs('front.blog', 'front.blog_details');
+@endphp
+<header class="header header-default header-sticky header-absolute fixed-top">
     <div class="header-inner">
         <div class="site-logo">
             <a class="navbar-brand" href="{{ route('front.home') }}">
@@ -7,18 +15,18 @@
         </div>
         <div class="site-menu d-none d-xl-block">
             <ul class="main-menu">
-                <li class="nav-item active"><a class="nav-link" href="{{ route('front.home') }}">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('front.all.service') }}">Our Services <i class="fa-solid fa-chevron-down"></i></a>
+                <li class="nav-item {{ $isHome ? 'active' : '' }}"><a class="nav-link {{ $isHome ? 'active' : '' }}" href="{{ route('front.home') }}">Home</a></li>
+                <li class="nav-item {{ $isService ? 'active' : '' }}"><a class="nav-link" href="{{ route('front.all.service') }}">Our Services <i class="fa-solid fa-chevron-down"></i></a>
                     <ul class="submenu">
                         @foreach(categories() as $item)
                             <li><a class="nav-link" href="{{ route('front.shop', $item->slug) }}">{{ $item->name }}</a></li>
                         @endforeach
                     </ul>
                 </li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('front.our-project') }}">Our Project</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('front.about-us') }}">About</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('front.contact') }}">Contact</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('front.blog') }}">Blog</a></li>
+                <li class="nav-item {{ $isProject ? 'active' : '' }}"><a class="nav-link" href="{{ route('front.our-project') }}">Our Project</a></li>
+                <li class="nav-item {{ $isAbout ? 'active' : '' }}"><a class="nav-link" href="{{ route('front.about-us') }}">About</a></li>
+                <li class="nav-item {{ $isContact ? 'active' : '' }}"><a class="nav-link" href="{{ route('front.contact') }}">Contact</a></li>
+                <li class="nav-item {{ $isBlog ? 'active' : '' }}"><a class="nav-link" href="{{ route('front.blog') }}">Blog</a></li>
             </ul>
         </div>
 
@@ -58,21 +66,21 @@
             <nav class="navbar">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('front.home') }}">Home</a>
+                        <a class="nav-link {{ $isHome ? 'active' : '' }}" href="{{ route('front.home') }}">Home</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Our Services</a>
+                        <a class="nav-link dropdown-toggle {{ $isService ? 'active' : '' }}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Our Services</a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('front.all.service') }}">All Services</a></li>
+                            <li><a class="dropdown-item {{ request()->routeIs('front.all.service') ? 'active' : '' }}" href="{{ route('front.all.service') }}">All Services</a></li>
                             @foreach(categories() as $item)
-                                <li><a class="dropdown-item" href="{{ route('front.shop', $item->slug) }}">{{ $item->name }}</a></li>
+                                <li><a class="dropdown-item {{ request()->routeIs('front.shop') && request()->route('slug') === $item->slug ? 'active' : '' }}" href="{{ route('front.shop', $item->slug) }}">{{ $item->name }}</a></li>
                             @endforeach
                         </ul>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('front.our-project') }}">Our Project</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('front.about-us') }}">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('front.contact') }}">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('front.blog') }}">Blog</a></li>
+                    <li class="nav-item"><a class="nav-link {{ $isProject ? 'active' : '' }}" href="{{ route('front.our-project') }}">Our Project</a></li>
+                    <li class="nav-item"><a class="nav-link {{ $isAbout ? 'active' : '' }}" href="{{ route('front.about-us') }}">About</a></li>
+                    <li class="nav-item"><a class="nav-link {{ $isContact ? 'active' : '' }}" href="{{ route('front.contact') }}">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link {{ $isBlog ? 'active' : '' }}" href="{{ route('front.blog') }}">Blog</a></li>
                 </ul>
             </nav>
             <div class="bottom-info">
