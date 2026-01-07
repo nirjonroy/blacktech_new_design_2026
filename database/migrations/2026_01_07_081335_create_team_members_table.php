@@ -15,6 +15,15 @@ return new class extends Migration
     {
         Schema::create('team_members', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('designation');
+            $table->string('image')->nullable();
+            $table->string('facebook')->nullable();
+            $table->string('instagram')->nullable();
+            $table->string('whatsapp')->nullable();
+            $table->string('website')->nullable();
+            $table->string('linkedin')->nullable();
+            $table->text('biography')->nullable();
             $table->timestamps();
         });
     }
