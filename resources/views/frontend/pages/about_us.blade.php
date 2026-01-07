@@ -133,6 +133,23 @@
             ],
         ];
         $testimonials = $testimonials ?? \App\Models\Testimonial::where('status', 1)->get();
+        $normalizeSocialUrl = function ($value, $type = null) {
+            if (empty($value)) {
+                return null;
+            }
+            $value = trim($value);
+            if ($type === 'whatsapp') {
+                if (preg_match('/^https?:\/\//i', $value)) {
+                    return $value;
+                }
+                $number = preg_replace('/[^0-9]/', '', $value);
+                return $number ? 'https://wa.me/' . $number : null;
+            }
+            if (!preg_match('/^https?:\/\//i', $value)) {
+                return 'https://' . ltrim($value, '/');
+            }
+            return $value;
+        };
     @endphp
 
     <div class="inner-header bg-holder" style="background-image: url('{{ asset($headerImage) }}');">
@@ -287,10 +304,21 @@
                                 @foreach ($teamMembers as $member)
                                     @php
                                         $memberName = $member->name ?? 'Team Member';
-                                        $memberRole = $member->about_us
-                                            ? \Illuminate\Support\Str::limit(strip_tags($member->about_us), 40)
-                                            : ($member->admin_type == 1 ? 'Administrator' : 'Team Member');
+                                        $memberRole = $member->designation ?? 'Team Member';
+                                        $memberBio = !empty($member->biography)
+                                            ? \Illuminate\Support\Str::limit(strip_tags($member->biography), 120)
+                                            : null;
                                         $memberImage = !empty($member->image) ? asset($member->image) : $teamFallbackImage;
+                                        $socialLinks = [
+                                            ['label' => 'Fb', 'url' => $normalizeSocialUrl($member->facebook ?? null)],
+                                            ['label' => 'Ig', 'url' => $normalizeSocialUrl($member->instagram ?? null)],
+                                            ['label' => 'Wa', 'url' => $normalizeSocialUrl($member->whatsapp ?? null, 'whatsapp')],
+                                            ['label' => 'Web', 'url' => $normalizeSocialUrl($member->website ?? null)],
+                                            ['label' => 'In', 'url' => $normalizeSocialUrl($member->linkedin ?? null)],
+                                        ];
+                                        $socialLinks = array_values(array_filter($socialLinks, function ($link) {
+                                            return !empty($link['url']);
+                                        }));
                                     @endphp
                                     <div class="team-item team-style-1">
                                         <div class="team-img">
@@ -299,15 +327,19 @@
                                         </div>
                                         <div class="team-info">
                                             <a href="javascript:void(0);" class="team-title">{{ $memberName }}</a>
-                                            <span class="team-destination">{{ $memberRole }}</span>
+                                        <span class="team-destination">{{ $memberRole }}</span>
+                                        @if (!empty($memberBio))
+                                            <p class="team-bio">{{ $memberBio }}</p>
+                                        @endif
+                                        @if (!empty($socialLinks))
                                             <div class="team-social">
                                                 <ul>
-                                                    <li><a href="javascript:void(0);">Fb</a></li>
-                                                    <li><a href="javascript:void(0);">Dr</a></li>
-                                                    <li><a href="javascript:void(0);">Tw</a></li>
-                                                    <li><a href="javascript:void(0);">Be</a></li>
+                                                    @foreach ($socialLinks as $link)
+                                                        <li><a href="{{ $link['url'] }}" target="_blank" rel="noopener">{{ $link['label'] }}</a></li>
+                                                    @endforeach
                                                 </ul>
                                             </div>
+                                        @endif
                                         </div>
                                     </div>
                                 @endforeach

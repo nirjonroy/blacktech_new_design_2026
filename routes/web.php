@@ -27,6 +27,7 @@ use App\Http\Controllers\WEB\Admin\BlogCommentController;
 use App\Http\Controllers\WEB\Admin\ProductVariantController;
 use App\Http\Controllers\WEB\Admin\ProductVariantItemController;
 use App\Http\Controllers\WEB\Admin\SettingController;
+use App\Http\Controllers\WEB\Admin\TeamMemberController;
 use App\Http\Controllers\WEB\Admin\SubscriberController;
 use App\Http\Controllers\WEB\Admin\ContactMessageController;
 use App\Http\Controllers\WEB\Admin\EmailConfigurationController;
@@ -354,6 +355,7 @@ Route::group(['as'=> 'admin.', 'prefix' => 'admin'],function (){
 
     Route::resource('testimonial', TestimonialController::class);
     Route::put('testimonial-status/{id}', [TestimonialController::class,'changeStatus'])->name('testimonial.status');
+    Route::resource('team-member', TeamMemberController::class);
 
     Route::resource('product', ProductController::class);
     Route::get('/all-product-delete', [ProductController::class, 'deleteAllProduct'])->name('deleteAllProduct');

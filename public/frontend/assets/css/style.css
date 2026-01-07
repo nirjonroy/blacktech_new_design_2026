@@ -2464,6 +2464,13 @@ blockquote.blockquote-style-1:before {
     color: #ffffff;
 }
 
+.team-item .team-info .team-bio {
+    margin: 8px 0 0;
+    font-size: 14px;
+    line-height: 20px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
 .team-item:hover .team-img img {
     transform: scale(1.1);
 }

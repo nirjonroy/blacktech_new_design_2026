@@ -12,7 +12,6 @@ use App\Models\ChildCategory;
 use App\Models\FlashSaleProduct;
 use App\Models\FooterLink;
 use App\Models\AboutUs;
-use App\Models\Admin;
 use App\Models\BannerImage;
 use App\Models\TermsAndCondition;
 use App\Models\Testimonial;
@@ -23,6 +22,7 @@ use App\Models\Order;
 use App\Models\Footer;
 use App\Models\CustomPage;
 use App\Models\ContactMessage;
+use App\Models\TeamMember;
 // use App\Models\AboutUs;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\FooterSocialLink;
@@ -81,7 +81,7 @@ class HomeController extends Controller
             ->orderBy('id', 'desc')
             ->take(10)
             ->get();
-        $teamMembers = Admin::where('status', 1)->orderBy('id', 'asc')->get();
+        $teamMembers = TeamMember::orderBy('id', 'asc')->get();
         $teamFallbackImage = optional(BannerImage::select('image')->find(15))->image;
         $testimonials = Testimonial::where('status', 1)->get();
       	return view('frontend.pages.about_us', compact('about_us', 'services', 'teamMembers', 'teamFallbackImage', 'testimonials'));
