@@ -1,6 +1,59 @@
 @extends('frontend.app')
 
-@section('title', 'Careers')
+@php
+    $SeoSettings = DB::table('seo_settings')->where('page_name', 'Careers')->first();
+    $siteName = optional($SeoSettings)->site_name ?? config('app.name', 'Blacktech');
+    $title = optional($SeoSettings)->meta_title ?? optional($SeoSettings)->seo_title ?? 'Careers';
+    $rawDescription = optional($SeoSettings)->meta_description ?? optional($SeoSettings)->seo_description ?? '';
+    $desc = \Illuminate\Support\Str::limit(strip_tags($rawDescription), 180);
+    $url = url()->current();
+    $metaImagePath = optional($SeoSettings)->meta_image;
+    $metaImage = $metaImagePath ? asset($metaImagePath) : (siteInfo()->logo ? asset(siteInfo()->logo) : asset('images/og-default.jpg'));
+    $author = optional($SeoSettings)->author ?? 'Blacktech';
+    $publisher = optional($SeoSettings)->publisher ?? $siteName;
+    $copyright = optional($SeoSettings)->copyright;
+    $keywords = optional($SeoSettings)->keywords;
+@endphp
+
+@section('title', $title)
+
+@section('seos')
+    <meta charset="UTF-8">
+
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+
+    <meta name="title" content="{{ $title }}">
+
+    <meta name="description" content="{{ $desc }}">
+    <meta name="author" content="{{ $author }}">
+    @if ($publisher)
+    <meta name="publisher" content="{{ $publisher }}">
+    @endif
+    @if ($copyright)
+    <meta name="copyright" content="{{ $copyright }}">
+    @endif
+    @if ($keywords)
+    <meta name="keywords" content="{{ $keywords }}">
+    @endif
+    <link rel="canonical" href="{{ $url }}">
+    <meta property="og:title" content="{{ $title }}">
+    <meta property="og:description" content="{{ $desc }}">
+    <meta property="og:url" content="{{ $url }}">
+    <meta property="og:site_name" content="{{ $siteName }}">
+    <meta property="og:image" content="{{ $metaImage }}">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="website">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="628">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{{ $title }}">
+    <meta name="twitter:description" content="{{ $desc }}">
+    <meta name="twitter:url" content="{{ $url }}">
+    <meta name="twitter:image" content="{{ $metaImage }}">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+@endsection
 
 @section('content')
 <div class="site-content">
@@ -12,9 +65,9 @@
         $headerTitle = 'Careers';
         $headerDescription = 'Give yourself the power of responsibility.';
 
-        $aboutImagePath = !empty(optional($about_us)->image_two)
-            ? optional($about_us)->image_two
-            : 'frontend/assets/images/about/about-03.jpg';
+        $aboutImagePath = !empty(optional($about_us)->video_background)
+            ? optional($about_us)->video_background
+            : (!empty(optional($about_us)->image_two) ? optional($about_us)->image_two : 'frontend/assets/images/about/about-03.jpg');
         if (!file_exists(public_path($aboutImagePath))) {
             $aboutImagePath = 'frontend/assets/images/about/about-01.jpg';
         }
