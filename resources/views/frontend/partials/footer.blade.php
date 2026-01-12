@@ -157,7 +157,7 @@
             var wrappers = document.querySelectorAll('.content-wrapper, .main-wrapper');
             wrappers.forEach(function(wrapper) {
                 var sections = Array.prototype.filter.call(wrapper.children, function(child) {
-                    return child.tagName === 'SECTION' && !child.classList.contains('consultation-cta');
+                    return child.tagName === 'SECTION' && !child.classList.contains('consultation-cta') && !child.classList.contains('cta-skip');
                 });
 
                 for (var index = 1; index < sections.length; index += 2) {

@@ -64,6 +64,9 @@ class HomeController extends Controller
         $about = AboutUs::first();
         $faqs = Faq::where('status', 1)->orderBy('id', 'asc')->get();
         $projects = SubCategory::where('status', 1)->orderBy('serial', 'ASC')->get();
+        $teamMembers = TeamMember::orderBy('id', 'asc')->get();
+        $teamFallbackImage = optional(BannerImage::select('image')->find(15))->image;
+        $testimonials = Testimonial::where('status', 1)->get();
       	// dd($products);
 
         return view('frontend.home.index', compact(
@@ -78,7 +81,10 @@ class HomeController extends Controller
           		'flash_sale_products',
                 'about',
                 'faqs',
-                'projects'));
+                'projects',
+                'teamMembers',
+                'teamFallbackImage',
+                'testimonials'));
     }
 
     public function about_us_page(){

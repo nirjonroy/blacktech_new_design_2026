@@ -19,19 +19,24 @@
 @if (!empty($ctaTitle) || !empty($ctaSubtitle) || !empty($ctaPhone))
     <section class="consultation-cta">
         <div class="container">
-            <div class="consultation-cta__content">
-                <p class="consultation-cta__text">
-                    @if (!empty($ctaTitle))
-                        <span>{{ $ctaTitle }}</span>
-                    @endif
-                    @if (!empty($ctaPhone))
-                        <span class="consultation-cta__call">
-                            Call
-                            <a href="tel:{{ $ctaPhoneHref }}">{{ $ctaPhone }}</a>
-                        </span>
-                    @endif
-                </p>
-            </div>
+            @if (!empty($ctaPhoneHref))
+                <a class="consultation-cta__link" href="tel:{{ $ctaPhoneHref }}" aria-label="Call {{ $ctaPhone }}">
+            @endif
+                <div class="consultation-cta__content">
+                    <p class="consultation-cta__text">
+                        @if (!empty($ctaTitle))
+                            <span>{{ $ctaTitle }}</span>
+                        @endif
+                        @if (!empty($ctaPhone))
+                            <span class="consultation-cta__call">
+                                Call {{ $ctaPhone }}
+                            </span>
+                        @endif
+                    </p>
+                </div>
+            @if (!empty($ctaPhoneHref))
+                </a>
+            @endif
         </div>
     </section>
 @endif
