@@ -5,6 +5,10 @@
     $isAbout = request()->routeIs('front.about-us');
     $isContact = request()->routeIs('front.contact', 'front.contact_us');
     $isBlog = request()->routeIs('front.blog', 'front.blog_details');
+    $navServices = \App\Models\Product::where('status', 1)
+        ->orderBy('id', 'desc')
+        ->get(['id', 'name', 'slug']);
+    $currentSlug = request()->route('slug');
 @endphp
 <header class="header header-default header-sticky header-absolute fixed-top">
     <div class="header-inner">
@@ -18,8 +22,12 @@
                 <li class="nav-item {{ $isHome ? 'active' : '' }}"><a class="nav-link {{ $isHome ? 'active' : '' }}" href="{{ route('front.home') }}">Home</a></li>
                 <li class="nav-item {{ $isService ? 'active' : '' }}"><a class="nav-link" href="{{ route('front.all.service') }}">Our Services <i class="fa-solid fa-chevron-down"></i></a>
                     <ul class="submenu">
-                        @foreach(categories() as $item)
-                            <li><a class="nav-link" href="{{ route('front.shop', $item->slug) }}">{{ $item->name }}</a></li>
+                        @foreach($navServices as $service)
+                            <li>
+                                <a class="nav-link {{ request()->routeIs('front.shop') && $currentSlug === $service->slug ? 'active' : '' }}" href="{{ route('front.shop', $service->slug) }}">
+                                    {{ $service->name }}
+                                </a>
+                            </li>
                         @endforeach
                     </ul>
                 </li>
@@ -72,8 +80,12 @@
                         <a class="nav-link dropdown-toggle {{ $isService ? 'active' : '' }}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Our Services</a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item {{ request()->routeIs('front.all.service') ? 'active' : '' }}" href="{{ route('front.all.service') }}">All Services</a></li>
-                            @foreach(categories() as $item)
-                                <li><a class="dropdown-item {{ request()->routeIs('front.shop') && request()->route('slug') === $item->slug ? 'active' : '' }}" href="{{ route('front.shop', $item->slug) }}">{{ $item->name }}</a></li>
+                            @foreach($navServices as $service)
+                                <li>
+                                    <a class="dropdown-item {{ request()->routeIs('front.shop') && $currentSlug === $service->slug ? 'active' : '' }}" href="{{ route('front.shop', $service->slug) }}">
+                                        {{ $service->name }}
+                                    </a>
+                                </li>
                             @endforeach
                         </ul>
                     </li>

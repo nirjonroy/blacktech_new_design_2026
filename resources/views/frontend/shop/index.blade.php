@@ -186,21 +186,20 @@
 
                         <div class="sidebar is-sticky">
 
-                            <div class="widget widget-categories">
-
-                                <h5 class="widget-title">Categories</h5>
-
-                                <ul class="categories-list">
-
-                                    @foreach (categories() as $item)
-
-                                        <li><a href="{{ route('front.shop', $item->slug) }}">{{ $item->name }}</a></li>
-
-                                    @endforeach
-
-                                </ul>
-
-                            </div>
+                            @if (!empty($relatedServices) && $relatedServices->count())
+                                <div class="widget widget-categories">
+                                    <h5 class="widget-title">Related Services</h5>
+                                    <ul class="categories-list">
+                                        @foreach ($relatedServices as $relatedService)
+                                            <li>
+                                                <a href="{{ route('front.shop', $relatedService->slug) }}">
+                                                    {{ $relatedService->name }}
+                                                </a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
 
                             <div class="widget categories-widget">
 

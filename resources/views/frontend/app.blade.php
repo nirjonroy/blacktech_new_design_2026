@@ -38,9 +38,21 @@
   /* Style for the button icon */
   .call-button i {
     font-size: 24px;
+    color: inherit;
+  }
+
+  .call-button:hover,
+  .call-button:focus {
+    color: #FFD700;
+    text-decoration: none;
+  }
+
+  .call-button:focus-visible {
+    outline: 2px solid #FFD700;
+    outline-offset: 4px;
   }
 </style>
-    <a href="tel:+1 571-478-2431" class="call-button">
+    <a href="tel:+1 571-478-2431" class="call-button cursor-style">
       <i class="fa-solid fa-phone"></i>
     </a>
 

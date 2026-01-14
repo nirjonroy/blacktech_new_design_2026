@@ -44,11 +44,10 @@ class HomeController extends Controller
         $feateuredCategories = featuredCategories();
         // dd($feateuredCategories);
         $products = Product::with(['category', 'subCategory', 'childCategory'])
-                                        ->where('is_recomended', 1)
-                                        ->where('status', 1)
-                                        ->latest()
-                                        ->take(12)
-                                        ->get();
+            ->where('status', 1)
+            ->latest()
+            ->take(12)
+            ->get();
         $marqueeServices = Product::where('status', 1)
             ->orderBy('id', 'desc')
             ->take(10)
@@ -191,12 +190,40 @@ class HomeController extends Controller
 
     public function shop(Request $request, $slug)
     {
-        $cat = Category::where('slug', $slug)->first();
-        $service = Product::where('category_id', $cat->id)->first();
+        $service = Product::where('slug', $slug)
+            ->where('status', 1)
+            ->first();
+        $serviceCategoryId = $service ? $service->category_id : null;
+
+        if (!$service) {
+            $cat = Category::where('slug', $slug)->first();
+            if (!$cat) {
+                abort(404);
+            }
+
+            $serviceCategoryId = $cat->id;
+            $service = Product::where('category_id', $cat->id)
+                ->where('status', 1)
+                ->first();
+        }
+
+        if (!$service) {
+            abort(404);
+        }
+
+        $relatedServices = collect();
+        if ($serviceCategoryId) {
+            $relatedServices = Product::where('category_id', $serviceCategoryId)
+                ->where('status', 1)
+                ->where('id', '!=', $service->id)
+                ->orderBy('id', 'desc')
+                ->take(6)
+                ->get();
+        }
 
         // dd($service);
 
-        return view('frontend.shop.index', compact('service'));
+        return view('frontend.shop.index', compact('service', 'relatedServices'));
     }
 
     public function our_project(){
@@ -215,12 +242,11 @@ class HomeController extends Controller
     }
 
     public function single_service($slug){
-        $service = Product::where('slug', $slug)->first();
-        dd($service);
-        // $cat = Category::where('id', $service->category_id)->first();
-        // $related_product = Product::where('category_id', $cat->id)->latest()->limit(12)->get();
-        // dd($related_product);
-        return view('frontend.shop.single_service', compact('service'));
+        if (!$slug) {
+            abort(404);
+        }
+
+        return redirect()->route('front.shop', $slug, 301);
     }
 
     public function mostSellingProducts()
@@ -251,7 +277,10 @@ class HomeController extends Controller
         return view('frontend.repair.index', compact('service'));
     }
     public function all_service(){
-        $all_service = Category::where('status', 1)->get();
+        $all_service = Product::with('category')
+            ->where('status', 1)
+            ->orderBy('id', 'desc')
+            ->get();
         return view('frontend.repair.all_service', compact('all_service'));
     }
 

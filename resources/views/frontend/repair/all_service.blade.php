@@ -11,7 +11,8 @@
     $desc = \Illuminate\Support\Str::limit(strip_tags($descriptionSource), 180);
     $url = url()->current();
     $fallbackLogo = siteInfo()->logo ?? null;
-    $firstItemImage = isset($all_service) && $all_service->count() ? optional($all_service->first())->image : null;
+    $firstItem = isset($all_service) && $all_service->count() ? $all_service->first() : null;
+    $firstItemImage = $firstItem ? ($firstItem->thumb_image ?? $firstItem->image) : null;
     $collectionImage = $firstItemImage ? asset($firstItemImage) : null;
     $metaImagePath = optional($SeoSettings)->meta_image;
     $metaImage = $metaImagePath
@@ -106,13 +107,18 @@
                         <div class="services grid-wrapper grid-xl-4 grid-lg-3 grid-md-2 grid-sm-1">
                             @foreach ($all_service as $item)
                                 @php
-                                    $serviceSlug = optional($item->category)->slug ?? $item->slug;
-                                    $serviceUrl = $serviceSlug ? route('front.shop', $serviceSlug) : 'javascript:void(0);';
+                                    $serviceSlug = $item->slug ?? null;
+                                    $serviceUrl = $serviceSlug
+                                        ? route('front.shop', $serviceSlug)
+                                        : (optional($item->category)->slug
+                                            ? route('front.shop', optional($item->category)->slug)
+                                            : 'javascript:void(0);');
                                     $icon = $serviceIcons[$serviceIndex % count($serviceIcons)];
                                     $serviceIndex++;
                                     $serviceImage = $item->thumb_image ?? $item->image ?? null;
                                     $serviceImageUrl = $serviceImage ? asset($serviceImage) : null;
-                                    $serviceDescription = \Illuminate\Support\Str::limit(strip_tags($item->short_description ?? ''), 140);
+                                    $serviceDescriptionSource = optional($item->category)->short_description ?? $item->short_description ?? '';
+                                    $serviceDescription = \Illuminate\Support\Str::limit(strip_tags($serviceDescriptionSource), 140);
                                 @endphp
                                 <div class="service-wrapper service-style-1{{ $serviceImageUrl ? ' service-has-image-icon' : '' }}">
                                     <div class="service-inner">
