@@ -6,8 +6,8 @@
 @php
     $SeoSettings = DB::table('seo_settings')->where('page_name', 'Service')->first();
     $siteName = optional($SeoSettings)->site_name ?? config('app.name', 'Blacktech');
-    $title = optional($SeoSettings)->meta_title ?? optional($SeoSettings)->seo_title ?? $siteName;
-    $descriptionSource = optional($SeoSettings)->meta_description ?? optional($SeoSettings)->seo_description ?? '';
+    $title = optional($SeoSettings)->seo_title ?? optional($SeoSettings)->meta_title ?? $siteName;
+    $descriptionSource = optional($SeoSettings)->seo_description ?? optional($SeoSettings)->meta_description ?? '';
     $desc = \Illuminate\Support\Str::limit(strip_tags($descriptionSource), 180);
     $url = url()->current();
     $fallbackLogo = siteInfo()->logo ?? null;
@@ -23,6 +23,12 @@
     $copyright = optional($SeoSettings)->copyright;
     $keywords = optional($SeoSettings)->keywords;
     $updatedIso = optional(optional($SeoSettings)->updated_at ? \Illuminate\Support\Carbon::parse($SeoSettings->updated_at) : null)->toIso8601String() ?? now()->toIso8601String();
+    $testimonials = \App\Models\Testimonial::where('status', 1)->get();
+    $teamFallbackImage = optional(\App\Models\BannerImage::select('image')->find(15))->image;
+    $faqItems = \App\Models\Faq::where('status', 1)->orderBy('id', 'asc')->get();
+    $faqColumns = $faqItems->isNotEmpty()
+        ? $faqItems->values()->chunk((int) ceil($faqItems->count() / 2))
+        : collect();
 @endphp
 @section('title', $title)
 @section('seos')
@@ -153,6 +159,108 @@
                 </div>
             </div>
         </section>
+
+        @if ($testimonials->isNotEmpty())
+            <section class="space-pt testimonial-section overflow-hidden bg-black ellipse-top">
+                <div class="space-pb ellipse-bottom">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-md-10">
+                                <div class="section-title text-center">
+                                    <span class="sub-title justify-content-center"><img class="img-fluid" src="{{ asset(optional(siteInfo())->favicon ?? 'frontend/assets/images/favicon.ico') }}" alt=""> Our Testimonial</span>
+                                    <h2 class="title">Over 500 clients and 5,000 projects across the globe.</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-start">
+                            <div class="col-md-11">
+                                <div class="owl-carousel slider-overflow" data-cursor-type="text" data-custom-text="Drag" data-nav-arrow="false" data-items="2" data-lg-items="1" data-md-items="1" data-sm-items="1" data-space="50">
+                                    @foreach ($testimonials as $testimonial)
+                                        @php
+                                            $rating = (int) round($testimonial->rating ?? 0);
+                                            $rating = max(0, min(5, $rating));
+                                            $authorName = $testimonial->name ?? 'Client';
+                                            $authorRole = $testimonial->designation ?? 'Client';
+                                            $authorImage = !empty($testimonial->image) ? asset($testimonial->image) : $teamFallbackImage;
+                                        @endphp
+                                        <div class="item">
+                                            <div class="testimonial-wrapper testimonial-style-2">
+                                                <div class="testimonial-ratings">
+                                                    @for ($i = 1; $i <= 5; $i++)
+                                                        <i class="fa-{{ $i <= $rating ? 'solid' : 'regular' }} fa-star"></i>
+                                                    @endfor
+                                                </div>
+                                                <div class="testimonial-quote"><img class="img-fluid" src="{{ asset('frontend/assets/images/quote-icon-01.png') }}" alt="" /></div>
+                                                <div class="testimonial-content">
+                                                    <p>{{ $testimonial->comment }}</p>
+                                                </div>
+                                                <div class="testimonial-author">
+                                                    <div class="author-image">
+                                                        <img class="img-fluid" src="{{ $authorImage }}" alt="{{ $authorName }}">
+                                                    </div>
+                                                    <div class="author-info">
+                                                        <h6 class="author-name">{{ $authorName }}</h6>
+                                                        <span class="author-position">{{ $authorRole }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        @endif
+
+        @if ($faqItems->isNotEmpty())
+            <section class="space-pt ellipse-top">
+                <div class="space-pb ellipse-bottom">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <div class="section-title">
+                                    <span class="sub-title justify-content-center"><img class="img-fluid" src="{{ asset(optional(siteInfo())->favicon ?? 'frontend/assets/images/favicon.ico') }}" alt=""> FAQ</span>
+                                    <h2 class="title mb-0">Frequently Asked Questions</h2>
+                                </div>
+                            </div>
+                        </div>
+
+                        @php
+                            $faqNumber = 1;
+                        @endphp
+                        <div class="row">
+                            @foreach ($faqColumns as $columnIndex => $faqColumn)
+                                <div class="col-md-6{{ $columnIndex ? ' mt-4 mt-md-0' : '' }}">
+                                    <div class="accordion" id="serviceFaq{{ $columnIndex }}">
+                                        @foreach ($faqColumn as $faq)
+                                            @php
+                                                $displayNumber = $faqNumber;
+                                                $headingId = "serviceFaqHeading{$columnIndex}{$displayNumber}";
+                                                $collapseId = "serviceFaqCollapse{$columnIndex}{$displayNumber}";
+                                                $isOpen = $displayNumber === 1;
+                                                $faqNumber++;
+                                            @endphp
+                                            <div class="accordion-item">
+                                                <h5 class="accordion-header" id="{{ $headingId }}">
+                                                    <button class="accordion-button {{ $isOpen ? '' : 'collapsed' }}" type="button" data-bs-toggle="collapse" data-bs-target="#{{ $collapseId }}" aria-expanded="{{ $isOpen ? 'true' : 'false' }}" aria-controls="{{ $collapseId }}">
+                                                        {{ str_pad($displayNumber, 2, '0', STR_PAD_LEFT) }}. {{ $faq->question }}
+                                                    </button>
+                                                </h5>
+                                                <div id="{{ $collapseId }}" class="accordion-collapse collapse {{ $isOpen ? 'show' : '' }}" aria-labelledby="{{ $headingId }}" data-bs-parent="#serviceFaq{{ $columnIndex }}">
+                                                    <div class="accordion-body">{!! $faq->answer !!}</div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </section>
+        @endif
     </div>
 </div>
 @endsection
