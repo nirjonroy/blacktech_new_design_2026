@@ -3,6 +3,7 @@
     $isService = request()->routeIs('front.all.service', 'front.shop', 'front.single.service', 'front.repair', 'front.industry', 'front.industry.all');
     $isProject = request()->routeIs('front.our-project', 'front.project.show');
     $isAbout = request()->routeIs('front.about-us');
+    $isTeam = request()->routeIs('front.team', 'front.team.member');
     $isContact = request()->routeIs('front.contact', 'front.contact_us');
     $isBlog = request()->routeIs('front.blog', 'front.blog_details');
     $navServiceCategories = \App\Models\Category::query()
@@ -49,6 +50,7 @@
                 </li>
                 <li class="nav-item {{ $isProject ? 'active' : '' }}"><a class="nav-link" href="{{ route('front.our-project') }}">Our Project</a></li>
                 <li class="nav-item {{ $isAbout ? 'active' : '' }}"><a class="nav-link" href="{{ route('front.about-us') }}">About</a></li>
+                <li class="nav-item {{ $isTeam ? 'active' : '' }}"><a class="nav-link" href="{{ route('front.team') }}">Team</a></li>
                 <li class="nav-item {{ $isContact ? 'active' : '' }}"><a class="nav-link" href="{{ route('front.contact') }}">Contact</a></li>
                 <li class="nav-item {{ $isBlog ? 'active' : '' }}"><a class="nav-link" href="{{ route('front.blog') }}">Blog</a></li>
             </ul>
@@ -119,6 +121,7 @@
                     </li>
                     <li class="nav-item"><a class="nav-link {{ $isProject ? 'active' : '' }}" href="{{ route('front.our-project') }}">Our Project</a></li>
                     <li class="nav-item"><a class="nav-link {{ $isAbout ? 'active' : '' }}" href="{{ route('front.about-us') }}">About</a></li>
+                    <li class="nav-item"><a class="nav-link {{ $isTeam ? 'active' : '' }}" href="{{ route('front.team') }}">Team</a></li>
                     <li class="nav-item"><a class="nav-link {{ $isContact ? 'active' : '' }}" href="{{ route('front.contact') }}">Contact</a></li>
                     <li class="nav-item"><a class="nav-link {{ $isBlog ? 'active' : '' }}" href="{{ route('front.blog') }}">Blog</a></li>
                 </ul>

@@ -118,6 +118,15 @@ class HomeController extends Controller
         return view('frontend.pages.career_single', compact('career'));
     }
 
+    public function team()
+    {
+        $teamMembers = TeamMember::orderBy('id', 'asc')->get();
+        $teamFallbackImage = optional(BannerImage::select('image')->find(15))->image;
+        $testimonials = Testimonial::where('status', 1)->get();
+
+        return view('frontend.pages.team', compact('teamMembers', 'teamFallbackImage', 'testimonials'));
+    }
+
     public function team_member($slug)
     {
         $member = TeamMember::where('slug', $slug)->firstOrFail();
