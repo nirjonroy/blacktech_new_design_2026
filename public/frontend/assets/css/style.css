@@ -6019,6 +6019,20 @@ form.form-dark .form-control:focus {
     justify-content: flex-end;
 }
 
+.header-default .mobile-action .hamburger {
+    background-color: #000000;
+    border-radius: 50px;
+}
+
+.header-default .mobile-action .hamburger .hamburger-inner,
+.header-default .mobile-action .hamburger .hamburger-inner:before,
+.header-default .mobile-action .hamburger .hamburger-inner:after,
+.header-default .mobile-action .hamburger .hamburger-hidden,
+.header-default .mobile-action .hamburger .hamburger-hidden:before,
+.header-default .mobile-action .hamburger .hamburger-hidden:after {
+    background-color: #ffffff;
+}
+
 .header-default.is-sticky {
     position: fixed;
     background-color: #000000;
@@ -7032,7 +7046,7 @@ form.form-dark .form-control:focus {
     align-items: center;
     justify-content: center;
     background-color: transparent;
-    background-image: linear-gradient(90deg, #5A460D 0%, #FFD700 100%) !important;
+    background-image: linear-gradient(90deg, #5A460D 0%, #FFD700 100%);
     background-blend-mode: normal;
 }
 

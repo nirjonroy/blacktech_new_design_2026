@@ -69,12 +69,10 @@
     </div>
 
     @php
-        $headerImage = 'frontend/assets/images/banner/inner-header/page-header-01.jpg';
-        if (!file_exists(public_path($headerImage))) {
-            $headerImage = 'frontend/assets/images/banner/banner-01/banner-bg-01.png';
-        }
-        $headerTitle = $contacts->title ?? 'Contact Us';
-        $headerDescription = \Illuminate\Support\Str::limit(strip_tags($contacts->description ?? $desc ?? ''), 120);
+        $headerImage = $metaImagePath ? asset($metaImagePath) : null;
+        $headerTitle = $title ?? ($contacts->title ?? 'Contact Us');
+        $headerDescriptionSource = $desc ?: ($contacts->description ?? '');
+        $headerDescription = \Illuminate\Support\Str::limit(strip_tags($headerDescriptionSource), 120);
         if (empty($headerDescription)) {
             $headerDescription = 'Let success motivate you.';
         }
@@ -99,7 +97,7 @@
         ];
     @endphp
 
-    <div class="inner-header bg-holder" style="background-image: url('{{ asset($headerImage) }}');">
+    <div class="inner-header bg-holder" @if ($headerImage) style="background-image: url('{{ $headerImage }}');" @endif>
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-12 text-center">

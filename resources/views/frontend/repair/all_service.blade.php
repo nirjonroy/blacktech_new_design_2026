@@ -76,12 +76,9 @@
 @section('content')
 <div class="site-content">
     @php
-        $headerImage = 'frontend/assets/images/banner/inner-header/page-header-01.jpg';
-        if (!file_exists(public_path($headerImage))) {
-            $headerImage = 'frontend/assets/images/banner/banner-01/banner-bg-01.png';
-        }
+        $headerImage = $metaImagePath ? asset($metaImagePath) : null;
     @endphp
-    <div class="inner-header bg-holder" style="background-image: url('{{ asset($headerImage) }}');">
+    <div class="inner-header bg-holder" @if ($headerImage) style="background-image: url('{{ $headerImage }}');" @endif>
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-12 text-center">

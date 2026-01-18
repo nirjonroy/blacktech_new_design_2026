@@ -42,10 +42,7 @@
 @section('content')
 <div class="site-content">
     @php
-        $headerImage = 'frontend/assets/images/banner/inner-header/page-header-01.jpg';
-        if (!file_exists(public_path($headerImage))) {
-            $headerImage = 'frontend/assets/images/banner/banner-01/banner-bg-01.png';
-        }
+        $headerImage = !empty($career->meta_image) ? asset($career->meta_image) : null;
         $jobTitle = $career->title ?? 'Career Details';
         $jobType = $career->employment_type ?? 'Full Time';
         $jobLocation = $career->location ?? 'Remote';
@@ -63,7 +60,7 @@
         $whyJoin = preg_split('/\r\n|\r|\n/', $career->why_join_us ?? '');
     @endphp
 
-    <div class="inner-header bg-holder" style="background-image: url('{{ asset($headerImage) }}');">
+    <div class="inner-header bg-holder" @if ($headerImage) style="background-image: url('{{ $headerImage }}');" @endif>
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-12 text-center">

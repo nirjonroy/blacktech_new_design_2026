@@ -132,13 +132,7 @@
 
     @php
 
-        $headerImage = 'frontend/assets/images/banner/inner-header/page-header-01.jpg';
-
-        if (!file_exists(public_path($headerImage))) {
-
-            $headerImage = 'frontend/assets/images/banner/banner-01/banner-bg-01.png';
-
-        }
+        $headerImage = !empty($service->meta_image) ? asset($service->meta_image) : null;
 
         $headerTitle = $service->short_name ?? $service->name ?? 'Service Detail';
 
@@ -152,7 +146,7 @@
 
     @endphp
 
-    <div class="inner-header bg-holder" style="background-image: url('{{ asset($headerImage) }}');">
+    <div class="inner-header bg-holder" @if ($headerImage) style="background-image: url('{{ $headerImage }}');" @endif>
 
         <div class="container">
 

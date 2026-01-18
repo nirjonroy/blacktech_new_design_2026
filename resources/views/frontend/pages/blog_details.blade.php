@@ -67,10 +67,7 @@
 @section('content')
 <div class="site-content">
     @php
-        $headerImage = 'frontend/assets/images/banner/inner-header/page-header-01.jpg';
-        if (!file_exists(public_path($headerImage))) {
-            $headerImage = 'frontend/assets/images/banner/banner-01/banner-bg-01.png';
-        }
+        $headerImage = !empty($blog->meta_image) ? asset($blog->meta_image) : null;
         $headerTitle = $blog->title ?? 'Blog Details';
         $headerDescription = \Illuminate\Support\Str::limit(strip_tags($metaDescription ?? $blog->description ?? ''), 120);
         if (empty($headerDescription)) {
@@ -90,7 +87,7 @@
             : 'javascript:void(0);';
     @endphp
 
-    <div class="inner-header bg-holder" style="background-image: url('{{ asset($headerImage) }}');">
+    <div class="inner-header bg-holder" @if ($headerImage) style="background-image: url('{{ $headerImage }}');" @endif>
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-12 text-center">

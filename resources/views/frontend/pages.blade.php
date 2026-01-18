@@ -53,18 +53,16 @@
     </div>
 
     @php
-        $headerImage = 'frontend/assets/images/banner/inner-header/page-header-01.jpg';
-        if (!file_exists(public_path($headerImage))) {
-            $headerImage = 'frontend/assets/images/banner/banner-01/banner-bg-01.png';
-        }
-        $headerTitle = $customPage->page_name ?? 'Page';
-        $headerDescription = \Illuminate\Support\Str::limit(strip_tags($customPage->description ?? $pageDescription ?? ''), 140);
+        $headerImage = $customPage->meta_image ? asset($customPage->meta_image) : null;
+        $headerTitle = $pageTitle ?: ($customPage->page_name ?? 'Page');
+        $headerDescriptionSource = $pageDescription ?: ($customPage->description ?? '');
+        $headerDescription = \Illuminate\Support\Str::limit(strip_tags($headerDescriptionSource), 140);
         if (empty($headerDescription)) {
             $headerDescription = 'Learn more about this page.';
         }
     @endphp
 
-    <div class="inner-header bg-holder" style="background-image: url('{{ asset($headerImage) }}');">
+    <div class="inner-header bg-holder" @if ($headerImage) style="background-image: url('{{ $headerImage }}');" @endif>
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-12 text-center">
