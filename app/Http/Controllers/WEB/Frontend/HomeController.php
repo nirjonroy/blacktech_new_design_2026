@@ -45,11 +45,11 @@ class HomeController extends Controller
         // dd($feateuredCategories);
         $products = Product::with(['category', 'subCategory', 'childCategory'])
             ->where('status', 1)
-            ->latest()
+            ->orderByRaw('CASE WHEN serial IS NULL THEN 1 ELSE 0 END, serial ASC, name ASC')
             ->take(12)
             ->get();
         $marqueeServices = Product::where('status', 1)
-            ->orderBy('id', 'desc')
+            ->orderByRaw('CASE WHEN serial IS NULL THEN 1 ELSE 0 END, serial ASC, name ASC')
             ->take(10)
             ->get();
         $flash_sale_products = flashSaleProduct::with('product')->where('status', 1)->latest()->get();
@@ -89,7 +89,7 @@ class HomeController extends Controller
     public function about_us_page(){
     	$about_us = AboutUs::first();
         $services = Product::where('status', 1)
-            ->orderBy('id', 'desc')
+            ->orderByRaw('CASE WHEN serial IS NULL THEN 1 ELSE 0 END, serial ASC, name ASC')
             ->take(10)
             ->get();
         $teamMembers = TeamMember::orderBy('id', 'asc')->get();
@@ -213,6 +213,7 @@ class HomeController extends Controller
             $serviceCategoryId = $cat->id;
             $service = Product::where('category_id', $cat->id)
                 ->where('status', 1)
+                ->orderByRaw('CASE WHEN serial IS NULL THEN 1 ELSE 0 END, serial ASC, name ASC')
                 ->first();
         }
 
@@ -225,7 +226,7 @@ class HomeController extends Controller
             $relatedServices = Product::where('category_id', $serviceCategoryId)
                 ->where('status', 1)
                 ->where('id', '!=', $service->id)
-                ->orderBy('id', 'desc')
+                ->orderByRaw('CASE WHEN serial IS NULL THEN 1 ELSE 0 END, serial ASC, name ASC')
                 ->take(6)
                 ->get();
         }
@@ -288,7 +289,7 @@ class HomeController extends Controller
     public function all_service(){
         $all_service = Product::with('category')
             ->where('status', 1)
-            ->orderBy('id', 'desc')
+            ->orderByRaw('CASE WHEN serial IS NULL THEN 1 ELSE 0 END, serial ASC, name ASC')
             ->get();
         return view('frontend.repair.all_service', compact('all_service'));
     }

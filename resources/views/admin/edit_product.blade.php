@@ -196,6 +196,19 @@
                                     <textarea name="long_description" id="" cols="30" rows="10" class="summernote">{{ $product->long_description }}</textarea>
                                 </div>
 
+                                <div class="form-group col-12 col-md-6">
+                                    <label>{{ __('admin.Is Main Service') }}</label>
+                                    <select name="is_main_service" class="form-control">
+                                        <option value="0" {{ $product->is_main_service ? '' : 'selected' }}>{{ __('admin.Regular Service') }}</option>
+                                        <option value="1" {{ $product->is_main_service ? 'selected' : '' }}>{{ __('admin.Main Service') }}</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-12 col-md-6">
+                                    <label>{{ __('admin.Serial') }}</label>
+                                    <input type="number" class="form-control" name="serial" min="0" value="{{ $product->serial }}">
+                                </div>
+
                                 {{-- <div class="form-group col-12">
                                     <label>{{__('admin.Highlight')}}</label>
                                     <div>

@@ -5,13 +5,25 @@
     $isAbout = request()->routeIs('front.about-us');
     $isContact = request()->routeIs('front.contact', 'front.contact_us');
     $isBlog = request()->routeIs('front.blog', 'front.blog_details');
+    $navMainServices = \App\Models\Product::query()
+        ->where('status', 1)
+        ->where('is_main_service', 1)
+        ->with(['category' => function ($query) {
+            $query->with(['products' => function ($query) {
+                $query->where('status', 1)
+                    ->orderByRaw('CASE WHEN serial IS NULL THEN 1 ELSE 0 END, serial ASC, name ASC');
+            }]);
+        }])
+        ->orderByRaw('CASE WHEN serial IS NULL THEN 1 ELSE 0 END, serial ASC, name ASC')
+        ->get(['id', 'name', 'slug', 'category_id', 'serial']);
+    $useMainServices = $navMainServices->isNotEmpty();
     $navServiceCategories = \App\Models\Category::query()
         ->whereHas('products', function ($query) {
             $query->where('status', 1);
         })
         ->with(['products' => function ($query) {
             $query->where('status', 1)
-                ->orderBy('name');
+                ->orderByRaw('CASE WHEN serial IS NULL THEN 1 ELSE 0 END, serial ASC, name ASC');
         }])
         ->orderBy('id', 'desc')
         ->get(['id', 'name', 'slug']);
@@ -29,22 +41,45 @@
                 <li class="nav-item {{ $isHome ? 'active' : '' }}"><a class="nav-link {{ $isHome ? 'active' : '' }}" href="{{ route('front.home') }}">Home</a></li>
                 <li class="nav-item {{ $isService ? 'active' : '' }}"><a class="nav-link" href="{{ route('front.all.service') }}">Our Services <i class="fa-solid fa-chevron-down"></i></a>
                     <ul class="submenu services-submenu">
-                        @foreach($navServiceCategories as $category)
-                            <li class="submenu-item">
-                                <span class="submenu-label">{{ $category->name }}</span>
-                                @if ($category->products->isNotEmpty())
-                                    <ul class="submenu child-submenu">
-                                        @foreach($category->products as $service)
-                                            <li>
-                                                <a class="nav-link {{ request()->routeIs('front.shop') && $currentSlug === $service->slug ? 'active' : '' }}" href="{{ route('front.shop', $service->slug) }}">
-                                                    {{ $service->name }}
-                                                </a>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                @endif
-                            </li>
-                        @endforeach
+                        @if ($useMainServices)
+                            @foreach($navMainServices as $mainService)
+                                @php
+                                    $category = $mainService->category;
+                                    $categoryServices = $category ? $category->products : collect();
+                                @endphp
+                                <li class="submenu-item">
+                                    <span class="submenu-label">{{ $mainService->name }}</span>
+                                    @if ($categoryServices->isNotEmpty())
+                                        <ul class="submenu child-submenu">
+                                            @foreach($categoryServices as $service)
+                                                <li>
+                                                    <a class="nav-link {{ request()->routeIs('front.shop') && $currentSlug === $service->slug ? 'active' : '' }}" href="{{ route('front.shop', $service->slug) }}">
+                                                        {{ $service->name }}
+                                                    </a>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @endif
+                                </li>
+                            @endforeach
+                        @else
+                            @foreach($navServiceCategories as $category)
+                                <li class="submenu-item">
+                                    <span class="submenu-label">{{ $category->name }}</span>
+                                    @if ($category->products->isNotEmpty())
+                                        <ul class="submenu child-submenu">
+                                            @foreach($category->products as $service)
+                                                <li>
+                                                    <a class="nav-link {{ request()->routeIs('front.shop') && $currentSlug === $service->slug ? 'active' : '' }}" href="{{ route('front.shop', $service->slug) }}">
+                                                        {{ $service->name }}
+                                                    </a>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @endif
+                                </li>
+                            @endforeach
+                        @endif
                     </ul>
                 </li>
                 <li class="nav-item {{ $isProject ? 'active' : '' }}"><a class="nav-link" href="{{ route('front.our-project') }}">Our Project</a></li>
@@ -96,25 +131,49 @@
                         <a class="nav-link dropdown-toggle {{ $isService ? 'active' : '' }}" href="#" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Our Services</a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item {{ request()->routeIs('front.all.service') ? 'active' : '' }}" href="{{ route('front.all.service') }}">All Services</a></li>
-                            @foreach($navServiceCategories as $category)
-                                <li class="dropdown-submenu">
+                            @if ($useMainServices)
+                                @foreach($navMainServices as $mainService)
                                     @php
-                                        $collapseId = 'serviceCategory' . $category->id;
+                                        $category = $mainService->category;
+                                        $categoryServices = $category ? $category->products : collect();
+                                        $collapseId = 'serviceMain' . $mainService->id;
                                     @endphp
-                                    <button class="dropdown-item dropdown-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#{{ $collapseId }}" aria-expanded="false" aria-controls="{{ $collapseId }}">
-                                        {{ $category->name }}
-                                    </button>
-                                    <ul class="collapse list-unstyled ps-3" id="{{ $collapseId }}">
-                                        @foreach($category->products as $service)
-                                            <li>
-                                                <a class="dropdown-item {{ request()->routeIs('front.shop') && $currentSlug === $service->slug ? 'active' : '' }}" href="{{ route('front.shop', $service->slug) }}">
-                                                    {{ $service->name }}
-                                                </a>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </li>
-                            @endforeach
+                                    <li class="dropdown-submenu">
+                                        <button class="dropdown-item dropdown-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#{{ $collapseId }}" aria-expanded="false" aria-controls="{{ $collapseId }}">
+                                            {{ $mainService->name }}
+                                        </button>
+                                        <ul class="collapse list-unstyled ps-3" id="{{ $collapseId }}">
+                                            @foreach($categoryServices as $service)
+                                                <li>
+                                                    <a class="dropdown-item {{ request()->routeIs('front.shop') && $currentSlug === $service->slug ? 'active' : '' }}" href="{{ route('front.shop', $service->slug) }}">
+                                                        {{ $service->name }}
+                                                    </a>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </li>
+                                @endforeach
+                            @else
+                                @foreach($navServiceCategories as $category)
+                                    <li class="dropdown-submenu">
+                                        @php
+                                            $collapseId = 'serviceCategory' . $category->id;
+                                        @endphp
+                                        <button class="dropdown-item dropdown-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#{{ $collapseId }}" aria-expanded="false" aria-controls="{{ $collapseId }}">
+                                            {{ $category->name }}
+                                        </button>
+                                        <ul class="collapse list-unstyled ps-3" id="{{ $collapseId }}">
+                                            @foreach($category->products as $service)
+                                                <li>
+                                                    <a class="dropdown-item {{ request()->routeIs('front.shop') && $currentSlug === $service->slug ? 'active' : '' }}" href="{{ route('front.shop', $service->slug) }}">
+                                                        {{ $service->name }}
+                                                    </a>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </li>
+                                @endforeach
+                            @endif
                         </ul>
                     </li>
                     <li class="nav-item"><a class="nav-link {{ $isProject ? 'active' : '' }}" href="{{ route('front.our-project') }}">Our Project</a></li>

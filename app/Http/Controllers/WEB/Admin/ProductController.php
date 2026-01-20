@@ -116,6 +116,8 @@ class ProductController extends Controller
             'name' => 'required',
             'slug' => 'required|unique:products',
             'thumb_image' => 'required',
+            'is_main_service' => 'nullable|boolean',
+            'serial' => 'nullable|integer|min:0',
             'icon_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'category' => 'required',
             'short_description' => '',
@@ -163,6 +165,8 @@ class ProductController extends Controller
         $product->qty = $request->quantity ? $request->quantity : 0;
         $product->short_description = $request->short_description;
         $product->long_description = $request->long_description;
+        $product->is_main_service = $request->boolean('is_main_service');
+        $product->serial = $request->serial !== null && $request->serial !== '' ? (int) $request->serial : null;
         $product->status = $request->status;
         $product->weight = $request->weight;
         $product->measure = $request->measure;
@@ -270,6 +274,8 @@ class ProductController extends Controller
             'category' => 'required',
             'short_description' => '',
             'long_description' => '',
+            'is_main_service' => 'nullable|boolean',
+            'serial' => 'nullable|integer|min:0',
             'icon_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string',
@@ -327,6 +333,8 @@ class ProductController extends Controller
         $product->offer_price = $request->offer_price;
         $product->short_description = $request->short_description;
         $product->long_description = $request->long_description;
+        $product->is_main_service = $request->boolean('is_main_service');
+        $product->serial = $request->serial !== null && $request->serial !== '' ? (int) $request->serial : null;
         $product->tags = $request->tags;
         $product->status = $request->status;
         $product->weight = $request->weight;
