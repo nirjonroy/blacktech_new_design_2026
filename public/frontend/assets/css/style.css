@@ -2604,6 +2604,42 @@ blockquote.blockquote-style-1:before {
     margin-top: auto;
 }
 
+.team-carousel.owl-carousel .owl-nav button.owl-prev,
+.team-carousel.owl-carousel .owl-nav button.owl-next {
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.team-carousel.owl-carousel .owl-nav button.owl-prev {
+    left: -20px;
+}
+
+.team-carousel.owl-carousel .owl-nav button.owl-next {
+    right: -20px;
+}
+
+.team-carousel.owl-carousel .owl-nav button.owl-prev:after,
+.team-carousel.owl-carousel .owl-nav button.owl-next:after {
+    background: none;
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    font-size: 18px;
+    color: #000000;
+}
+
+.team-carousel.owl-carousel .owl-nav button.owl-prev:after {
+    content: "\f053";
+}
+
+.team-carousel.owl-carousel .owl-nav button.owl-next:after {
+    content: "\f054";
+}
+
+.team-carousel.owl-carousel .owl-nav button.owl-prev:hover:after,
+.team-carousel.owl-carousel .owl-nav button.owl-next:hover:after {
+    color: #FFD700;
+}
+
 .team-boxs.team-top-space {
     margin-top: 100px;
 }

@@ -297,7 +297,7 @@
 
                 <div class="row mt-xl-5 pt-5">
                     <div class="col-md-12">
-                        <div class="team-boxs team-carousel owl-carousel" data-items="4" data-lg-items="3" data-md-items="2" data-sm-items="2" data-xs-items="1" data-xx-items="1" data-space="30" data-nav-dots="true" data-nav-arrow="false" data-autoplay="false">
+                        <div class="team-boxs team-carousel owl-carousel" data-items="4" data-lg-items="3" data-md-items="2" data-sm-items="2" data-xs-items="1" data-xx-items="1" data-space="30" data-nav-dots="true" data-nav-arrow="true" data-autoplay="true" data-autospeed="3000" data-cursor-type="text" data-custom-text="Drag">
                             @if ($teamMembers->isNotEmpty())
                                 @foreach ($teamMembers as $member)
                                     @php

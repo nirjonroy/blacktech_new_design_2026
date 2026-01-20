@@ -134,7 +134,10 @@
                     <div class="col-lg-8">
                         <div class="section-title text-center">
                             <span class="sub-title justify-content-center"><img class="img-fluid" src="{{ asset(optional(siteInfo())->favicon ?? 'frontend/assets/images/favicon.ico') }}" alt=""> Our Experts</span>
-                            <h2 class="title">Meet the people behind the results.</h2>
+                            <h2 class="title">{{ $title }}</h2>
+                            @if (!empty($desc))
+                                <p class="mb-0">{{ $desc }}</p>
+                            @endif
                         </div>
                     </div>
                 </div>
