@@ -182,7 +182,7 @@
 <meta name="twitter:url" content="{{ $url }}">
 <meta name="twitter:image" content="{{ $ogImage }}">
 
-{{-- CSRF for your AJAX --}}
+
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
