@@ -37,9 +37,14 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $slider = Slider::select(['id', 'title_one', 'title_two', 'image'])->where('status', 1)->first();
+        $slider = Slider::select(['id', 'title_one', 'title_two', 'image'])
+            ->where('status', 1)
+            ->orderByRaw('CASE WHEN serial IS NULL THEN 1 ELSE 0 END, serial ASC, id ASC')
+            ->first();
         // dd($slider);
-		 $sliders = Slider::where('status', 1)->get();
+		 $sliders = Slider::where('status', 1)
+             ->orderByRaw('CASE WHEN serial IS NULL THEN 1 ELSE 0 END, serial ASC, id ASC')
+             ->get();
 
         $feateuredCategories = featuredCategories();
         // dd($feateuredCategories);

@@ -96,7 +96,22 @@
             ]
         });
 
-        $('#dataTable').DataTable();
+        var $dataTable = $('#dataTable');
+        if ($dataTable.length) {
+            var initialOrder = $dataTable.data('order');
+            if (typeof initialOrder === 'string') {
+                try {
+                    initialOrder = JSON.parse(initialOrder);
+                } catch (error) {
+                    initialOrder = undefined;
+                }
+            }
+            var dataTableOptions = {};
+            if (initialOrder !== undefined) {
+                dataTableOptions.order = initialOrder;
+            }
+            $dataTable.DataTable(dataTableOptions);
+        }
         $('.select2').select2();
         $('.sub_cat_one').select2();
         $('.tags').tagify();

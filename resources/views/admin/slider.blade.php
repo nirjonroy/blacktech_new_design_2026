@@ -21,7 +21,7 @@
                   <div class="card">
                     <div class="card-body">
                       <div class="table-responsive table-invoice">
-                        <table class="table table-striped" id="dataTable">
+                        <table class="table table-striped" id="dataTable" data-order='[[1,"asc"]]'>
                             <thead>
                                 <tr>
                                     <th>{{__('admin.Image')}}</th>

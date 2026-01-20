@@ -19,7 +19,7 @@ class SliderController extends Controller
         if(!auth()->user()->can('slider.index')){
             abort(403, 'Unauthorized action.');
         }
-        $sliders = Slider::all();
+        $sliders = Slider::orderByRaw('CASE WHEN serial IS NULL THEN 1 ELSE 0 END, serial ASC, id ASC')->get();
         return view('admin.slider', compact('sliders'));
     }
 
