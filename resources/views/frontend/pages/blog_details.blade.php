@@ -76,15 +76,16 @@
         $categoryName = optional($blog->category)->name ?? 'Blog';
         $postDate = optional($blog->created_at)->format('M d, Y') ?? now()->format('M d, Y');
         $authorName = $blog->author ?? optional($blog->admin)->name ?? 'admin';
-        $authorImage = optional($blog->admin)->image
-            ? asset($blog->admin->image)
-            : asset('frontend/assets/images/team/01.jpg');
         $postImage = !empty($blog->image)
             ? asset($blog->image)
             : asset('frontend/assets/images/about/about-01.jpg');
         $postUrl = !empty($blog->slug)
             ? route('front.blog_details', [$blog->slug])
             : 'javascript:void(0);';
+        $shareTitle = $metaTitle ?? $blog->title ?? $headerTitle;
+        $encodedPostUrl = urlencode($postUrl);
+        $encodedShareTitle = urlencode($shareTitle);
+        $encodedWhatsappText = urlencode(trim($shareTitle . ' ' . $postUrl));
     @endphp
 
     <div class="inner-header bg-holder" @if ($headerImage) style="background-image: url('{{ $headerImage }}');" @endif>
@@ -117,7 +118,6 @@
 
                                 <div class="blog-single-info">
                                     <div class="blog-author">
-                                        <img class="author-image img-fluid" src="{{ $authorImage }}" alt="{{ $authorName }}">
                                         <div class="blog-info">
                                             <h6 class="author-name">Written by</h6>
                                             <p>{{ $authorName }}</p>
@@ -126,10 +126,10 @@
                                     <div class="social-icon">
                                         <p class="mb-0 me-2 me-sm-4">Share</p>
                                         <ul>
-                                            <li><a href="#">Fb</a></li>
-                                            <li><a href="#">IN</a></li>
-                                            <li><a href="#">X</a></li>
-                                            <li><a href="#">YT</a></li>
+                                            <li><a href="https://www.facebook.com/sharer/sharer.php?u={{ $encodedPostUrl }}" target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook">Fb</a></li>
+                                            <li><a href="https://www.linkedin.com/sharing/share-offsite/?url={{ $encodedPostUrl }}" target="_blank" rel="noopener noreferrer" aria-label="Share on LinkedIn">IN</a></li>
+                                            <li><a href="https://twitter.com/intent/tweet?url={{ $encodedPostUrl }}&text={{ $encodedShareTitle }}" target="_blank" rel="noopener noreferrer" aria-label="Share on X">X</a></li>
+                                            <li><a href="https://api.whatsapp.com/send?text={{ $encodedWhatsappText }}" target="_blank" rel="noopener noreferrer" aria-label="Share on WhatsApp">WA</a></li>
                                         </ul>
                                     </div>
                                 </div>
