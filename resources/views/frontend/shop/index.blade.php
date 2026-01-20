@@ -250,23 +250,13 @@
                                 <h5 class="service-title">{{ $service->name ?? $serviceTitle }}</h5>
 
                                 <div class="description">
-
-                                    @if (!empty($service->short_description))
-
-                                        {!! $service->short_description !!}
-
-                                    @endif
-
                                     @if (!empty($service->long_description))
 
                                         {!! $service->long_description !!}
 
                                     @endif
-
-                                    @if (empty($service->short_description) && empty($service->long_description))
-
+                                    @if (empty($service->long_description))
                                         <p>Not Added</p>
-
                                     @endif
 
                                 </div>

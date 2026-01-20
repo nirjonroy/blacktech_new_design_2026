@@ -5782,7 +5782,7 @@ form.form-dark .form-control:focus {
     top: 0;
     left: 0;
     right: 0;
-    z-index: 9;
+    z-index: 1000;
     padding: 0 80px;
     background-color: #000000;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -6063,7 +6063,7 @@ form.form-dark .form-control:focus {
 .header-2 {
     width: 100%;
     position: relative;
-    z-index: 9;
+    z-index: 1000;
     padding: 0 70px;
     background-color: #ffffff;
     /* Site Main Logo */
@@ -6135,7 +6135,7 @@ form.form-dark .form-control:focus {
 .header-3 {
     width: 100%;
     position: relative;
-    z-index: 9;
+    z-index: 1000;
     padding: 0 80px;
     background-color: #000000;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -9630,7 +9630,8 @@ form.form-dark .form-control:focus {
     background-color: #000000;
     padding-top: 145px;
     position: relative;
-    z-index: 9;
+    z-index: 12;
+    isolation: isolate;
     /*-------------------------*/
     /* Footer Main */
     /*-------------------------*/
@@ -9640,6 +9641,12 @@ form.form-dark .form-control:focus {
     /*-------------------------*/
     /* Footer Dark CSS */
     /*-------------------------*/
+}
+
+.site-footer .footer-main,
+.site-footer .footer-copyright {
+    position: relative;
+    z-index: 1;
 }
 
 .site-footer .footer-main>.container>.row {
