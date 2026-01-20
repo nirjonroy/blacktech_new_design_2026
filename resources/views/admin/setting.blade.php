@@ -93,28 +93,33 @@
                                                           </div>
 
                                                           <div class="form-group">
+                                                              <label for="">{{ __('admin.Footer Contact Note') }}</label>
+                                                              <textarea name="footer_contact_note" cols="30" rows="4" class="form-control text-area-5">{{ $setting->footer_contact_note }}</textarea>
+                                                          </div>
+
+                                                          {{--
+                                                          <div class="form-group">
                                                             <label for="">{{__('admin.Phone number required on the register page')}}</label>
                                                             <select name="phone_number_required" id="" class="form-control">
                                                                 <option {{ $setting->phone_number_required == 1 ? 'selected' : '' }} value="1">{{__('admin.Enable')}}</option>
                                                                 <option {{ $setting->phone_number_required == 0 ? 'selected' : '' }} value="0">{{__('admin.Disable')}}</option>
                                                             </select>
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label for="">{{__('admin.Default Phone Code')}}</label>
-                                                            <select name="default_phone_code" id="default_phone_code" class="form-control select2">
-
-                                                            </select>
-                                                        </div>
-
+                                                          </div>
 
                                                           <div class="form-group">
-                                                              <label for="">{{__('admin.Multi Vendor System')}}</label>
-                                                              <select name="multivendor" id="" class="form-control">
-                                                                  <option {{ $setting->enable_multivendor == 1 ? 'selected' : '' }} value="1">{{__('admin.Enable')}}</option>
-                                                                  <option {{ $setting->enable_multivendor == 0 ? 'selected' : '' }} value="0">{{__('admin.Disable')}}</option>
-                                                              </select>
+                                                            <label for="">{{__('admin.Default Phone Code')}}</label>
+                                                            <select name="default_phone_code" id="default_phone_code" class="form-control select2">
+                                                            </select>
                                                           </div>
+
+                                                          <div class="form-group">
+                                                            <label for="">{{__('admin.Multi Vendor System')}}</label>
+                                                            <select name="multivendor" id="" class="form-control">
+                                                                <option {{ $setting->enable_multivendor == 1 ? 'selected' : '' }} value="1">{{__('admin.Enable')}}</option>
+                                                                <option {{ $setting->enable_multivendor == 0 ? 'selected' : '' }} value="0">{{__('admin.Disable')}}</option>
+                                                            </select>
+                                                          </div>
+                                                          --}}
 
 
                                                           <div class="form-group d-none">
@@ -142,27 +147,27 @@
                                                           </div>
 
 
+                                                          {{--
                                                           <div class="form-group">
-                                                              <label for="">{{__('admin.Default Currency Name')}}</label>
-                                                              <select name="currency_name" id="" class="form-control select2">
-                                                                  <option value="">{{__('admin.Select Default Currency')}}
-                                                                </option>
-                                                                @foreach ($currencies as $currency)
-                                                                <option {{ $setting->currency_name == $currency->code ? 'selected' : '' }} value="{{ $currency->code }}">{{ $currency->code }}
-                                                                </option>
-                                                                @endforeach
-                                                              </select>
+                                                            <label for="">{{__('admin.Default Currency Name')}}</label>
+                                                            <select name="currency_name" id="" class="form-control select2">
+                                                                <option value="">{{__('admin.Select Default Currency')}}
+                                                              </option>
+                                                              @foreach ($currencies as $currency)
+                                                              <option {{ $setting->currency_name == $currency->code ? 'selected' : '' }} value="{{ $currency->code }}">{{ $currency->code }}
+                                                              </option>
+                                                              @endforeach
+                                                            </select>
                                                           </div>
 
-
                                                           <div class="form-group">
-                                                              <label for="">{{__('admin.Currency Icon')}}</label>
-                                                              <input type="text" name="currency_icon" class="form-control" value="{{ $setting->currency_icon }}">
+                                                            <label for="">{{__('admin.Currency Icon')}}</label>
+                                                            <input type="text" name="currency_icon" class="form-control" value="{{ $setting->currency_icon }}">
                                                           </div>
 
-                                                            <div class="form-group">
-                                                                <label for="">{{__('admin.Timezone')}}</label>
-                                                                <select name="timezone" id="" class="form-control select2">
+                                                          <div class="form-group">
+                                                            <label for="">{{__('admin.Timezone')}}</label>
+                                                            <select name="timezone" id="" class="form-control select2">
                                                                     <option {{ $setting->timezone == 'Africa/Abidjan' ? 'selected' : '' }} value="Africa/Abidjan" selected>Africa/Abidjan</option>
                                                                     <option {{ $setting->timezone == 'Africa/Accra' ? 'selected' : '' }} value="Africa/Accra" >Africa/Accra</option>
                                                                     <option  {{ $setting->timezone == 'Africa/Addis_Ababa' ? 'selected' : '' }}value="Africa/Addis_Ababa" >Africa/Addis_Ababa</option>
@@ -602,8 +607,9 @@
                                                                     <option  {{ $setting->timezone == 'Pacific/Wake' ? 'selected' : '' }} value="Pacific/Wake" >Pacific/Wake</option>
                                                                     <option  {{ $setting->timezone == 'Pacific/Wallis' ? 'selected' : '' }} value="Pacific/Wallis" >Pacific/Wallis</option>
                                                                     <option  {{ $setting->timezone == 'UTC' ? 'selected' : '' }} value="UTC" >UTC</option>
-                                                                </select>
-                                                            </div>
+                                                            </select>
+                                                          </div>
+                                                          --}}
 
                                                           <button class="btn btn-primary" type="submit">{{__('admin.Update')}}</button>
 

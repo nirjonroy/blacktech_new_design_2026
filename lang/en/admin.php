@@ -518,6 +518,7 @@
   'Sidebar Large Header' => 'Sidebar Large Header',
   'Sidebar Small Header' => 'Sidebar Small Header',
   'Contact Email' => 'Contact Email',
+  'Footer Contact Note' => 'Footer Contact Note',
   'Default Currency Name' => 'Default Currency Name',
   'Select Default Currency' => 'Select Default Currency',
   'Currency Icon' => 'Currency Icon',

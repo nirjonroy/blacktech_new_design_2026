@@ -228,42 +228,29 @@ class SettingController extends Controller
     public function updateGeneralSetting(Request $request){
         $rules = [
             'frontend_url' => 'required',
-            'multivendor' => 'required',
             'layout' => 'required',
             'lg_header' => 'required',
             'sm_header' => 'required',
             'contact_email' => 'required',
-            'currency_name' => 'required',
-            'currency_icon' => 'required',
-            'timezone' => 'required',
         ];
         $customMessages = [
             'frontend_url.required' => trans('admin_validation.Frontend url is required'),
-            'multivendor.required' => trans('admin_validation.Multivendor is required'),
             'layout.required' => trans('admin_validation.Layout is required'),
             'lg_header.required' => trans('admin_validation.Sidebar large header is required'),
             'sm_header.required' => trans('admin_validation.Sidebar small header is required'),
             'contact_email.required' => trans('admin_validation.Contact email is required'),
-            'currency_name.required' => trans('admin_validation.Currency name is required'),
-            'currency_icon.required' => trans('admin_validation.Currency icon is required'),
-            'timezone.required' => trans('admin_validation.Timezone is required'),
         ];
         $this->validate($request, $rules,$customMessages);
 
         $setting = Setting::first();
         $setting->frontend_url = $request->frontend_url;
-        $setting->enable_multivendor = $request->multivendor;
-        $setting->phone_number_required = $request->phone_number_required;
-        $setting->default_phone_code = $request->default_phone_code;
         $setting->text_direction = $request->layout;
         $setting->sidebar_lg_header = $request->lg_header;
         $setting->sidebar_sm_header = $request->sm_header;
         $setting->contact_email = $request->contact_email;
-        $setting->currency_name = $request->currency_name;
-        $setting->currency_icon = $request->currency_icon;
         $setting->google_location = $request->google_location;
         $setting->footer_google_location = $request->footer_google_location;
-        $setting->timezone = $request->timezone;
+        $setting->footer_contact_note = $request->footer_contact_note;
         $setting->save();
 
         $notification = trans('admin_validation.Update Successfully');
