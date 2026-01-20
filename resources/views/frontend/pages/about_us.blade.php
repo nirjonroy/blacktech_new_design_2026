@@ -230,7 +230,7 @@
                                     @foreach ($marqueeItems as $service)
                                         @php
                                             $serviceName = $service->name ?? ($service['name'] ?? 'Service');
-                                            $serviceImagePath = $service->thumb_image ?? $service->image ?? ($service['image'] ?? null);
+                                            $serviceImagePath = $service->icon_image ?? $service->thumb_image ?? $service->image ?? ($service['image'] ?? null);
                                             $serviceImage = $serviceImagePath
                                                 ? asset($serviceImagePath)
                                                 : asset('frontend/assets/images/client-logo/brand-icon1.png');

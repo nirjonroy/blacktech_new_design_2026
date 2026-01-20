@@ -116,6 +116,7 @@ class ProductController extends Controller
             'name' => 'required',
             'slug' => 'required|unique:products',
             'thumb_image' => 'required',
+            'icon_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'category' => 'required',
             'short_description' => '',
             'meta_title' => 'nullable|string|max:255',
@@ -142,6 +143,9 @@ class ProductController extends Controller
         $product = new Product();
         if($request->hasFile('thumb_image')){
             $product->thumb_image = $this->saveUpload($request->file('thumb_image'), 'uploads/custom-images');
+        }
+        if ($request->hasFile('icon_image')) {
+            $product->icon_image = $this->saveUpload($request->file('icon_image'), 'uploads/product-icons');
         }
 
 
@@ -266,6 +270,7 @@ class ProductController extends Controller
             'category' => 'required',
             'short_description' => '',
             'long_description' => '',
+            'icon_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string',
             'meta_image' => 'nullable|image|mimes:jpg,jpeg,png,webp,avif|max:2048',
@@ -297,6 +302,15 @@ class ProductController extends Controller
 
         if($request->hasFile('thumb_image')){
             $product->thumb_image = $this->saveUpload($request->file('thumb_image'), 'uploads/custom-images', $product->thumb_image ?? null);
+        }
+        if ($request->boolean('remove_icon_image')) {
+            if ($product->icon_image && File::exists(public_path($product->icon_image))) {
+                @unlink(public_path($product->icon_image));
+            }
+            $product->icon_image = null;
+        }
+        if ($request->hasFile('icon_image')) {
+            $product->icon_image = $this->saveUpload($request->file('icon_image'), 'uploads/product-icons', $product->icon_image ?? null);
         }
 
 
@@ -400,6 +414,7 @@ class ProductController extends Controller
         $product = Product::find($id);
         $gallery = $product->gallery;
         $old_thumbnail = $product->thumb_image;
+        $iconImage = $product->icon_image;
         $metaImage = $product->meta_image;
         $product->delete();
         if($old_thumbnail){
@@ -407,6 +422,9 @@ class ProductController extends Controller
         }
         if ($metaImage && File::exists(public_path($metaImage))) {
             @unlink(public_path($metaImage));
+        }
+        if ($iconImage && File::exists(public_path($iconImage))) {
+            @unlink(public_path($iconImage));
         }
         foreach($gallery as $image){
             $old_image = $image->image;
@@ -617,9 +635,13 @@ public function fshippingdestroy(Request $request) {
 
                 $gallery = $product->gallery;
                 $old_thumbnail = $product->thumb_image;
+                $iconImage = $product->icon_image;
                 $product->delete();
                 if($old_thumbnail){
                     if(File::exists(public_path().'/'.$old_thumbnail))unlink(public_path().'/'.$old_thumbnail);
+                }
+                if ($iconImage && File::exists(public_path($iconImage))) {
+                    @unlink(public_path($iconImage));
                 }
                 foreach($gallery as $image){
                     $old_image = $image->image;

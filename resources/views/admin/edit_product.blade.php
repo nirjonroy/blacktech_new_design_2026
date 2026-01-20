@@ -37,6 +37,24 @@
                                     <input type="file" class="form-control-file"  name="thumb_image" onchange="previewThumnailImage(event)">
                                 </div>
 
+                                <div class="form-group col-12">
+                                    <label>{{ __('admin.Icon Image Preview') }}</label>
+                                    <div>
+                                        <img id="icon-preview-img" class="admin-img" src="{{ $product->icon_image ? asset($product->icon_image) : asset('uploads/website-images/preview.png') }}" alt="">
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-12">
+                                    <label>{{ __('admin.Icon Image') }}</label>
+                                    <input type="file" class="form-control-file" name="icon_image" accept=".jpg,.jpeg,.png" onchange="previewIconImage(event)">
+                                    @if ($product->icon_image)
+                                        <div class="custom-control custom-checkbox mt-2">
+                                            <input type="checkbox" class="custom-control-input" id="remove_icon_image_product" name="remove_icon_image" value="1">
+                                            <label class="custom-control-label" for="remove_icon_image_product">{{ __('admin.Remove Icon Image') }}</label>
+                                        </div>
+                                    @endif
+                                </div>
+
 
                                 <!-- <div class="form-group col-6">-->
                                 <!--@foreach($product->gallery as $key=>$pGImg)-->
@@ -539,6 +557,15 @@
         var reader = new FileReader();
         reader.onload = function(){
             var output = document.getElementById('preview-img');
+            output.src = reader.result;
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    };
+
+    function previewIconImage(event) {
+        var reader = new FileReader();
+        reader.onload = function(){
+            var output = document.getElementById('icon-preview-img');
             output.src = reader.result;
         }
         reader.readAsDataURL(event.target.files[0]);

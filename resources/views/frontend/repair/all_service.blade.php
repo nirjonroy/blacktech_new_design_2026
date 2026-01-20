@@ -118,7 +118,7 @@
                                             : 'javascript:void(0);');
                                     $icon = $serviceIcons[$serviceIndex % count($serviceIcons)];
                                     $serviceIndex++;
-                                    $serviceImage = $item->thumb_image ?? $item->image ?? null;
+                                    $serviceImage = $item->icon_image ?? $item->thumb_image ?? $item->image ?? null;
                                     $serviceImageUrl = $serviceImage ? asset($serviceImage) : null;
                                     $serviceDescriptionSource = optional($item->category)->short_description ?? $item->short_description ?? '';
                                     $serviceDescription = \Illuminate\Support\Str::limit(strip_tags($serviceDescriptionSource), 140);

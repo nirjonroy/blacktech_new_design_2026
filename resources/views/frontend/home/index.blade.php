@@ -343,7 +343,7 @@
                                                 @php
                                                     $icon = $serviceIcons[$serviceIndex % count($serviceIcons)];
                                                     $serviceIndex++;
-                                                    $serviceImage = $item->thumb_image ?? $item->image ?? null;
+                                                    $serviceImage = $item->icon_image ?? $item->thumb_image ?? $item->image ?? null;
                                                     $serviceImageUrl = $serviceImage ? asset($serviceImage) : null;
                                                     $serviceDescriptionSource = optional($item->category)->short_description ?? $item->short_description ?? '';
                                                     $serviceDescription = \Illuminate\Support\Str::limit(strip_tags($serviceDescriptionSource), 140);
@@ -609,7 +609,7 @@
                                                     @foreach ($caseStudyMarqueeItems as $item)
                                                         @php
                                                             $serviceName = $item->name ?? ($item['name'] ?? 'Service');
-                                                            $serviceImagePath = $item->thumb_image ?? $item->image ?? ($item['image'] ?? null);
+                                                            $serviceImagePath = $item->icon_image ?? $item->thumb_image ?? $item->image ?? ($item['image'] ?? null);
                                                             $serviceImage = $serviceImagePath
                                                                 ? asset($serviceImagePath)
                                                                 : asset('frontend/assets/images/client-logo/brand-icon1.png');
@@ -719,7 +719,7 @@
                             @endphp
                             @forelse ($highlightServices as $highlightIndex => $highlightService)
                                 @php
-                                    $highlightImage = $highlightService->thumb_image ?? $highlightService->image ?? null;
+                                    $highlightImage = $highlightService->icon_image ?? $highlightService->thumb_image ?? $highlightService->image ?? null;
                                     $highlightImageUrl = $highlightImage ? asset($highlightImage) : null;
                                     $highlightIcon = $highlightIcons[$highlightIndex % count($highlightIcons)];
                                 @endphp

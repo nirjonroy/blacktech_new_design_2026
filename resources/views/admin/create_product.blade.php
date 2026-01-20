@@ -36,6 +36,18 @@
                                     <input type="file" class="form-control-file"  name="thumb_image" onchange="previewThumnailImage(event)">
                                 </div>
 
+                                <div class="form-group col-6">
+                                    <label>{{ __('admin.Icon Image Preview') }}</label>
+                                    <div>
+                                        <img id="icon-preview-img" class="admin-img" src="{{ asset('uploads/website-images/preview.png') }}" alt="">
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-6">
+                                    <label>{{ __('admin.Icon Image') }}</label>
+                                    <input type="file" class="form-control-file" name="icon_image" accept=".jpg,.jpeg,.png" onchange="previewIconImage(event)">
+                                </div>
+
                                 <!--<div class="form-group col-4">-->
                                 <!--    <label>upload images <span class="text-danger">*</span></label>-->
                                     <!--<input type="file" name="images[]" multiple>-->
@@ -414,6 +426,15 @@
         var reader = new FileReader();
         reader.onload = function(){
             var output = document.getElementById('preview-img');
+            output.src = reader.result;
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    };
+
+    function previewIconImage(event) {
+        var reader = new FileReader();
+        reader.onload = function(){
+            var output = document.getElementById('icon-preview-img');
             output.src = reader.result;
         }
         reader.readAsDataURL(event.target.files[0]);
