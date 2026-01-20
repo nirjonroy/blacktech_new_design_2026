@@ -7054,6 +7054,24 @@ form.form-dark .form-control:focus {
     background-blend-mode: normal;
 }
 
+.inner-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.inner-header[style*="background-image"]::before {
+    opacity: 1;
+}
+
+.inner-header > .container {
+    position: relative;
+    z-index: 1;
+}
+
 .inner-header .title {
     color: #000000;
     font-size: 42px;
@@ -7062,6 +7080,12 @@ form.form-dark .form-control:focus {
 
 .inner-header p {
     color: #000000;
+}
+
+.inner-header[style*="background-image"] .title,
+.inner-header[style*="background-image"] p {
+    color: #ffffff;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
 }
 
 /*====================================================*/
