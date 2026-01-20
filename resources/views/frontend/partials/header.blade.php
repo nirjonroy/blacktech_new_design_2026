@@ -48,7 +48,7 @@
                                     $categoryServices = $category ? $category->products : collect();
                                 @endphp
                                 <li class="submenu-item">
-                                    <span class="submenu-label">{{ $mainService->name }}</span>
+                                    <a class="submenu-label" href="{{ route('front.shop', $mainService->slug) }}">{{ $mainService->name }}</a>
                                     @if ($categoryServices->isNotEmpty())
                                         <ul class="submenu child-submenu">
                                             @foreach($categoryServices as $service)
