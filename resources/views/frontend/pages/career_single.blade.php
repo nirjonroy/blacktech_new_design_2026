@@ -66,6 +66,7 @@
                 <div class="col-md-12 text-center">
                     <h1 class="title">{{ $jobTitle }}</h1>
                     <p>{{ $jobType }} • {{ $jobLocation }}</p>
+                    @include('frontend.partials.banner-cta')
                 </div>
             </div>
         </div>

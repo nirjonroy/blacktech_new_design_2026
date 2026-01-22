@@ -39,6 +39,7 @@
         <div class="uni-banner-text-area">
             <h1>{{ $categories[0]->category->name }}</h1>
             <p style="color:#ffffff">{{ $categories[0]->category->short_description }} </p>
+            @include('frontend.partials.banner-cta')
             <ul>
                 <li><a href="{{route('front.home')}}">Home</a></li>
                 <li>{{ $categories[0]->category->name }}</li>

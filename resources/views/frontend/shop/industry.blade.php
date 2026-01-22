@@ -72,7 +72,11 @@ padding-bottom:10px;
 </style>
 
  <div style="background:url('https://images.pexels.com/photos/255379/pexels-photo-255379.jpeg?auto=compress&cs=tinysrgb&w=600');" class="top-banner shadow-lg">
-    <div class="container-fluid"></div>
+    <div class="container-fluid">
+        <div class="text-center py-4">
+            @include('frontend.partials.banner-cta')
+        </div>
+    </div>
  </div>
 <main class="bg-light container">
     <div class="p-4">

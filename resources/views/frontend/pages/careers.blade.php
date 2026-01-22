@@ -136,6 +136,7 @@
                 <div class="col-md-12 text-center">
                     <h1 class="title">{{ $headerTitle }}</h1>
                     <p>{{ $headerDescription }}</p>
+                    @include('frontend.partials.banner-cta')
                 </div>
             </div>
         </div>

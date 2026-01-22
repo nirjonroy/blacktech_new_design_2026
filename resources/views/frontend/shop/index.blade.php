@@ -157,6 +157,7 @@
                     <h1 class="title">{{ $headerTitle }}</h1>
 
                     {{-- intentionally no description in the header --}}
+                    @include('frontend.partials.banner-cta')
 
                 </div>
 

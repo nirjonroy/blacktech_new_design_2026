@@ -27,6 +27,7 @@
         <div class="uni-banner-text-area">
             <h2>Appoinment</h2>
             <p>{{$service->name}} </p>
+            @include('frontend.partials.banner-cta')
             <ul>
                 <li><a href="{{route('front.home')}}">Home</a></li>
                 <li>Service Details</li>

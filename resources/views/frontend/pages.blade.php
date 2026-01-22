@@ -70,6 +70,7 @@
                     @if (!empty($headerDescription))
                         <p>{{ $headerDescription }}</p>
                     @endif
+                    @include('frontend.partials.banner-cta')
                 </div>
             </div>
         </div>

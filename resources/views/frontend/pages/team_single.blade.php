@@ -51,6 +51,7 @@
                     @if (!empty($memberRole))
                         <p>{{ $memberRole }}</p>
                     @endif
+                    @include('frontend.partials.banner-cta')
                 </div>
             </div>
         </div>

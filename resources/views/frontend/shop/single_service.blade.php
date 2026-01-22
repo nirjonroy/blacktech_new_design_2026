@@ -80,6 +80,7 @@
                         <div class="page-title">
                             <h1>know Our About <span>Company</span></h1>
                         </div>
+                        @include('frontend.partials.banner-cta')
                     </div>
 
                     <nav aria-label="breadcrumb">

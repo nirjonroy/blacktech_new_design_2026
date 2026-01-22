@@ -86,6 +86,7 @@
                     @if (!empty($desc))
                         <p>{{ $desc }}</p>
                     @endif
+                    @include('frontend.partials.banner-cta')
                 </div>
             </div>
         </div>

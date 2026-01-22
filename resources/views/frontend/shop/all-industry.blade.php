@@ -84,6 +84,7 @@
                         <div class="page-title">
                             <h2 class="display-4 text-center"> Industries </h2>
                         </div>
+                        @include('frontend.partials.banner-cta')
                     </div>
 
                     <nav aria-label="breadcrumb">
