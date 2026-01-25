@@ -220,7 +220,7 @@
                                 <div class="col-md-6 ms-auto">
                                     <div class="banner-content">
                                         <h2>{{ $slider->title_two }}</h2>
-                                        @include('frontend.partials.banner-cta')
+                                        @include('frontend.partials.banner-cta', ['ctaShape' => 'circle'])
                                     </div>
                                 </div>
                             </div>
@@ -236,7 +236,7 @@
                                 <div class="col-md-6 ms-auto">
                                     <div class="banner-content">
                                         <h2>Creative solutions real results</h2>
-                                        @include('frontend.partials.banner-cta')
+                                        @include('frontend.partials.banner-cta', ['ctaShape' => 'circle'])
                                     </div>
                                 </div>
                             </div>

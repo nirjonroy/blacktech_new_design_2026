@@ -4507,6 +4507,21 @@ div[cursor-type="arrow"] .owl-carousel,
     stroke: #FFD700;
 }
 
+.banner-cta--rect .btn {
+    width: auto;
+    height: auto;
+    flex-direction: row;
+    padding: 12px 28px;
+    gap: 12px;
+    border-radius: 10px;
+}
+
+.banner-cta--rect .btn:after {
+    border-radius: 10px;
+    right: -4px;
+    top: -4px;
+}
+
 .btn.arrow-down {
     width: 128px;
     height: 128px;
