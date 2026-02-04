@@ -75,6 +75,44 @@
                                     <label>LinkedIn</label>
                                     <input type="text" class="form-control" name="linkedin" value="{{ $teamMember->linkedin }}">
                                 </div>
+                                <div class="form-group col-12">
+                                    <label>Meta Title</label>
+                                    <input type="text" class="form-control" name="meta_title" value="{{ $teamMember->meta_title }}">
+                                </div>
+                                <div class="form-group col-12">
+                                    <label>Meta Description</label>
+                                    <textarea name="meta_description" cols="30" rows="3" class="form-control text-area-5">{{ $teamMember->meta_description }}</textarea>
+                                </div>
+                                <div class="form-group col-12">
+                                    <label>Existing Meta Image</label>
+                                    <div>
+                                        @if (!empty($teamMember->meta_image))
+                                            <img src="{{ asset($teamMember->meta_image) }}" alt="{{ $teamMember->name }}" width="120">
+                                        @else
+                                            <span class="text-muted">No meta image</span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="form-group col-12">
+                                    <label>New Meta Image</label>
+                                    <input type="file" name="meta_image" class="form-control-file">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Author</label>
+                                    <input type="text" class="form-control" name="author" value="{{ $teamMember->author }}">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Publisher</label>
+                                    <input type="text" class="form-control" name="publisher" value="{{ $teamMember->publisher }}">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Copyright</label>
+                                    <input type="text" class="form-control" name="copyright" value="{{ $teamMember->copyright }}">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Meta Keywords</label>
+                                    <input type="text" class="form-control" name="keywords" value="{{ $teamMember->keywords }}">
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-12">

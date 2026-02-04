@@ -1,6 +1,65 @@
 @extends('frontend.app')
 
-@section('title', $member->name ?? 'Team Member')
+@php
+    $siteName = config('app.name', 'Blacktech');
+    $metaTitle = $member->meta_title ?? $member->name ?? 'Team Member';
+    $rawDescription = $member->meta_description ?? $member->biography ?? '';
+    $metaDescription = \Illuminate\Support\Str::limit(trim(strip_tags($rawDescription)), 180);
+    if (empty($metaDescription)) {
+        $metaDescription = \Illuminate\Support\Str::limit($metaTitle, 160, '');
+    }
+    $primaryImage = !empty($member->meta_image)
+        ? asset($member->meta_image)
+        : (!empty($member->image) ? asset($member->image) : null);
+    $metaImage = $primaryImage ?? asset('images/og-default.jpg');
+    $author = $member->author ?? 'Blacktech';
+    $publisher = $member->publisher ?? $siteName;
+    $copyright = $member->copyright ?? null;
+    $keywords = $member->keywords ?? null;
+    $canonical = url()->current();
+@endphp
+
+@section('title', $metaTitle)
+
+@section('seos')
+    <meta charset="UTF-8">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="title" content="{{ $metaTitle }}">
+    <meta name="description" content="{{ $metaDescription }}">
+    <meta name="author" content="{{ $author }}">
+    @if ($publisher)
+    <meta name="publisher" content="{{ $publisher }}">
+    @endif
+    @if ($copyright)
+    <meta name="copyright" content="{{ $copyright }}">
+    @endif
+    @if ($keywords)
+    <meta name="keywords" content="{{ $keywords }}">
+    @endif
+    <link rel="canonical" href="{{ $canonical }}">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{{ $siteName }}">
+    <meta property="og:title" content="{{ $metaTitle }}">
+    <meta property="og:description" content="{{ $metaDescription }}">
+    <meta property="og:url" content="{{ $canonical }}">
+    <meta property="og:image" content="{{ $metaImage }}">
+    <meta property="og:image:secure_url" content="{{ $metaImage }}">
+    <meta property="og:image:alt" content="{{ $metaTitle }}">
+    <meta property="og:locale" content="en_US">
+    @if ($publisher)
+    <meta property="article:publisher" content="{{ $publisher }}">
+    @endif
+    @if ($author)
+    <meta property="article:author" content="{{ $author }}">
+    @endif
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{{ $metaTitle }}">
+    <meta name="twitter:description" content="{{ $metaDescription }}">
+    <meta name="twitter:url" content="{{ $canonical }}">
+    <meta name="twitter:image" content="{{ $metaImage }}">
+@endsection
 
 @section('content')
 <div class="site-content">
@@ -9,6 +68,7 @@
         if (!file_exists(public_path($headerImage))) {
             $headerImage = 'frontend/assets/images/banner/banner-01/banner-bg-01.png';
         }
+        $headerImage = !empty($member->meta_image) ? $member->meta_image : $headerImage;
         $memberName = $member->name ?? 'Team Member';
         $memberRole = $member->designation ?? null;
         $fallbackImagePath = $teamFallbackImage ?? 'frontend/assets/images/team/01.jpg';

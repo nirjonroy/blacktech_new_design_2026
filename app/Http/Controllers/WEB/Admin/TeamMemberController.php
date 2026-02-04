@@ -40,6 +40,13 @@ class TeamMemberController extends Controller
             'website' => 'nullable|string|max:255',
             'linkedin' => 'nullable|string|max:255',
             'biography' => 'nullable|string',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string',
+            'meta_image' => 'nullable|image',
+            'author' => 'nullable|string|max:255',
+            'publisher' => 'nullable|string|max:255',
+            'copyright' => 'nullable|string|max:255',
+            'keywords' => 'nullable|string|max:500',
         ];
         $customMessages = [
             'name.required' => trans('admin_validation.Name is required'),
@@ -80,6 +87,21 @@ class TeamMemberController extends Controller
                 ->save(public_path('/' . $imageName));
         }
 
+        $metaImageName = null;
+        if ($request->meta_image) {
+            $uploadPath = public_path('uploads/team-members');
+            if (!File::exists($uploadPath)) {
+                File::makeDirectory($uploadPath, 0777, true);
+            }
+
+            $extension = $request->meta_image->getClientOriginalExtension();
+            $metaImageName = Str::slug($request->name) . '-meta' . date('-Ymdhis') . '.' . $extension;
+            $metaImageName = 'uploads/team-members/' . $metaImageName;
+
+            Image::make($request->meta_image)
+                ->save(public_path('/' . $metaImageName));
+        }
+
         $teamMember = new TeamMember();
         $teamMember->name = $request->name;
         $teamMember->slug = $slug;
@@ -91,6 +113,13 @@ class TeamMemberController extends Controller
         $teamMember->website = $request->website;
         $teamMember->linkedin = $request->linkedin;
         $teamMember->biography = $request->biography;
+        $teamMember->meta_title = $request->meta_title;
+        $teamMember->meta_description = $request->meta_description;
+        $teamMember->meta_image = $metaImageName;
+        $teamMember->author = $request->author;
+        $teamMember->publisher = $request->publisher;
+        $teamMember->copyright = $request->copyright;
+        $teamMember->keywords = $request->keywords;
         $teamMember->save();
 
         $notification = trans('admin_validation.Created Successfully');
@@ -118,6 +147,13 @@ class TeamMemberController extends Controller
             'website' => 'nullable|string|max:255',
             'linkedin' => 'nullable|string|max:255',
             'biography' => 'nullable|string',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string',
+            'meta_image' => 'nullable|image',
+            'author' => 'nullable|string|max:255',
+            'publisher' => 'nullable|string|max:255',
+            'copyright' => 'nullable|string|max:255',
+            'keywords' => 'nullable|string|max:500',
         ];
         $customMessages = [
             'name.required' => trans('admin_validation.Name is required'),
@@ -164,6 +200,26 @@ class TeamMemberController extends Controller
             }
         }
 
+        if ($request->meta_image) {
+            $uploadPath = public_path('uploads/team-members');
+            if (!File::exists($uploadPath)) {
+                File::makeDirectory($uploadPath, 0777, true);
+            }
+
+            $existingMetaImage = $teamMember->meta_image;
+            $extension = $request->meta_image->getClientOriginalExtension();
+            $metaImageName = Str::slug($request->name) . '-meta' . date('-Ymdhis') . '.' . $extension;
+            $metaImageName = 'uploads/team-members/' . $metaImageName;
+
+            Image::make($request->meta_image)
+                ->save(public_path('/' . $metaImageName));
+
+            $teamMember->meta_image = $metaImageName;
+            if ($existingMetaImage && File::exists(public_path('/' . $existingMetaImage))) {
+                unlink(public_path('/' . $existingMetaImage));
+            }
+        }
+
         $teamMember->name = $request->name;
         $teamMember->slug = $slug;
         $teamMember->designation = $request->designation;
@@ -173,6 +229,12 @@ class TeamMemberController extends Controller
         $teamMember->website = $request->website;
         $teamMember->linkedin = $request->linkedin;
         $teamMember->biography = $request->biography;
+        $teamMember->meta_title = $request->meta_title;
+        $teamMember->meta_description = $request->meta_description;
+        $teamMember->author = $request->author;
+        $teamMember->publisher = $request->publisher;
+        $teamMember->copyright = $request->copyright;
+        $teamMember->keywords = $request->keywords;
         $teamMember->save();
 
         $notification = trans('admin_validation.Update Successfully');

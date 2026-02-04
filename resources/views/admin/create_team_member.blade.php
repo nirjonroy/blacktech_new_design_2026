@@ -64,6 +64,34 @@
                                     <label>LinkedIn</label>
                                     <input type="text" class="form-control" name="linkedin">
                                 </div>
+                                <div class="form-group col-12">
+                                    <label>Meta Title</label>
+                                    <input type="text" class="form-control" name="meta_title">
+                                </div>
+                                <div class="form-group col-12">
+                                    <label>Meta Description</label>
+                                    <textarea name="meta_description" cols="30" rows="3" class="form-control text-area-5"></textarea>
+                                </div>
+                                <div class="form-group col-12">
+                                    <label>Meta Image</label>
+                                    <input type="file" name="meta_image" class="form-control-file">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Author</label>
+                                    <input type="text" class="form-control" name="author">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Publisher</label>
+                                    <input type="text" class="form-control" name="publisher">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Copyright</label>
+                                    <input type="text" class="form-control" name="copyright">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Meta Keywords</label>
+                                    <input type="text" class="form-control" name="keywords">
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-12">
