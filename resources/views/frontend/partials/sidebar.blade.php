@@ -147,16 +147,6 @@
                                 @endforelse
                             </ul>
                             <ul class="bottom-misc-menu">
-                                <h6>Our Brands</h6>
-                                @foreach(brands() as $brand)
-                                <li class="unselected topLevel">
-                                    <img src="{{ asset($brand->logo) }}" alt="icon" class="MenuItemIcons">
-                                    <div class="name">
-                                        <a href="{{ route('front.product.brand-product', [$brand->slug] ) }}">
-                                            {{ $brand->name }}</a>
-                                    </div>
-                                </li>
-                                @endforeach
                                 <li class="unselected topLevel d-none">
                                     <img src="{{ asset('frontend/images/others/food.webp') }}" alt="icon" class="MenuItemIcons">
                                     <div class="name">

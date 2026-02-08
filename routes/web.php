@@ -770,7 +770,6 @@ Route::group(['as' => 'front.'], function(){
         Route::group(['as'=> 'product.'], function(){
             Route::get('/search-product', 'searchProduct')->name('search');
 
-            Route::get('/brand-product/{slug}', 'brandWiseProduct')->name('brand-product');
             Route::get('/product/{id}', 'show')->name('show');
           Route::get('/shop/single-product/{slug}', 'shop_single')->name('shop-single');
         });

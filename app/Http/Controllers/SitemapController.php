@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Blog;
-use App\Models\Brand;
 use App\Models\Category;
 use App\Models\ChildCategory;
 use App\Models\CustomPage;
@@ -125,19 +124,6 @@ class SitemapController extends Controller
             ]);
         }
 
-        $brands = Brand::query()
-            ->where('status', 1)
-            ->whereNotNull('slug')
-            ->get(['slug', 'updated_at', 'created_at']);
-
-        foreach ($brands as $brand) {
-            $urls->push([
-                'loc' => route('front.product.brand-product', ['slug' => $brand->slug]),
-                'lastmod' => $this->formatDate($brand->updated_at ?? $brand->created_at),
-                'changefreq' => 'weekly',
-                'priority' => '0.4',
-            ]);
-        }
         $urls = $urls->unique('loc')->values();
 
         return response()->view('sitemap', [
