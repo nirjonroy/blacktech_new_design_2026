@@ -9,7 +9,7 @@
     $metaTitle = $industry->meta_title ?? $industry->name;
     $rawDescription = $industry->meta_description ?? $industry->short_description_1 ?? $industry->description_1 ?? $industry->description_2 ?? $industry->name;
     $metaDescription = \Illuminate\Support\Str::limit(strip_tags($rawDescription), 180);
-    $primaryImage = $industry->meta_image ? asset($industry->meta_image) : ($industry->image ? asset($industry->image) : null);
+    $primaryImage = $industry->image ? asset($industry->image) : ($industry->meta_image ? asset($industry->meta_image) : null);
     $metaImage = $primaryImage ?? asset('images/og-default.jpg');
     $author = $industry->author ?? 'Blacktech';
     $publisher = $industry->publisher ?? $siteName;

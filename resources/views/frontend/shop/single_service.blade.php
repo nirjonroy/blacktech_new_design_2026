@@ -9,7 +9,7 @@
     $metaTitle = $service->meta_title ?? $service->seo_title ?? $service->name;
     $rawDescription = $service->meta_description ?? $service->seo_description ?? $service->short_description ?? $service->long_description;
     $metaDescription = \Illuminate\Support\Str::limit(strip_tags($rawDescription), 180);
-    $primaryImage = $service->meta_image ? asset($service->meta_image) : ($service->thumb_image ? asset($service->thumb_image) : null);
+    $primaryImage = $service->thumb_image ? asset($service->thumb_image) : ($service->meta_image ? asset($service->meta_image) : null);
     $metaImage = $primaryImage ?? asset('images/og-default.jpg');
     $author = $service->author ?? 'Blacktech';
     $publisher = $service->publisher ?? $siteName;

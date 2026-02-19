@@ -8,9 +8,9 @@
     if (empty($metaDescription)) {
         $metaDescription = \Illuminate\Support\Str::limit($metaTitle, 160, '');
     }
-    $primaryImage = !empty($member->meta_image)
-        ? asset($member->meta_image)
-        : (!empty($member->image) ? asset($member->image) : null);
+    $primaryImage = !empty($member->image)
+        ? asset($member->image)
+        : (!empty($member->meta_image) ? asset($member->meta_image) : null);
     $metaImage = $primaryImage ?? asset('images/og-default.jpg');
     $author = $member->author ?? 'Blacktech';
     $publisher = $member->publisher ?? $siteName;

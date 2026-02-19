@@ -12,7 +12,9 @@
     $metaTitle = $blog->meta_title ?? $blog->seo_title ?? $blog->title;
     $rawDescription = $blog->meta_description ?? $blog->seo_description ?? $blog->description;
     $metaDescription = \Illuminate\Support\Str::limit(strip_tags($rawDescription), 180);
-    $metaImage = $blog->meta_image ? asset($blog->meta_image) : asset($blog->image);
+    $primaryImage = !empty($blog->image) ? asset($blog->image) : null;
+    $metaImage = $primaryImage
+        ?? (!empty($blog->meta_image) ? asset($blog->meta_image) : asset('images/og-default.jpg'));
     $author = $blog->author ?? 'Blacktech';
     $publisher = $blog->publisher ?? $siteName;
     $copyright = $blog->copyright ?? null;

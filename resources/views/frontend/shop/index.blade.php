@@ -26,7 +26,7 @@
 
     }
 
-    $primaryImage = $service->meta_image ? asset($service->meta_image) : ($service->thumb_image ? asset($service->thumb_image) : null);
+    $primaryImage = $service->thumb_image ? asset($service->thumb_image) : ($service->meta_image ? asset($service->meta_image) : null);
 
     $metaImage = $primaryImage ?? asset('images/og-default.jpg');
 

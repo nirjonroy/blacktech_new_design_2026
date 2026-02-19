@@ -8,7 +8,9 @@
         $title = $SeoSettings->meta_title ?? $SeoSettings->seo_title ?? $siteName;
         $desc = \Illuminate\Support\Str::limit(strip_tags($SeoSettings->meta_description ?? $SeoSettings->seo_description ?? ''), 180);
         $url = url()->current();
-        $metaImage = $SeoSettings->meta_image ? asset($SeoSettings->meta_image) : asset($about_us->video_background);
+        $metaImage = !empty($about_us->video_background)
+            ? asset($about_us->video_background)
+            : ($SeoSettings->meta_image ? asset($SeoSettings->meta_image) : asset('images/og-default.jpg'));
         $author = $SeoSettings->author ?? 'Blacktech';
         $publisher = $SeoSettings->publisher ?? $siteName;
         $copyright = $SeoSettings->copyright ?? null;

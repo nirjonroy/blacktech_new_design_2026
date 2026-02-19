@@ -10,9 +10,9 @@
     $rawDescription = $project->meta_description ?? $project->description ?? '';
     $desc = \Illuminate\Support\Str::limit(strip_tags($rawDescription), 180);
     $url = url()->current();
-    $metaImage = $project->meta_image
-        ? asset($project->meta_image)
-        : ($project->image ? asset($project->image) : asset('images/og-default.jpg'));
+    $metaImage = $project->image
+        ? asset($project->image)
+        : ($project->meta_image ? asset($project->meta_image) : asset('images/og-default.jpg'));
     $author = $project->author ?? 'Blacktech';
     $publisher = $project->publisher ?? $siteName;
     $copyright = $project->copyright ?? null;

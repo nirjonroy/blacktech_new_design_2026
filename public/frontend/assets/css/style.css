@@ -7215,7 +7215,9 @@ form.form-dark .form-control:focus {
     /* Page Header */
     /*---------------------*/
     .inner-header {
-        height: 350px;
+        height: auto;
+        min-height: 350px;
+        padding: 110px 0 70px;
     }
     /*---------------------*/
     /* Header Menu Overlay */
@@ -7288,7 +7290,16 @@ form.form-dark .form-control:focus {
     /* Page Header */
     /*---------------------*/
     .inner-header {
-        height: 300px;
+        height: auto;
+        min-height: 300px;
+        padding: 100px 0 60px;
+    }
+    .inner-header .title {
+        font-size: 32px;
+        line-height: 1.2;
+    }
+    .inner-header p {
+        font-size: 16px;
     }
 }
 
@@ -7353,6 +7364,22 @@ form.form-dark .form-control:focus {
         width: 40px;
         height: 40px;
         padding: 10px;
+    }
+    .inner-header {
+        min-height: 280px;
+        padding: 90px 0 50px;
+    }
+    .banner-cta--rect .btn {
+        padding: 10px 18px;
+        gap: 10px;
+    }
+    .banner-cta--rect .btn span {
+        font-size: 16px;
+        line-height: 22px;
+    }
+    .banner-cta--rect .btn svg {
+        width: 18px;
+        height: 20px;
     }
 }
 
