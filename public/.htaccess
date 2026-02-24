@@ -5,6 +5,10 @@
 
     RewriteEngine On
 
+    # Force www
+    RewriteCond %{HTTP_HOST} ^blacktechcorp\.com$ [NC]
+    RewriteRule ^(.*)$ https://www.blacktechcorp.com/$1 [L,R=301]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
