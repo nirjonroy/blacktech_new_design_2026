@@ -40,7 +40,7 @@
                                 <div class="form-group col-12">
                                     <label>{{ __('admin.Icon Image Preview') }}</label>
                                     <div>
-                                        <img id="icon-preview-img" class="admin-img" src="{{ $product->icon_image ? asset($product->icon_image) : asset('uploads/website-images/preview.png') }}" alt="">
+                                        <img id="icon-preview-img" class="admin-img" src="{{ asset($product->icon_image ?: $product->thumb_image) }}" alt="">
                                     </div>
                                 </div>
 
@@ -54,23 +54,6 @@
                                         </div>
                                     @endif
                                 </div>
-
-
-                                <!-- <div class="form-group col-6">-->
-                                <!--@foreach($product->gallery as $key=>$pGImg)-->
-
-                                <!--<i class="fa fa-times" aria-hidden="true"></i>-->
-                                <!--<a href="javascript:;" data-toggle="modal" data-target="#deleteModal" class="btn btn-danger btn-sm" onclick="deleteData({{ $pGImg->id }})"><i class="fa fa-times" aria-hidden="true"></i></a>-->
-
-                                <!--<img src="{{asset($pGImg->image)}}" width="100px" height="100px">-->
-                                <!--@endforeach-->
-
-                                <!--</div>-->
-                                <!--<br/>-->
-                            <!--    <div class="form-group col-6">-->
-                            <!--    <label for="">Select Multiple images here </label>-->
-                            <!--    <input type="file" class="form-control-file" name="images[]" multiple>-->
-                            <!--</div>-->
                             <input type="hidden" name="product_id" required value="{{ $product->id }}">
 
 
@@ -98,40 +81,6 @@
                                         @endforeach
                                     </select>
                                 </div>
-
-                                <!-- <div class="form-group col-12">-->
-                                <!--    <label>{{__('admin.Sub Category')}}</label>-->
-                                <!--    <select name="sub_category" class="form-control select2" id="sub_category">-->
-                                <!--        <option value="">{{__('admin.Select Sub Category')}}</option>-->
-                                <!--        @if ($product->category_id != 0)-->
-                                <!--            @foreach ($subCategories as $subCategory)-->
-                                <!--            <option {{ $product->sub_category_id == $subCategory->id ? 'selected' : '' }} value="{{ $subCategory->id }}">{{ $subCategory->name }}</option>-->
-                                <!--            @endforeach-->
-                                <!--        @endif-->
-                                <!--    </select>-->
-                                <!--</div>-->
-
-                                <!-- <div class="form-group col-12">-->
-                                <!--    <label>{{__('admin.Child Category')}}</label>-->
-                                <!--    <select name="child_category" class="form-control select2" id="child_category">-->
-                                <!--        <option value="">{{__('admin.Select Child Category')}}</option>-->
-                                <!--        @if ($product->sub_category_id != 0)-->
-                                <!--            @foreach ($childCategories as $childCategory)-->
-                                <!--            <option {{ $product->child_category_id == $childCategory->id ? 'selected' : '' }} value="{{ $childCategory->id }}">{{ $childCategory->name }}</option>-->
-                                <!--            @endforeach-->
-                                <!--        @endif-->
-                                <!--    </select>-->
-                                <!--</div> -->
-
-                                <!--<div class="form-group col-12">-->
-                                <!--    <label>{{__('admin.Brand')}}</label>-->
-                                <!--    <select name="brand" class="form-control select2" id="brand">-->
-                                <!--        <option value="">{{__('admin.Select Brand')}}</option>-->
-                                <!--        @foreach ($brands as $brand)-->
-                                <!--            <option {{ $product->brand_id == $brand->id ? 'selected' : '' }} value="{{ $brand->id }}">{{ $brand->name }}</option>-->
-                                <!--        @endforeach-->
-                                <!--    </select>-->
-                                <!--</div>-->
 
                                 {{-- <div class="form-group col-12">
                                     <label>{{__('admin.SKU')}} </label>
@@ -301,114 +250,6 @@
                                     <textarea name="keywords" cols="30" rows="3" class="form-control text-area-3" placeholder="{{ __('admin.Meta Keywords Placeholder') }}">{{ $product->keywords }}</textarea>
                                 </div>
 
-                                <!--<div class="form-group col-12">-->
-                                <!--    <label>{{__('admin.Specifications')}}</label>-->
-                                <!--    <div>-->
-                                <!--        @if ($product->is_specification==1)-->
-                                <!--            <a href="javascript::void()" id="manageSpecificationBox">-->
-                                <!--                <input name="is_specification" id="status_toggle" type="checkbox" checked data-toggle="toggle" data-on="Enable" data-off="Disabled" data-onstyle="success" data-offstyle="danger">-->
-                                <!--            </a>-->
-                                <!--        @else-->
-                                <!--        <a href="javascript::void()" id="manageSpecificationBox">-->
-                                <!--                <input name="is_specification" id="status_toggle" type="checkbox" data-toggle="toggle" data-on="Enable" data-off="Disabled" data-onstyle="success" data-offstyle="danger">-->
-                                <!--            </a>-->
-                                <!--        @endif-->
-
-                                <!--    </div>-->
-                                <!--</div>-->
-                                <!--@if ($product->is_specification==1)-->
-                                <!--    <div class="form-group col-12" id="specification-box">-->
-                                <!--        @if ($productSpecifications->count() != 0)-->
-                                <!--            @foreach ($productSpecifications as $productSpecification)-->
-                                <!--                <div class="row mt-2" id="existSpecificationBox-{{ $productSpecification->id }}">-->
-                                <!--                    <div class="col-md-5">-->
-                                <!--                        <label>{{__('admin.Key')}} <span class="text-danger">*</span></label>-->
-                                <!--                        <select name="keys[]" class="form-control">-->
-                                <!--                            @foreach ($specificationKeys as $specificationKey)-->
-                                <!--                                <option {{ $specificationKey->id == $productSpecification->product_specification_key_id ? 'selected' : '' }} value="{{ $specificationKey->id }}">{{ $specificationKey->key }}</option>-->
-                                <!--                            @endforeach-->
-                                <!--                        </select>-->
-                                <!--                    </div>-->
-                                <!--                    <div class="col-md-5">-->
-                                <!--                        <label>{{__('admin.Specification')}} <span class="text-danger">*</span></label>-->
-                                <!--                        <input type="text" class="form-control" name="specifications[]" value="{{ $productSpecification->specification }}">-->
-                                <!--                    </div>-->
-                                <!--                    <div class="col-md-2">-->
-                                <!--                        <button type="button" class="btn btn-danger plus_btn removeExistSpecificationRow"  data-specificationiId="{{ $productSpecification->id }}"><i class="fas fa-trash"></i></button>-->
-                                <!--                    </div>-->
-                                <!--                </div>-->
-                                <!--            @endforeach-->
-                                <!--        @endif-->
-
-                                <!--        <div class="row mt-2">-->
-                                <!--            <div class="col-md-5">-->
-                                <!--                <label>{{__('admin.Key')}} <span class="text-danger">*</span></label>-->
-                                <!--                <select name="keys[]" class="form-control">-->
-                                <!--                    @foreach ($specificationKeys as $specificationKey)-->
-                                <!--                        <option value="{{ $specificationKey->id }}">{{ $specificationKey->key }}</option>-->
-                                <!--                    @endforeach-->
-                                <!--                </select>-->
-                                <!--            </div>-->
-                                <!--            <div class="col-md-5">-->
-                                <!--                <label>{{__('admin.Specification')}} <span class="text-danger">*</span></label>-->
-                                <!--                <input type="text" class="form-control" name="specifications[]">-->
-                                <!--            </div>-->
-                                <!--            <div class="col-md-2">-->
-                                <!--                <button type="button" class="btn btn-success plus_btn" id="addNewSpecificationRow"><i class="fas fa-plus"></i></button>-->
-                                <!--            </div>-->
-                                <!--        </div>-->
-
-                                <!--    </div>-->
-                                <!--@endif-->
-
-                                <!--@if ($product->is_specification==0)-->
-                                <!--    <div class="form-group col-12 d-none" id="specification-box">-->
-                                <!--        @if ($productSpecifications->count() != 0)-->
-                                <!--            @foreach ($productSpecifications as $productSpecification)-->
-                                <!--                <div class="row mt-2" id="existSpecificationBox-{{ $productSpecification->id }}">-->
-                                <!--                    <div class="col-md-5">-->
-                                <!--                        <label>{{__('admin.Key')}} <span class="text-danger">*</span></label>-->
-                                <!--                        <select name="keys[]" class="form-control">-->
-                                <!--                            @foreach ($specificationKeys as $specificationKey)-->
-                                <!--                                <option {{ $specificationKey->id == $productSpecification->product_specification_key_id ? 'selected' : '' }} value="{{ $specificationKey->id }}">{{ $specificationKey->key }}</option>-->
-                                <!--                            @endforeach-->
-                                <!--                        </select>-->
-                                <!--                    </div>-->
-                                <!--                    <div class="col-md-5">-->
-                                <!--                        <label>{{__('admin.Specification')}} <span class="text-danger">*</span></label>-->
-                                <!--                        <input type="text" class="form-control" name="specifications[]" value="{{ $productSpecification->specification }}">-->
-                                <!--                    </div>-->
-                                <!--                    <div class="col-md-2">-->
-                                <!--                        <button type="button" class="btn btn-danger plus_btn removeExistSpecificationRow"  data-specificationiId="{{ $productSpecification->id }}"><i class="fas fa-trash"></i></button>-->
-                                <!--                    </div>-->
-                                <!--                </div>-->
-                                <!--            @endforeach-->
-                                <!--        @endif-->
-
-                                <!--        <div class="row mt-2">-->
-                                <!--            <div class="col-md-5">-->
-                                <!--                <label>{{__('admin.Key')}} <span class="text-danger">*</span></label>-->
-                                <!--                <select name="keys[]" class="form-control">-->
-                                <!--                    @foreach ($specificationKeys as $specificationKey)-->
-                                <!--                        <option value="{{ $specificationKey->id }}">{{ $specificationKey->key }}</option>-->
-                                <!--                    @endforeach-->
-                                <!--                </select>-->
-                                <!--            </div>-->
-                                            <!--<div class="col-md-5">-->
-                                            <!--    <label>{{__('admin.Specification')}} <span class="text-danger">*</span></label>-->
-                                            <!--    <input type="text" class="form-control" name="specifications[]">-->
-                                            <!--</div>-->
-                                            <!--<div class="col-md-2">-->
-                                            <!--    <button type="button" class="btn btn-success plus_btn" id="addNewSpecificationRow"><i class="fas fa-plus"></i></button>-->
-                                            <!--</div>-->
-                                        </div>
-
-                                    </div>
-                                @endif
-
-
-
-
                                 {{-- <div id="hidden-specification-box" class="d-none">
                                     <div class="delete-specification-row">
                                         <div class="row mt-2">
@@ -452,7 +293,7 @@
         $(document).ready(function () {
             $("#name").on("focusout",function(e){
                 $("#slug").val(convertToSlug($(this).val()));
-            })
+            });
 
             $("#category").on("change",function(){
                 var categoryId = $("#category").val();
@@ -470,7 +311,7 @@
                             console.log(err);
 
                         }
-                    })
+                    });
                 }else{
                     var response= "<option value=''>{{__('admin.Select Sub Category')}}</option>";
                     $("#sub_category").html(response);
@@ -479,7 +320,7 @@
                 }
 
 
-            })
+            });
 
             $("#sub_category").on("change",function(){
                 var SubCategoryId = $("#sub_category").val();
@@ -494,13 +335,13 @@
                             console.log(err);
 
                         }
-                    })
+                    });
                 }else{
                     var response= "<option value=''>{{__('admin.Select Child Category')}}</option>";
                     $("#child_category").html(response);
                 }
 
-            })
+            });
 
             $("#is_return").on('change',function(){
                 var returnId = $("#is_return").val();
@@ -510,12 +351,12 @@
                     $("#policy_box").addClass('d-none');
                 }
 
-            })
+            });
 
             $("#addNewSpecificationRow").on('click',function(){
                 var html = $("#hidden-specification-box").html();
                 $("#specification-box").append(html);
-            })
+            });
 
             $(document).on('click', '.deleteSpeceficationBtn', function () {
                 $(this).closest('.delete-specification-row').remove();
@@ -532,7 +373,7 @@
                 }
 
 
-            })
+            });
 
             $(".removeExistSpecificationRow").on("click",function(){
                 var isDemo = "{{ env('APP_MODE') }}"
@@ -553,8 +394,8 @@
                         console.log(err);
 
                     }
-                })
-            })
+                });
+            });
 
         });
     })(jQuery);

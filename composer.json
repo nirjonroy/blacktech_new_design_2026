@@ -4,6 +4,35 @@
     "description": "The Laravel Framework.",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
+    "repositories": [
+    {
+        "type": "package",
+        "package": {
+            "name": "nirjon/laravel-seo",
+            "version": "dev-package-release",
+            "source": {
+                "url": "https://github.com/nirjonroy/seo-entiantials.git",
+                "type": "git",
+                "reference": "package-release"
+            },
+            "require": {
+                "illuminate/support": "^9.0|^10.0|^11.0"
+            },
+            "autoload": {
+                "psr-4": {
+                    "Nirjon\\LaravelSeo\\": "src/"
+                }
+            },
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Nirjon\\LaravelSeo\\SEOServiceProvider"
+                    ]
+                }
+            }
+        }
+    }
+],
     "require": {
         "php": "^8.0.2",
         "google/recaptcha": "^1.2",
@@ -15,6 +44,7 @@
         "laravel/ui": "^4.1",
         "mews/purifier": "^3.3",
         "mollie/laravel-mollie": "^2.21",
+        "nirjon/laravel-seo": "dev-package-release",
         "paypal/rest-api-sdk-php": "*",
         "pusher/pusher-php-server": "^7.2",
         "razorpay/razorpay": "^2.8",

@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Blog;
 use App\Models\Category;
+use App\Models\Career;
 use App\Models\ChildCategory;
 use App\Models\CustomPage;
 use App\Models\Product;
 use App\Models\SubCategory;
+use App\Models\TeamMember;
 use Carbon\Carbon;
 use Illuminate\Http\Response;
 
@@ -119,6 +121,61 @@ class SitemapController extends Controller
             $urls->push([
                 'loc' => route('front.customPages', ['slug' => $page->slug]),
                 'lastmod' => $this->formatDate($page->updated_at ?? $page->created_at),
+                'changefreq' => 'monthly',
+                'priority' => '0.4',
+            ]);
+        }
+
+        $services = Product::query()
+            ->where('status', 1)
+            ->whereNotNull('slug')
+            ->get(['slug', 'updated_at', 'created_at']);
+
+        foreach ($services as $service) {
+            $urls->push([
+                'loc' => route('front.shop', ['slug' => $service->slug]),
+                'lastmod' => $this->formatDate($service->updated_at ?? $service->created_at),
+                'changefreq' => 'weekly',
+                'priority' => '0.4',
+            ]);
+        }
+
+        $projects = SubCategory::query()
+            ->where('status', 1)
+            ->whereNotNull('slug')
+            ->get(['slug', 'updated_at', 'created_at']);
+
+        foreach ($projects as $project) {
+            $urls->push([
+                'loc' => route('front.project.show', ['slug' => $project->slug]),
+                'lastmod' => $this->formatDate($project->updated_at ?? $project->created_at),
+                'changefreq' => 'monthly',
+                'priority' => '0.4',
+            ]);
+        }
+
+        $careers = Career::query()
+            ->where('status', 1)
+            ->whereNotNull('slug')
+            ->get(['slug', 'updated_at', 'created_at']);
+
+        foreach ($careers as $career) {
+            $urls->push([
+                'loc' => route('front.career.details', ['slug' => $career->slug]),
+                'lastmod' => $this->formatDate($career->updated_at ?? $career->created_at),
+                'changefreq' => 'monthly',
+                'priority' => '0.4',
+            ]);
+        }
+
+        $teamMembers = TeamMember::query()
+            ->whereNotNull('slug')
+            ->get(['slug', 'updated_at', 'created_at']);
+
+        foreach ($teamMembers as $member) {
+            $urls->push([
+                'loc' => route('front.team.member', ['slug' => $member->slug]),
+                'lastmod' => $this->formatDate($member->updated_at ?? $member->created_at),
                 'changefreq' => 'monthly',
                 'priority' => '0.4',
             ]);
