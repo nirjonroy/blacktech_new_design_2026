@@ -22,6 +22,22 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Package Admin Routes
+    |--------------------------------------------------------------------------
+    |
+    | BlackTech uses both admin and web guards across dashboard routes.
+    |
+    */
+    'admin' => [
+        'middleware' => ['web', 'auth:admin,web'],
+        'sidebar' => [
+            'auto_install' => true,
+            'path' => resource_path('views/admin/sidebar.blade.php'),
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Default SEO Values
     |--------------------------------------------------------------------------
     |

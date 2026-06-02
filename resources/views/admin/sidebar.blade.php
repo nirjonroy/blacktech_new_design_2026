@@ -487,6 +487,11 @@
 
 
 
+             {{-- Nirjon Laravel SEO sidebar link --}}
+             @include('seo::admin.sidebar-link')
+
+
+
              <li class="{{ Route::is('admin.redirect.*') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.redirect.index') }}">
              <div class="icon">
              <i class="fas fa-random"></i>
