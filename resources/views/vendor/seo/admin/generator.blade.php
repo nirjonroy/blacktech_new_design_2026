@@ -6,20 +6,24 @@
     <title>PageForge Generator</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"></script>
     <style>
         .tab-content { display: none; }
         .tab-content.active { display: block; }
         .tab-btn.active { border-bottom: 2px solid #2563eb; color: #2563eb; }
-        .note-editor.note-frame { border-color: #d1d5db; border-radius: 0.375rem; margin-top: 0.25rem; }
-        .note-toolbar { background: #f9fafb; border-top-left-radius: 0.375rem; border-top-right-radius: 0.375rem; }
+        .tox-tinymce { border-color: #d1d5db !important; border-radius: 0.5rem !important; }
+        .pf-modal { display: none; }
+        .pf-modal.active { display: flex; }
     </style>
 </head>
 <body class="bg-gray-100 p-8">
     <div class="max-w-5xl mx-auto bg-white p-6 rounded-lg shadow-md">
-        <h1 class="text-2xl font-bold mb-6">PageForge Admin Generator</h1>
+        <div class="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <h1 class="text-2xl font-bold">PageForge Admin Generator</h1>
+            <div class="flex flex-wrap gap-2">
+                <button type="button" data-open-modal="demo-data-modal" onclick="window.nirjonSeoOpenModal && window.nirjonSeoOpenModal('demo-data-modal')" class="rounded-md border border-blue-200 bg-blue-50 px-3 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-100">Use Demo Data</button>
+                <button type="button" data-open-modal="css-help-modal" onclick="window.nirjonSeoOpenModal && window.nirjonSeoOpenModal('css-help-modal')" class="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">CSS Classes</button>
+            </div>
+        </div>
         
         <!-- Tabs -->
         <div class="flex border-b mb-6">
@@ -83,6 +87,44 @@
                     <input type="text" id="site_name" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2 border">
                 </div>
 
+                <div class="rounded-lg border border-gray-200 bg-gray-50 p-5">
+                    <h3 class="mb-4 text-sm font-bold uppercase tracking-wide text-gray-800">Generated Page Design</h3>
+                    <div class="grid gap-4 md:grid-cols-2">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Page Logo</label>
+                            <input type="file" id="logo_image" accept="image/*" class="mt-1 block w-full rounded-md border border-gray-300 bg-white p-2 shadow-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Font Family</label>
+                            <input type="text" id="font_family" value="Inter, Arial, sans-serif" class="mt-1 block w-full rounded-md border border-gray-300 bg-white p-2 shadow-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Primary Color</label>
+                            <input type="color" id="primary_color" value="#111827" class="mt-1 h-10 w-full rounded-md border border-gray-300 bg-white p-1 shadow-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Accent Color</label>
+                            <input type="color" id="accent_color" value="#2563eb" class="mt-1 h-10 w-full rounded-md border border-gray-300 bg-white p-1 shadow-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Background Color</label>
+                            <input type="color" id="background_color" value="#f8fafc" class="mt-1 h-10 w-full rounded-md border border-gray-300 bg-white p-1 shadow-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Text Color</label>
+                            <input type="color" id="text_color" value="#1f2937" class="mt-1 h-10 w-full rounded-md border border-gray-300 bg-white p-1 shadow-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Container Width</label>
+                            <input type="text" id="container_width" value="960px" class="mt-1 block w-full rounded-md border border-gray-300 bg-white p-2 shadow-sm">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700">Custom CSS</label>
+                            <textarea id="custom_css" rows="5" class="mt-1 block w-full rounded-md border border-gray-300 bg-white p-2 font-mono text-sm shadow-sm" placeholder=".pf-hero { ... }"></textarea>
+                        </div>
+                    </div>
+                </div>
+
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Keyword Bundle 1 (comma separated)</label>
                     <input type="text" id="bundle1" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2 border">
@@ -130,19 +172,149 @@
         </div>
     </div>
 
+    <div id="demo-data-modal" class="pf-modal fixed inset-0 z-50 items-center justify-center bg-slate-900/60 p-4">
+        <div class="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-lg bg-white p-6 shadow-xl">
+            <div class="mb-4 flex items-start justify-between gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">Demo Data</h2>
+                    <p class="text-sm text-slate-500">Fill PageForge with a working demo template.</p>
+                </div>
+                <button type="button" data-close-modal onclick="window.nirjonSeoCloseModals && window.nirjonSeoCloseModals()" class="rounded-md px-2 py-1 text-slate-500 hover:bg-slate-100">Close</button>
+            </div>
+            <div class="grid gap-3 md:grid-cols-2">
+                <button type="button" data-demo-type="consultancy" class="rounded-lg border border-slate-200 p-4 text-left hover:border-blue-400 hover:bg-blue-50">
+                    <strong class="block text-slate-900">Consultancy Landing Page</strong>
+                    <span class="text-sm text-slate-500">Professional stress-test template using service + city combinations.</span>
+                    <span class="mt-3 block text-xs font-semibold uppercase tracking-wide text-slate-500">Fills</span>
+                    <span class="mt-1 block text-sm text-slate-600">Template title, slug, content, meta fields, author, publisher, colors, and keyword bundles.</span>
+                    <span class="mt-2 block rounded-md bg-slate-50 p-2 text-xs text-slate-600">Expert {0} Consultancy in {1}<br>Top {0} Services in {1} | BlackTech</span>
+                    <span class="mt-2 block text-xs text-slate-500">Bundles: Web Development, SEO Audit, API Integration + Dhaka, Sylhet</span>
+                </button>
+                <button type="button" data-demo-type="restaurant" class="rounded-lg border border-slate-200 p-4 text-left hover:border-blue-400 hover:bg-blue-50">
+                    <strong class="block text-slate-900">Restaurant Menu Design</strong>
+                    <span class="text-sm text-slate-500">Local landing pages with richer visual content.</span>
+                    <span class="mt-3 block text-xs font-semibold uppercase tracking-wide text-slate-500">Fills</span>
+                    <span class="mt-1 block text-sm text-slate-600">Menu-design title, slug, HTML content, SEO metadata, design defaults, and keyword bundles.</span>
+                    <span class="mt-2 block text-xs text-slate-500">Bundles: Restaurant, Cafe, Bistro + Dhaka, Sylhet, Chittagong</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="css-help-modal" class="pf-modal fixed inset-0 z-50 items-center justify-center bg-slate-900/60 p-4">
+        <div class="max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-lg bg-white p-6 shadow-xl">
+            <div class="mb-4 flex items-start justify-between gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">Demo CSS Customization</h2>
+                    <p class="text-sm text-slate-500">Use these classes in the Custom CSS field.</p>
+                </div>
+                <button type="button" data-close-modal onclick="window.nirjonSeoCloseModals && window.nirjonSeoCloseModals()" class="rounded-md px-2 py-1 text-slate-500 hover:bg-slate-100">Close</button>
+            </div>
+            <div class="grid gap-4 md:grid-cols-2">
+                <div class="rounded-lg border border-slate-200 p-4">
+                    <h3 class="mb-2 font-bold text-slate-900">Available Classes</h3>
+                    <ul class="space-y-1 text-sm text-slate-700">
+                        <li><code>.pf-page</code> controls the full generated page background and outer spacing</li>
+                        <li><code>.pf-shell</code> controls the centered page width wrapper</li>
+                        <li><code>.pf-header</code> controls the logo/header row above the card</li>
+                        <li><code>.pf-logo</code> controls uploaded logo size and fit</li>
+                        <li><code>.pf-card</code> controls the main page card border, radius, and shadow</li>
+                        <li><code>.pf-hero</code> controls the title section background and spacing</li>
+                        <li><code>.pf-title</code> controls the generated page H1</li>
+                        <li><code>.pf-featured</code> controls the uploaded featured image</li>
+                        <li><code>.pf-content</code> controls generated HTML body content</li>
+                        <li><code>.pf-related</code> controls the related pages section</li>
+                        <li><code>.pf-related-card</code> controls each related page card</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="mb-2 flex items-center justify-between">
+                        <h3 class="font-bold text-slate-900">Sample CSS</h3>
+                        <button type="button" id="apply-demo-css" class="rounded-md bg-slate-900 px-3 py-1.5 text-sm font-semibold text-white hover:bg-slate-700">Use This CSS</button>
+                    </div>
+                    <pre class="overflow-x-auto rounded-lg bg-slate-950 p-4 text-xs text-slate-100"><code id="demo-css-code">.pf-card {
+  border-radius: 6px;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.14);
+}
+
+.pf-hero {
+  background: linear-gradient(135deg, #eff6ff, #ffffff);
+}
+
+.pf-featured {
+  aspect-ratio: 16 / 7;
+}
+
+.pf-content h3 {
+  border-left: 4px solid var(--pf-accent);
+  padding-left: 14px;
+}
+
+.pf-related-card {
+  background: #f8fafc;
+}</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
+        (function () {
+            function openModal(id) {
+                closeModals();
+                var modal = document.getElementById(id);
+                if (modal) {
+                    modal.classList.add('active');
+                    modal.setAttribute('aria-hidden', 'false');
+                }
+            }
+
+            function closeModals() {
+                document.querySelectorAll('.pf-modal').forEach(function (modal) {
+                    modal.classList.remove('active');
+                    modal.setAttribute('aria-hidden', 'true');
+                });
+            }
+
+            window.nirjonSeoOpenModal = openModal;
+            window.nirjonSeoCloseModals = closeModals;
+
+            document.addEventListener('click', function (event) {
+                var opener = event.target.closest('[data-open-modal]');
+                if (opener) {
+                    event.preventDefault();
+                    openModal(opener.getAttribute('data-open-modal'));
+                    return;
+                }
+
+                if (event.target.closest('[data-close-modal]')) {
+                    event.preventDefault();
+                    closeModals();
+                }
+            });
+        })();
+
         document.addEventListener('DOMContentLoaded', fetchAndRenderPages);
 
-        $(function () {
-            $('#content').summernote({
-                height: 220,
-                placeholder: 'Write page content...',
-                toolbar: [
-                    ['style', ['bold', 'italic']],
-                    ['insert', ['link']],
-                    ['view', ['codeview']]
-                ]
-            });
+        document.addEventListener('DOMContentLoaded', function () {
+            if (window.tinymce && document.getElementById('content')) {
+                tinymce.init({
+                    selector: '#content',
+                    height: 460,
+                    menubar: 'file edit view insert format tools table help',
+                    branding: false,
+                    promotion: false,
+                    plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table wordcount help emoticons codesample',
+                    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media table blockquote codesample | removeformat code fullscreen preview',
+                    toolbar_mode: 'sliding',
+                    setup: function (editor) {
+                        editor.on('change keyup', function () {
+                            editor.save();
+                        });
+                    }
+                });
+            }
         });
 
         function switchTab(tabName) {
@@ -154,6 +326,123 @@
 
             if (tabName === 'pages') {
                 fetchAndRenderPages();
+            }
+        }
+
+        function setValue(id, value) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.value = value || '';
+            }
+        }
+
+        function setEditorHtml(value) {
+            const tinyEditor = window.tinymce ? tinymce.get('content') : null;
+            if (tinyEditor) {
+                tinyEditor.setContent(value || '');
+                return;
+            }
+            setValue('content', value || '');
+        }
+
+        function openModal(id) {
+            window.nirjonSeoOpenModal(id);
+        }
+
+        function closeModals() {
+            window.nirjonSeoCloseModals();
+        }
+
+        function demoPayload(type) {
+            if (type === 'restaurant') {
+                return {
+                    templateTitle: '{Premium|Modern|Creative} {0} Menu Design in {1}',
+                    templateSlug: '{0}-menu-design-{1}',
+                    content: '<h3>Professional {0} Menu Design in {1}</h3><p>Your menu is often the first sales tool your customer sees. We create <strong>{premium|modern|conversion-focused}</strong> menu designs that help restaurants, cafes, and food brands present offers clearly.</p><p>Our team combines layout, typography, food imagery, and local SEO structure so your {0} business in <strong>{1}</strong> looks polished online.</p>',
+                    metaTitle: '{0} Menu Design in {1} | BlackTech',
+                    metaDescription: 'Professional {0} menu design services in {1}. Get a polished restaurant menu and SEO-ready landing page.',
+                    metaKeywords: '{0}, menu design, restaurant branding, {1}',
+                    bundle1: 'Restaurant, Cafe, Bistro',
+                    bundle2: 'Dhaka, Sylhet, Chittagong'
+                };
+            }
+
+            return {
+                templateTitle: 'Expert {0} Consultancy in {1}',
+                templateSlug: 'expert-{0}-consultancy-{1}',
+                content: '<h3>Need {0} Services in {1}?</h3><p>BlackTech Consultancy helps growing businesses plan, build, and optimize professional <strong>{0}</strong> solutions for teams in <strong>{1}</strong> and beyond.</p><p>From discovery and implementation to reporting and continuous improvement, our consultants focus on measurable outcomes, clean delivery, and long-term scalability.</p><p>Get the {premium|fast|reliable} experience your project deserves.</p>',
+                metaTitle: 'Top {0} Services in {1} | BlackTech',
+                metaDescription: 'Hire expert {0} developers in {1} for your business growth. Professional services by BlackTech.',
+                metaKeywords: '{0}, {1}, expert services, BlackTech',
+                bundle1: 'Web Development, SEO Audit, API Integration',
+                bundle2: 'Dhaka, Sylhet'
+            };
+        }
+
+        function fillDemoData(type) {
+            const demo = demoPayload(type);
+            setValue('templateTitle', demo.templateTitle);
+            setValue('templateSlug', demo.templateSlug);
+            setEditorHtml(demo.content);
+            setValue('meta_title', demo.metaTitle);
+            setValue('meta_description', demo.metaDescription);
+            setValue('meta_keywords', demo.metaKeywords);
+            setValue('author', 'Nirjon Roy');
+            setValue('publisher', 'BlackTech Consultancy');
+            setValue('copyright', '\u00a9 2026 BlackTech Consultancy');
+            setValue('site_name', 'BlackTech Consultancy');
+            setValue('bundle1', demo.bundle1);
+            setValue('bundle2', demo.bundle2);
+            setValue('primary_color', '#111827');
+            setValue('accent_color', '#2563eb');
+            setValue('background_color', '#f8fafc');
+            setValue('text_color', '#1f2937');
+            setValue('font_family', 'Inter, Arial, sans-serif');
+            setValue('container_width', '960px');
+            closeModals();
+            switchTab('generator');
+        }
+
+        async function editPage(id) {
+            if (!id) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/admin/seo-admin/generator/api-pages/${encodeURIComponent(id)}`, {
+                    headers: { 'Accept': 'application/json' }
+                });
+                const data = await response.json();
+
+                if (!response.ok || !data.template) {
+                    alert('Could not load page data for editing.');
+                    return;
+                }
+
+                const template = data.template;
+                setValue('templateTitle', template.title_structure || data.page.final_title || '');
+                setValue('templateSlug', template.slug_structure || data.page.url_slug || '');
+                setEditorHtml(template.content || data.page.final_content || '');
+                setValue('meta_title', template.meta_title || data.page.meta_title || '');
+                setValue('meta_description', template.meta_description || data.page.meta_description || '');
+                setValue('meta_keywords', template.meta_keywords || data.page.meta_keywords || '');
+                setValue('author', template.author || '');
+                setValue('publisher', template.publisher || '');
+                setValue('copyright', template.copyright || '');
+                setValue('site_name', template.site_name || '');
+                setValue('primary_color', template.primary_color || '#111827');
+                setValue('accent_color', template.accent_color || '#2563eb');
+                setValue('background_color', template.background_color || '#f8fafc');
+                setValue('text_color', template.text_color || '#1f2937');
+                setValue('font_family', template.font_family || 'Inter, Arial, sans-serif');
+                setValue('container_width', template.container_width || '960px');
+                setValue('custom_css', template.custom_css || '');
+                setValue('bundle1', data.keyword_bundle_1 || '');
+                setValue('bundle2', data.keyword_bundle_2 || '');
+                switchTab('generator');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } catch (error) {
+                alert('Could not load page data for editing.');
             }
         }
 
@@ -203,6 +492,7 @@
                             <td class="py-2 px-4 border-b">
                                 <div class="flex gap-3">
                                     <a href="${viewUrl}" target="_blank" class="text-blue-600 hover:underline">View</a>
+                                    <button type="button" onclick="editPage(${page.id})" class="text-amber-600 hover:underline font-medium">Edit</button>
                                     <button type="button" onclick="deletePage(${page.id})" class="text-red-600 hover:underline font-medium">Delete</button>
                                 </div>
                             </td>
@@ -221,7 +511,8 @@
         async function generatePages() {
             const templateTitle = document.getElementById('templateTitle').value;
             const templateSlug = document.getElementById('templateSlug').value;
-            const content = $('#content').summernote('code');
+            const tinyEditor = window.tinymce ? tinymce.get('content') : null;
+            const content = tinyEditor ? tinyEditor.getContent() : document.getElementById('content').value;
             
             const metaTitle = document.getElementById('meta_title').value;
             const metaDescription = document.getElementById('meta_description').value;
@@ -256,9 +547,19 @@
             formData.append('publisher', publisher);
             formData.append('copyright', copyright);
             formData.append('siteName', siteName);
+            formData.append('primaryColor', document.getElementById('primary_color').value);
+            formData.append('accentColor', document.getElementById('accent_color').value);
+            formData.append('backgroundColor', document.getElementById('background_color').value);
+            formData.append('textColor', document.getElementById('text_color').value);
+            formData.append('fontFamily', document.getElementById('font_family').value);
+            formData.append('containerWidth', document.getElementById('container_width').value);
+            formData.append('customCss', document.getElementById('custom_css').value);
             
             if (document.getElementById('featured_image').files.length > 0) {
                 formData.append('featured_image', document.getElementById('featured_image').files[0]);
+            }
+            if (document.getElementById('logo_image').files.length > 0) {
+                formData.append('logo_image', document.getElementById('logo_image').files[0]);
             }
             formData.append('bundles', JSON.stringify(bundles));
 
@@ -288,7 +589,9 @@
                     alertContainer.textContent = data.message || 'Generation successful!';
                     alertContainer.className = 'mb-4 p-4 rounded text-white bg-green-500 block';
                     document.getElementById('generator-form').reset();
-                    $('#content').summernote('reset');
+                    if (tinyEditor) {
+                        tinyEditor.setContent('');
+                    }
                     setTimeout(() => switchTab('pages'), 1500);
                 } else {
                     alertContainer.textContent = data.message || 'Error occurred';
@@ -338,6 +641,35 @@
         window.fetchAndRenderPages = fetchAndRenderPages;
         window.switchTab = switchTab;
         window.deletePage = deletePage;
+        window.editPage = editPage;
+
+        document.addEventListener('click', function (event) {
+            const target = event.target.closest('[data-open-modal], [data-close-modal], [data-demo-type], #apply-demo-css');
+
+            if (!target) {
+                return;
+            }
+
+            if (target.matches('[data-open-modal]')) {
+                openModal(target.getAttribute('data-open-modal'));
+                return;
+            }
+
+            if (target.matches('[data-close-modal]')) {
+                closeModals();
+                return;
+            }
+
+            if (target.matches('[data-demo-type]')) {
+                fillDemoData(target.getAttribute('data-demo-type'));
+                return;
+            }
+
+            if (target.matches('#apply-demo-css')) {
+                setValue('custom_css', document.getElementById('demo-css-code') ? document.getElementById('demo-css-code').textContent : '');
+                closeModals();
+            }
+        });
     </script>
 </body>
 </html>
