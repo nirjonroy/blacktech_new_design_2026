@@ -22,6 +22,7 @@ use App\Models\Order;
 use App\Models\Footer;
 use App\Models\CustomPage;
 use App\Models\ContactMessage;
+use App\Models\AffiliateApplication;
 use App\Models\TeamMember;
 use App\Models\Career;
 // use App\Models\AboutUs;
@@ -121,6 +122,52 @@ class HomeController extends Controller
             ->firstOrFail();
 
         return view('frontend.pages.career_single', compact('career'));
+    }
+
+    public function affiliate()
+    {
+        return view('frontend.pages.affiliate');
+    }
+
+    public function affiliate_submit(Request $request)
+    {
+        $rules = [
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'nullable|max:255',
+            'company_name' => 'nullable|max:255',
+            'website' => 'nullable|url|max:255',
+            'audience' => 'required|max:255',
+            'promotion_plan' => 'required',
+            'message' => 'nullable',
+        ];
+
+        $customMessages = [
+            'name.required' => trans('admin_validation.Name is required'),
+            'email.required' => 'Email is required',
+            'email.email' => 'Please enter a valid email address',
+            'website.url' => 'Please enter a valid website or social profile URL',
+            'audience.required' => 'Audience is required',
+            'promotion_plan.required' => 'Promotion plan is required',
+        ];
+
+        $this->validate($request, $rules, $customMessages);
+
+        AffiliateApplication::create($request->only([
+            'name',
+            'email',
+            'phone',
+            'company_name',
+            'website',
+            'audience',
+            'promotion_plan',
+            'message',
+        ]));
+
+        Alert::toast('Message', 'Affiliate application submitted successfully');
+        $notification = ['messege' => 'Affiliate application submitted successfully', 'alert-type' => 'success'];
+
+        return redirect()->back()->with($notification);
     }
 
     public function team()

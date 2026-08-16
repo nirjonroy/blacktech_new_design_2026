@@ -74,6 +74,8 @@
                                 <li><a href="{{ route('front.about-us') }}">About us</a></li>
                                 <li><a href="{{ route('front.our-project') }}">Our Project</a></li>
                                 <li><a href="{{ route('front.all.service') }}">Our Services</a></li>
+                                <li><a href="{{ route('front.affiliate') }}">Become an Affiliate</a></li>
+                                <li><a href="{{ route('front.affiliate.login') }}">Affiliate Login</a></li>
                                 <li><a href="{{ route('front.team') }}">Team</a></li>
                                 <li><a href="{{ route('front.blog') }}">Blog</a></li>
                                 <li><a href="{{ route('front.contact') }}">Contact</a></li>

@@ -1,0 +1,30 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up()
+    {
+        Schema::create('affiliate_applications', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('email')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('company_name')->nullable();
+            $table->string('website')->nullable();
+            $table->string('audience')->nullable();
+            $table->text('promotion_plan')->nullable();
+            $table->text('message')->nullable();
+            $table->string('status')->default('new');
+            $table->timestamps();
+        });
+    }
+
+    public function down()
+    {
+        Schema::dropIfExists('affiliate_applications');
+    }
+};

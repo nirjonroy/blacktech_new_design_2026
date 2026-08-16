@@ -66,6 +66,7 @@ use App\Http\Controllers\WEB\Admin\FlashSaleController;
 use App\Http\Controllers\WEB\Admin\InventoryController;
 use App\Http\Controllers\WEB\Admin\NotificationController;
 use App\Http\Controllers\WEB\Admin\RedirectController;
+use App\Http\Controllers\WEB\Admin\AffiliateApplicationController;
 
 
 use App\Http\Controllers\WEB\Seller\SellerDashboardController;
@@ -105,6 +106,7 @@ use App\Http\Controllers\WEB\Frontend\ProductController as FrontProductControlle
 use App\Http\Controllers\WEB\Frontend\CartController as FrontCartController;
 use App\Http\Controllers\WEB\Frontend\CheckoutController as FrontCheckoutController;
 use App\Http\Controllers\WEB\Frontend\OrderController as FrontOrderController;
+use App\Http\Controllers\WEB\Frontend\AffiliatePortalController;
 
 Route::get('/clear-cache', function(){
     \Artisan::call('cache:clear');
@@ -448,6 +450,13 @@ Route::group(['as'=> 'admin.', 'prefix' => 'admin'],function (){
     Route::get('show-contact-message/{id}',[ContactMessageController::class,'show'])->name('show-contact-message');
     Route::delete('delete-contact-message/{id}',[ContactMessageController::class,'destroy'])->name('delete-contact-message');
     Route::put('enable-save-contact-message',[ContactMessageController::class,'handleSaveContactMessage'])->name('enable-save-contact-message');
+    Route::get('affiliate-application',[AffiliateApplicationController::class,'index'])->name('affiliate-application');
+    Route::get('show-affiliate-application/{id}',[AffiliateApplicationController::class,'show'])->name('show-affiliate-application');
+    Route::post('approve-affiliate-application/{id}',[AffiliateApplicationController::class,'approve'])->name('approve-affiliate-application');
+    Route::delete('delete-affiliate-application/{id}',[AffiliateApplicationController::class,'destroy'])->name('delete-affiliate-application');
+    Route::get('affiliate-client',[AffiliateApplicationController::class,'clients'])->name('affiliate-client');
+    Route::get('show-affiliate-client/{id}',[AffiliateApplicationController::class,'showClient'])->name('show-affiliate-client');
+    Route::delete('delete-affiliate-client/{id}',[AffiliateApplicationController::class,'destroyClient'])->name('delete-affiliate-client');
 
     Route::get('email-configuration',[EmailConfigurationController::class,'index'])->name('email-configuration');
     Route::put('update-email-configuraion',[EmailConfigurationController::class,'update'])->name('update-email-configuraion');
@@ -750,6 +759,8 @@ Route::group(['as' => 'front.'], function(){
         Route::get('/about-us', 'about_us_page')->name('about-us');
         Route::get('/careers', 'careers')->name('careers');
         Route::get('/career/{slug}', 'career_details')->name('career.details');
+        Route::get('/become-an-affiliate', 'affiliate')->name('affiliate');
+        Route::post('/become-an-affiliate', 'affiliate_submit')->name('affiliate.submit');
         Route::get('/team', 'team')->name('team');
         Route::get('/team/{slug}', 'team_member')->name('team.member');
       	Route::get('/privacy-policy', 'privacy_policy')->name('privacy_policy');
@@ -812,6 +823,14 @@ Route::group(['as' => 'front.'], function(){
         Route::post('optverify', 'optverify')->name('optverify');
         Route::post('change-password', 'changePassword')->name('pasword.change');
         Route::post('profile-update', 'updateProfile')->name('profile.update');
+    });
+
+    Route::controller(AffiliatePortalController::class)->group(function(){
+        Route::get('/affiliate/login', 'loginPage')->name('affiliate.login');
+        Route::post('/affiliate/login', 'login')->name('affiliate.login.submit');
+        Route::get('/affiliate/logout', 'logout')->name('affiliate.logout');
+        Route::get('/affiliate/dashboard', 'dashboard')->name('affiliate.dashboard');
+        Route::post('/affiliate/client-submit', 'storeClient')->name('affiliate.client.submit');
     });
 
 Route::prefix('front')->group(function(){

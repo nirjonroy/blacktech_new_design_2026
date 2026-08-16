@@ -462,6 +462,18 @@
            </div>
            <span>{{__('admin.Contact Message')}}</span></a></li>
 
+          <li class="{{ Route::is('admin.affiliate-application') || Route::is('admin.show-affiliate-application') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.affiliate-application') }}">
+           <div class="icon">
+           <i class="fas fa-handshake"></i>
+           </div>
+           <span>Affiliate Applications</span></a></li>
+
+          <li class="{{ Route::is('admin.affiliate-client') || Route::is('admin.show-affiliate-client') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.affiliate-client') }}">
+           <div class="icon">
+           <i class="fas fa-users"></i>
+           </div>
+           <span>Affiliate Clients</span></a></li>
+
 
 
 

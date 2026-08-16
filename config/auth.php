@@ -55,6 +55,11 @@ return [
             'driver' => 'session',
             'provider' => 'admins',
         ],
+
+        'affiliate' => [
+            'driver' => 'session',
+            'provider' => 'affiliate_marketers',
+        ],
     ],
 
     /*
@@ -83,6 +88,11 @@ return [
         'admins' => [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
+        ],
+
+        'affiliate_marketers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\AffiliateMarketer::class,
         ],
 
 
