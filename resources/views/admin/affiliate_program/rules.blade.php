@@ -18,7 +18,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <form action="{{ route('admin.affiliate-rules.update') }}" method="POST">
+                            <form action="{{ route('admin.affiliate-rules.update') }}" method="POST" id="affiliateRulesForm" onsubmit="if (window.tinymce) { tinymce.triggerSave(); }">
                                 @csrf
                                 <div class="form-group">
                                     <label>Title <span class="text-danger">*</span></label>
@@ -26,7 +26,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Rules & Regulations <span class="text-danger">*</span></label>
-                                    <textarea name="description" cols="30" rows="12" class="form-control text-area-5 summernote" required>{{ old('description', optional($rule)->description) }}</textarea>
+                                    <textarea name="description" cols="30" rows="12" class="form-control text-area-5 summernote">{{ old('description', optional($rule)->description) }}</textarea>
                                 </div>
                                 <div class="form-group">
                                     <label>
@@ -43,4 +43,18 @@
         </div>
     </section>
 </div>
+<script>
+    (function () {
+        var form = document.getElementById('affiliateRulesForm');
+        if (!form) {
+            return;
+        }
+
+        form.addEventListener('submit', function () {
+            if (window.tinymce) {
+                tinymce.triggerSave();
+            }
+        });
+    })();
+</script>
 @endsection
