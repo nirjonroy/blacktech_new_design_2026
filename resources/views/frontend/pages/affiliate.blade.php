@@ -142,6 +142,9 @@
                                 <li class="mb-3"><i class="fa-solid fa-check me-2"></i> Promote web design, development, branding, SEO, and digital marketing services.</li>
                                 <li class="mb-3"><i class="fa-solid fa-check me-2"></i> We review each application before starting the partnership.</li>
                             </ul>
+                            <a href="{{ route('front.affiliate.rules') }}" class="btn btn-effect mt-4">
+                                <span>Rules & Prices</span>
+                            </a>
                         </div>
                     </div>
                     <div class="col-xl-7 col-lg-7">

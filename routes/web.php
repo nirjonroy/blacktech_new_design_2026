@@ -67,6 +67,7 @@ use App\Http\Controllers\WEB\Admin\InventoryController;
 use App\Http\Controllers\WEB\Admin\NotificationController;
 use App\Http\Controllers\WEB\Admin\RedirectController;
 use App\Http\Controllers\WEB\Admin\AffiliateApplicationController;
+use App\Http\Controllers\WEB\Admin\AffiliateProgramController;
 
 
 use App\Http\Controllers\WEB\Seller\SellerDashboardController;
@@ -457,6 +458,12 @@ Route::group(['as'=> 'admin.', 'prefix' => 'admin'],function (){
     Route::get('affiliate-client',[AffiliateApplicationController::class,'clients'])->name('affiliate-client');
     Route::get('show-affiliate-client/{id}',[AffiliateApplicationController::class,'showClient'])->name('show-affiliate-client');
     Route::delete('delete-affiliate-client/{id}',[AffiliateApplicationController::class,'destroyClient'])->name('delete-affiliate-client');
+    Route::get('affiliate-rules',[AffiliateProgramController::class,'rules'])->name('affiliate-rules');
+    Route::post('affiliate-rules',[AffiliateProgramController::class,'updateRules'])->name('affiliate-rules.update');
+    Route::get('affiliate-price',[AffiliateProgramController::class,'prices'])->name('affiliate-price');
+    Route::post('affiliate-price',[AffiliateProgramController::class,'storePrice'])->name('affiliate-price.store');
+    Route::put('affiliate-price/{id}',[AffiliateProgramController::class,'updatePrice'])->name('affiliate-price.update');
+    Route::delete('affiliate-price/{id}',[AffiliateProgramController::class,'destroyPrice'])->name('affiliate-price.destroy');
 
     Route::get('email-configuration',[EmailConfigurationController::class,'index'])->name('email-configuration');
     Route::put('update-email-configuraion',[EmailConfigurationController::class,'update'])->name('update-email-configuraion');
@@ -761,6 +768,7 @@ Route::group(['as' => 'front.'], function(){
         Route::get('/career/{slug}', 'career_details')->name('career.details');
         Route::get('/become-an-affiliate', 'affiliate')->name('affiliate');
         Route::post('/become-an-affiliate', 'affiliate_submit')->name('affiliate.submit');
+        Route::get('/affiliate-rules', 'affiliate_rules')->name('affiliate.rules');
         Route::get('/team', 'team')->name('team');
         Route::get('/team/{slug}', 'team_member')->name('team.member');
       	Route::get('/privacy-policy', 'privacy_policy')->name('privacy_policy');

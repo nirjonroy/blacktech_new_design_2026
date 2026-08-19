@@ -23,6 +23,8 @@ use App\Models\Footer;
 use App\Models\CustomPage;
 use App\Models\ContactMessage;
 use App\Models\AffiliateApplication;
+use App\Models\AffiliateProgramRule;
+use App\Models\AffiliateServicePrice;
 use App\Models\TeamMember;
 use App\Models\Career;
 // use App\Models\AboutUs;
@@ -168,6 +170,16 @@ class HomeController extends Controller
         $notification = ['messege' => 'Affiliate application submitted successfully', 'alert-type' => 'success'];
 
         return redirect()->back()->with($notification);
+    }
+
+    public function affiliate_rules()
+    {
+        $rule = AffiliateProgramRule::where('status', 1)->first();
+        $prices = AffiliateServicePrice::where('status', 1)
+            ->orderByRaw('CASE WHEN serial IS NULL THEN 1 ELSE 0 END, serial ASC, id ASC')
+            ->get();
+
+        return view('frontend.pages.affiliate_rules', compact('rule', 'prices'));
     }
 
     public function team()

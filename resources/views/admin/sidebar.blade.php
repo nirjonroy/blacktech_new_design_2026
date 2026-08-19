@@ -474,6 +474,18 @@
            </div>
            <span>Affiliate Clients</span></a></li>
 
+          <li class="{{ Route::is('admin.affiliate-rules') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.affiliate-rules') }}">
+           <div class="icon">
+           <i class="fas fa-list-alt"></i>
+           </div>
+           <span>Affiliate Rules</span></a></li>
+
+          <li class="{{ Route::is('admin.affiliate-price') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.affiliate-price') }}">
+           <div class="icon">
+           <i class="fas fa-dollar-sign"></i>
+           </div>
+           <span>Affiliate Prices</span></a></li>
+
 
 
 

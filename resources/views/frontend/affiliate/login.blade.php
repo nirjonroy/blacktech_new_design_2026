@@ -8,6 +8,7 @@
                 <div class="col-md-12 text-center">
                     <h1 class="title">Affiliate Login</h1>
                     <p>Access your affiliate dashboard and submit client details.</p>
+                    <a href="{{ route('front.affiliate.rules') }}" class="btn btn-effect mt-3"><span>Rules & Prices</span></a>
                 </div>
             </div>
         </div>
