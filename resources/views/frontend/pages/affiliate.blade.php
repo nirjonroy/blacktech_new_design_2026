@@ -159,7 +159,14 @@
                                         <input type="email" class="form-control" placeholder="Email Address *" name="email" value="{{ old('email') }}" required>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" class="form-control" placeholder="Phone / WhatsApp" name="phone" value="{{ old('phone') }}">
+                                        <div class="row">
+                                            <div class="col-4 pe-1">
+                                                <input type="text" class="form-control" placeholder="+1" name="phone_country_code" value="{{ old('phone_country_code') }}" pattern="^\+[0-9]{1,4}$" title="Enter country code. Example: +1">
+                                            </div>
+                                            <div class="col-8 ps-1">
+                                                <input type="tel" class="form-control" placeholder="Phone / WhatsApp" name="phone" value="{{ old('phone') }}" pattern="^[0-9\s().-]{6,20}$" title="Enter phone number without country code">
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="col-md-6">
                                         <input type="text" class="form-control" placeholder="Company / Brand Name" name="company_name" value="{{ old('company_name') }}">

@@ -79,7 +79,14 @@
 
                           <div class="form-group">
                             <label for="phone">Phone:</label>
-                            <input type="text" class="form-control" name="phone">
+                            <div class="row">
+                                <div class="col-4 pe-1">
+                                    <input type="text" class="form-control" name="phone_country_code" placeholder="+1" pattern="^\+[0-9]{1,4}$" title="Enter country code. Example: +1" required>
+                                </div>
+                                <div class="col-8 ps-1">
+                                    <input type="tel" class="form-control" name="phone" placeholder="Phone Number" pattern="^[0-9\s().-]{6,20}$" title="Enter phone number without country code" required>
+                                </div>
+                            </div>
                           </div>
 
                           <div class="form-group">

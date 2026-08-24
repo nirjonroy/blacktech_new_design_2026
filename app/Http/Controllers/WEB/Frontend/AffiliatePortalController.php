@@ -9,6 +9,36 @@ use Illuminate\Support\Facades\Auth;
 
 class AffiliatePortalController extends Controller
 {
+    private function countryCodePhoneRule($required = false)
+    {
+        $rules = [$required ? 'required' : 'nullable', 'max:255'];
+        $rules[] = 'regex:/^[0-9\s().-]{6,20}$/';
+
+        return implode('|', $rules);
+    }
+
+    private function countryCodePhoneMessage()
+    {
+        return 'Please enter the phone number without country code. Example: 5714782431';
+    }
+
+    private function countryCodeMessage()
+    {
+        return 'Please enter a valid country code. Example: +1';
+    }
+
+    private function combinePhoneWithCountryCode(Request $request, $phoneField = 'client_phone', $countryCodeField = 'client_phone_country_code')
+    {
+        $phone = trim((string) $request->input($phoneField));
+        $countryCode = trim((string) $request->input($countryCodeField));
+
+        if ($phone === '') {
+            return null;
+        }
+
+        return trim($countryCode . ' ' . $phone);
+    }
+
     public function loginPage()
     {
         if (Auth::guard('affiliate')->check()) {
@@ -63,18 +93,24 @@ class AffiliatePortalController extends Controller
         $request->validate([
             'client_name' => 'required|max:255',
             'client_email' => 'nullable|email|max:255',
-            'client_phone' => 'nullable|max:255',
+            'client_phone_country_code' => 'nullable|required_with:client_phone|regex:/^\+[0-9]{1,4}$/',
+            'client_phone' => 'nullable|required_with:client_phone_country_code|max:255|regex:/^[0-9\s().-]{6,20}$/',
             'company_name' => 'nullable|max:255',
             'service_interest' => 'nullable|max:255',
             'budget' => 'nullable|max:255',
             'message' => 'nullable',
+        ], [
+            'client_phone.regex' => $this->countryCodePhoneMessage(),
+            'client_phone_country_code.regex' => $this->countryCodeMessage(),
+            'client_phone_country_code.required_with' => 'Country code is required when client phone is provided',
+            'client_phone.required_with' => 'Client phone number is required when country code is provided',
         ]);
 
         AffiliateClientSubmission::create([
             'affiliate_marketer_id' => Auth::guard('affiliate')->id(),
             'client_name' => $request->client_name,
             'client_email' => $request->client_email,
-            'client_phone' => $request->client_phone,
+            'client_phone' => $this->combinePhoneWithCountryCode($request),
             'company_name' => $request->company_name,
             'service_interest' => $request->service_interest,
             'budget' => $request->budget,

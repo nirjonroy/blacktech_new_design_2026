@@ -38,6 +38,44 @@ use App\Mail\sendmail;
 use App\Mail\ReciveMail;
 class HomeController extends Controller
 {
+    private function countryCodePhoneRule($required = false)
+    {
+        $rules = [$required ? 'required' : 'nullable', 'max:255'];
+        $rules[] = 'regex:/^[0-9\s().-]{6,20}$/';
+
+        return implode('|', $rules);
+    }
+
+    private function countryCodeRule($required = false)
+    {
+        $rules = [$required ? 'required' : 'nullable'];
+        $rules[] = 'regex:/^\+[0-9]{1,4}$/';
+
+        return implode('|', $rules);
+    }
+
+    private function countryCodePhoneMessage()
+    {
+        return 'Please enter the phone number without country code. Example: 5714782431';
+    }
+
+    private function countryCodeMessage()
+    {
+        return 'Please enter a valid country code. Example: +1';
+    }
+
+    private function combinePhoneWithCountryCode(Request $request, $phoneField = 'phone', $countryCodeField = 'phone_country_code')
+    {
+        $phone = trim((string) $request->input($phoneField));
+        $countryCode = trim((string) $request->input($countryCodeField));
+
+        if ($phone === '') {
+            return null;
+        }
+
+        return trim($countryCode . ' ' . $phone);
+    }
+
     public function index()
     {
         $slider = Slider::select(['id', 'title_one', 'title_two', 'image'])
@@ -136,7 +174,8 @@ class HomeController extends Controller
         $rules = [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255',
-            'phone' => 'nullable|max:255',
+            'phone_country_code' => 'nullable|required_with:phone|regex:/^\+[0-9]{1,4}$/',
+            'phone' => 'nullable|required_with:phone_country_code|max:255|regex:/^[0-9\s().-]{6,20}$/',
             'company_name' => 'nullable|max:255',
             'website' => 'nullable|url|max:255',
             'audience' => 'required|max:255',
@@ -151,20 +190,26 @@ class HomeController extends Controller
             'website.url' => 'Please enter a valid website or social profile URL',
             'audience.required' => 'Audience is required',
             'promotion_plan.required' => 'Promotion plan is required',
+            'phone.regex' => $this->countryCodePhoneMessage(),
+            'phone_country_code.regex' => $this->countryCodeMessage(),
+            'phone_country_code.required_with' => 'Country code is required when phone is provided',
+            'phone.required_with' => 'Phone number is required when country code is provided',
         ];
 
         $this->validate($request, $rules, $customMessages);
 
-        AffiliateApplication::create($request->only([
+        $affiliateData = $request->only([
             'name',
             'email',
-            'phone',
             'company_name',
             'website',
             'audience',
             'promotion_plan',
             'message',
-        ]));
+        ]);
+        $affiliateData['phone'] = $this->combinePhoneWithCountryCode($request);
+
+        AffiliateApplication::create($affiliateData);
 
         Alert::toast('Message', 'Affiliate application submitted successfully');
         $notification = ['messege' => 'Affiliate application submitted successfully', 'alert-type' => 'success'];
@@ -364,7 +409,8 @@ class HomeController extends Controller
             'service_name' => 'required',
             'name' => 'required',
             'email' => 'required|email',
-            'phone' => 'required',
+            'phone_country_code' => $this->countryCodeRule(true),
+            'phone' => $this->countryCodePhoneRule(true),
             'address' => 'required',
             'short_notes' => 'required',
             'appoinment_date' => '',
@@ -374,6 +420,8 @@ class HomeController extends Controller
             'name.required' => trans('admin_validation.Name is required'),
 
             'email.required' => trans('admin_validation.Slug is required'),
+            'phone.regex' => $this->countryCodePhoneMessage(),
+            'phone_country_code.regex' => $this->countryCodeMessage(),
 
 
         ];
@@ -395,7 +443,7 @@ class HomeController extends Controller
         $order->service_name = $request->service_name;
         $order->name = $request->name;
         $order->email = $request->email;
-        $order->phone = $request->phone;
+        $order->phone = $this->combinePhoneWithCountryCode($request);
         $order->address = $request->address;
         $order->short_notes = $request->short_notes;
         $order->appoinment_date = $request->appoinment_date;
@@ -403,7 +451,7 @@ class HomeController extends Controller
         $order->save();
         $mailData = [
             'name' => $request->name,
-            'phone' => $request->phone,
+            'phone' => $this->combinePhoneWithCountryCode($request),
             'service_name' => $request->service_name,
             'short_notes' => $request->short_notes,
         ];
@@ -438,7 +486,8 @@ class HomeController extends Controller
 
             'name' => 'required',
             'email' => '',
-            'phone' => '',
+            'phone_country_code' => $this->countryCodeRule(true),
+            'phone' => $this->countryCodePhoneRule(true),
             'address' => '',
             'subject' => '',
             'message' => '',
@@ -448,6 +497,8 @@ class HomeController extends Controller
             'name.required' => trans('admin_validation.Name is required'),
 
             'email.required' => trans('admin_validation.Slug is required'),
+            'phone.regex' => $this->countryCodePhoneMessage(),
+            'phone_country_code.regex' => $this->countryCodeMessage(),
 
 
         ];
@@ -459,7 +510,7 @@ class HomeController extends Controller
 
         $order->name = $request->name;
         $order->email = $request->email;
-        $order->phone = $request->phone;
+        $order->phone = $this->combinePhoneWithCountryCode($request);
         $order->address = $request->address;
         $order->subject = $request->subject;
         $order->message = $request->message;

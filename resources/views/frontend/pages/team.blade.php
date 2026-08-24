@@ -295,7 +295,14 @@
                                             <input type="email" class="form-control" placeholder="Email" name="email" required>
                                         </div>
                                         <div class="col-md-4">
-                                            <input type="text" class="form-control" placeholder="Phone" name="phone" required>
+                                            <div class="row">
+                                                <div class="col-4 pe-1">
+                                                    <input type="text" class="form-control" placeholder="+1" name="phone_country_code" pattern="^\+[0-9]{1,4}$" title="Enter country code. Example: +1" required>
+                                                </div>
+                                                <div class="col-8 ps-1">
+                                                    <input type="tel" class="form-control" placeholder="Phone Number" name="phone" pattern="^[0-9\s().-]{6,20}$" title="Enter phone number without country code" required>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="col-lg-12">
                                             <input type="text" class="form-control" placeholder="Subject" name="subject" required>
